@@ -88,7 +88,7 @@ const magnitude = (n:  ComplexNumber) => Math.hypot(n.r, n.i)
 */
 const phase = (n:  ComplexNumber) => Math.atan2(n.i, n.r)
 
-export default {
+const complex = {
   makeNew,
   add,
   addInPlace,
@@ -100,3 +100,5 @@ export default {
   magnitude,
   phase,
 }
+
+export default complex

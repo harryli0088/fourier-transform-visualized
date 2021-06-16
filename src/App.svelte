@@ -5,6 +5,7 @@
 
   import Plot from "./Components/Plot.svelte";
   import Polar from "./Components/Polar.svelte";
+  import complex from './utils/complexNumber';
   import dft from './utils/dft';
   import getCos from './utils/getCos';
   import type { MathFunc, PointType } from './utils/types';
@@ -50,8 +51,8 @@
 
   $: dftPoints = dft(points.map(p => p.y)).map((n,i) => ({
     x: i,
-    y: n.magnitude() / points.length
-  })).slice(0, 11)
+    y: complex.magnitude(n) / points.length
+  }))
   $: console.log("dftPoints",dftPoints)
 </script>
 
