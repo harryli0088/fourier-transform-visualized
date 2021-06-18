@@ -6,11 +6,13 @@
   import Plot from "./Components/Plot.svelte";
   import Polar from "./Components/Polar.svelte";
   import complex from './utils/complexNumber';
-  import dft from './utils/dft';
   import getCos from './utils/getCos';
   import type { MathFunc, PointType } from './utils/types';
+  // import fft, { zeroPad } from './utils/fft';
+  import getCosineFourierTransform from './utils/getCosineFourierTransform';
+  import { getDefiniteIntegralFunction } from './utils/definiteIntegral';
 
-  const domain: [number, number] = [0, Math.PI/2]
+  const domain: [number, number] = [0, 2*Math.PI]
 
   const onMountDrawProportion = 1
   const drawProportion = tweened(0, {
@@ -49,11 +51,21 @@
     easing: cubicOut
   })
 
-  $: dftPoints = dft(points.map(p => p.y)).map((n,i) => ({
-    x: i,
-    y: complex.magnitude(n) / points.length
-  }))
-  $: console.log("dftPoints",dftPoints)
+  // $: zeroPaddedPoints = zeroPad(
+  //   points.map(
+  //     p => complex.makeNew({r: p.y})
+  //   )
+  // )
+  // $: dftPoints = fft(zeroPaddedPoints).map((n,i) => ({
+  //   x: i,
+  //   y: complex.magnitude(n) / points.length
+  // })).slice(0, zeroPaddedPoints.length / 2).slice(0, 100)
+  // $: console.log("dftPoints",dftPoints)
+
+  $: cosineFourierTransform = getCosineFourierTransform($funcFreq, 0)
+  $: definiteIntegralFunction = getDefiniteIntegralFunction(cosineFourierTransform, domain[0], domain[1])
+  $: getMagnitude = (theta: number) => definiteIntegralFunction(theta).r
+  $: ftPoints = getPoints([0, 10], getMagnitude, stepSize)
 </script>
 
 <main>
@@ -94,7 +106,7 @@
   </div>
   <Polar drawProportion={$drawProportion} freq={$windingFreq} {points}/>
 
-	<Plot drawProportion={$drawProportion} points={dftPoints} windingFreq={Infinity}/>
+	<Plot drawProportion={$drawProportion} points={ftPoints} windingFreq={Infinity}/>
 </main>
 
 <style>
