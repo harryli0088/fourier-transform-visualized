@@ -10,7 +10,7 @@
   import type { MathFunc, PointType } from './utils/types';
   // import fft, { zeroPad } from './utils/fft';
   import getCosineFourierTransform from './utils/getCosineFourierTransform';
-  import { getDefiniteIntegralFunction } from './utils/definiteIntegral';
+  import getDefiniteIntegralFunction from './utils/getDefiniteIntegralFunction';
 
   const domain: [number, number] = [0, 2*Math.PI]
 
@@ -64,8 +64,8 @@
 
   $: cosineFourierTransform = getCosineFourierTransform($funcFreq, 0)
   $: definiteIntegralFunction = getDefiniteIntegralFunction(cosineFourierTransform, domain[0], domain[1])
-  $: getMagnitude = (theta: number) => definiteIntegralFunction(theta).r
-  $: ftPoints = getPoints([0, 10], getMagnitude, stepSize)
+  $: getReal = (freq: number) => definiteIntegralFunction(freq).r
+  $: ftPoints = getPoints([0, 10], getReal, stepSize)
 </script>
 
 <main>
