@@ -5,13 +5,13 @@
 
   import Plot from "./Components/Plot.svelte";
   import Polar from "./Components/Polar.svelte";
-  import complex from './utils/complexNumber';
+  // import complex from './utils/complexNumber';
   import getCos from './utils/getCos';
   import type { MathFunc, PointType } from './utils/types';
   // import fft, { zeroPad } from './utils/fft';
   import getCosineFourierTransform from './utils/getCosineFourierTransform';
   import getDefiniteIntegralFunction from './utils/getDefiniteIntegralFunction';
-import { TWO_PI } from './utils/constants';
+  import { TWO_PI } from './utils/constants';
 
   const domain: [number, number] = [0, Math.PI]
 
@@ -107,7 +107,7 @@ import { TWO_PI } from './utils/constants';
       value={INITIAL_WINDING_FREQ}
     >
   </div>
-  <Polar drawProportion={$drawProportion} freq={$windingFreq} {points}/>
+  <Polar {definiteIntegralFunction} {domain} drawProportion={$drawProportion} freq={$windingFreq} {points}/>
 
 	<Plot drawProportion={$drawProportion} points={ftPoints} windingFreq={Infinity}/>
 </main>

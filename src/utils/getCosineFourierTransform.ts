@@ -29,8 +29,12 @@ export default function getCosineFourierTransform(
 ):(t: number) => MathComplexFunc {
   return (t: number):MathComplexFunc => {
     return (freq: number) => {
-      const aMinusTwoPiFreq = a - TWO_PI*freq
-      const aPlusTwoPiFreq = a + TWO_PI*freq
+      if(a === TWO_PI*freq || a === -TWO_PI*freq) { //if the frequency of the input cosine matches
+        freq += 0.000000001 //increment the frequency a little so we don't end up with a zero denominator
+      }
+      const twoPiFreq = TWO_PI*freq
+      const aMinusTwoPiFreq = a - twoPiFreq
+      const aPlusTwoPiFreq = a + twoPiFreq
       return complex.makeNew({
         i: (
           Math.cos(-1*aPlusTwoPiFreq*t - b) / aPlusTwoPiFreq

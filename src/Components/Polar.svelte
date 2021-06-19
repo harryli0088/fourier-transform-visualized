@@ -1,8 +1,11 @@
 <script lang="ts">
   import Arrow from './Arrow.svelte';
   import type { PointType } from '../utils/types';
+  import type { ComplexNumber } from '../utils/complexNumber';
 
+  export let definiteIntegralFunction: (freq: number) => ComplexNumber
   export let diameter:number = 500
+  export let domain: [number, number] = [0,Math.PI] //the time domain
   export let drawProportion: number = 1 //between 0 and 1, the proportion of the points to draw
   export let freq: number = 1 //cycles per second, ie Hz
   export let height: number = 500
@@ -47,19 +50,14 @@
   $: arrowPoint = pixelPoints[sliceIndex - 1]
   $: pathD = `M ${pointStrings.slice(0, sliceIndex).join(" ")}`
 
-  const markerWidth = 7
-  const markerHeight = 5
+  $: centerOfMass = definiteIntegralFunction(freq)
+  $: domainSpan = domain[1] - domain[0] //for the center of mass explanation, we need to divide by the span of the time domain (t2 - t1)
+  $: centerOfMassScale = radius / domainSpan //multiply the values by the scale to get to the right spot
 </script>
 
 <main>
 	<div bind:clientWidth={width}>
     <svg {width} {height}>
-      <defs>
-        <marker id="arrowhead" {markerWidth} {markerHeight} refX="0" refY="2.5" orient="auto" fill="gray">
-          <polygon points="0 0, 7 2.5, 0 5" />
-        </marker>
-      </defs>
-      
       <g>
         <g transform={`translate(${left + radius},${top + radius})`}>
           {#each lineIntervals as l}
@@ -73,6 +71,8 @@
           {#if drawProportion !== 1 && arrowPoint}
             <Arrow x1={0} y1={0} x2={arrowPoint.x} y2={arrowPoint.y}/>
           {/if}
+
+          <circle cx={centerOfMass.r*centerOfMassScale} cy={-centerOfMass.i*centerOfMassScale} r={10} fill="red"/>
       </g>
       </g>
     </svg>
