@@ -13,7 +13,7 @@
   import getDefiniteIntegralFunction from './utils/getDefiniteIntegralFunction';
 import { TWO_PI } from './utils/constants';
 
-  const domain: [number, number] = [0, 2*Math.PI]
+  const domain: [number, number] = [0, Math.PI]
 
   const onMountDrawProportion = 1
   const drawProportion = tweened(0, {
