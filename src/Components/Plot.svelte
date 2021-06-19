@@ -3,12 +3,14 @@
 
   import Arrow from './Arrow.svelte';
   import getDomain from '../utils/getDomain';
+  import getRange from '../utils/getRange';
   import type { MathFunc, PointType } from '../utils/types';
 
   export let drawProportion: number = 1 //between 0 and 1, the proportion of the points to draw
   export let height: number = 200
   export let margin: {b: number, l: number, r: number, t: number} = {b:1,l:1,r:0,t:1}
   export let points: PointType[] = []
+  export let range: [number, number] | null = null
   export let stroke: string = "black"
   export let windingFreq: number = -1
   export let xTickGap: number = 0.25
@@ -17,13 +19,14 @@
   export let yTickSize: number = 15
 
   $: domain = getDomain(points)
-  $: range = (():[number, number] => {
+  function getPointsRange(points: PointType[]):[number, number] {
     const yValues = points.map(p => p.y)
     if(yValues.length > 0) {
       return [Math.min(...yValues), Math.max(...yValues)]
     }
     return [-1,1]
-  })()
+  }
+  $: useRange = range || getRange(points) //use the range from props if provided, else use find the range of the points
   $: xTickHalfSize = xTickSize/2
   $: yTickHalfSize = yTickSize/2
 
@@ -37,7 +40,7 @@
 
   $: xScale = scaleLinear<number,number>().domain(domain).range([left, right])
   $: x0 = xScale(0)
-  $: yScale = scaleLinear<number,number>().domain(range).range([bottom, top])
+  $: yScale = scaleLinear<number,number>().domain(useRange).range([bottom, top])
   $: y0 = yScale(0)
 
 
@@ -51,7 +54,7 @@
     return labels
   }
   $: xLabels = getLabels(domain)
-  $: yLabels = getLabels(range)
+  $: yLabels = getLabels(useRange)
 
   $: pixelPoints = points.map(p => ({x: xScale(p.x), y: yScale(p.y)}))
   $: pointStrings = pixelPoints.map(p => `${p.x},${p.y}`)
@@ -100,10 +103,10 @@
 	<div bind:clientWidth={width}>
     <svg {width} {height}>
       <line x1={xScale(domain[0])} y1={y0} x2={xScale(domain[1])} y2={y0}/>
-      <line x1={x0} y1={yScale(range[0])} x2={x0} y2={range[1]}/>
+      <line x1={x0} y1={yScale(useRange[0])} x2={x0} y2={useRange[1]}/>
 
       {#each windingFreqTicks as t}
-        <line class="winding-freq-tick" x1={t} y1={yScale(range[0])} x2={t} y2={yScale(range[1])}/>
+        <line class="winding-freq-tick" x1={t} y1={yScale(useRange[0])} x2={t} y2={yScale(useRange[1])}/>
       {/each}
       {#each xTicks as t}
         <line x1={t.o} y1={y0 + getTickSize(t.i,xTickHalfSize)} x2={t.o} y2={y0 - getTickSize(t.i,xTickHalfSize)}/>
