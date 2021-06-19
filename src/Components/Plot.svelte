@@ -119,7 +119,7 @@
       <path d={pathD} fill="none" {stroke}/>
 
       {#if drawProportion !== 1 && arrowPoint}
-        <Arrow x1={arrowPoint.x} y1={y0} x2={arrowPoint.x} y2={arrowPoint.y} color={drawProportion===5/20?"gold":"gray"}/>
+        <Arrow x1={arrowPoint.x} y1={y0} x2={arrowPoint.x} y2={arrowPoint.y} color={"gray"}/>
       {/if}
     </svg>
   </div>
