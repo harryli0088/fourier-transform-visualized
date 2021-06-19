@@ -10,7 +10,7 @@
   import getDefiniteIntegralFunction from '../utils/getDefiniteIntegralFunction';
   import { STEP_SIZE, TWO_PI, WINDING_FREQ_MAX } from '../utils/constants';
   import getPoints from '../utils/getPoints';
-import complex from '../utils/complexNumber';
+  import complex from '../utils/complexNumber';
 
   const domain: [number, number] = [0, Math.PI]
 
@@ -25,12 +25,30 @@ import complex from '../utils/complexNumber';
 
 
   const INITIAL_FUNC_FREQ = 2.5
-  const frequencies:number[] = [INITIAL_FUNC_FREQ, 7]
+  let frequencies:number[] = [INITIAL_FUNC_FREQ, 7]
+  let newFreq: string = "1"
+  function addFreq(e: Event) {
+    e.preventDefault()
+    frequencies = [...frequencies, parseFloat(newFreq)]
+  }
+  function editFreq(index: number, value: string) {
+    const freq = parseFloat(value) //parse the value
+    if(!isNaN(freq)) { //if the value is anumber
+      frequencies[index] = freq //edit the frequency
+      frequencies = frequencies //rerender
+    }
+  }
+  function deleteFreq(index: number) {
+    if(frequencies.length > 1) { //if we will have at least one frequency left
+      frequencies.splice(index,1) //splice at the index
+      frequencies = frequencies //rerender
+    }
+  }
   $: fullFrequencies = frequencies.map(f => f * TWO_PI) //multiply by 2pi to get the full frequency to use
   $: funcs = fullFrequencies.map(getCos)
-  $: func = (t: number) => funcs.reduce((sum,func) => sum + func(t), 0)
+  $: combinedFunc = (t: number) => funcs.reduce((sum,func) => sum + func(t), 0)
   
-  $: points = getPoints(domain, func, STEP_SIZE)
+  $: points = getPoints(domain, combinedFunc, STEP_SIZE)
 
   const INITIAL_WINDING_FREQ = 1
 	const windingFreq = tweened(INITIAL_WINDING_FREQ, {
@@ -46,6 +64,33 @@ import complex from '../utils/complexNumber';
 </script>
 
 <main>
+  <form on:submit={addFreq}>
+    <input 
+      bind:value={newFreq}
+      max={1000}
+      min={1}
+      type="number"
+    />
+    <button type="submit">Add</button>
+  </form>
+
+  <div>
+    {#each frequencies as f, i}
+      <div>
+        <input
+          max={1000}
+          min={1}
+          on:change={e => editFreq(i, e.target.value)}
+          type="number"
+          value={f}
+        />
+        {#if frequencies.length > 1}
+          <button on:click={e => deleteFreq(i)}>X</button>
+        {/if}
+      </div>
+    {/each}
+  </div>
+
   <div>
     <span><b>Draw Proportion: </b>{$drawProportion}</span>
     <input
