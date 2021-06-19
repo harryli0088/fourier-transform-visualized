@@ -17,15 +17,15 @@ import { TWO_PI } from './utils/constants';
 
   const onMountDrawProportion = 1
   const drawProportion = tweened(0, {
-    duration: 5000,
+    duration: 10000,
     easing: cubicOut
   })
   onMount(() => {
     drawProportion.set(onMountDrawProportion)
   })
 
-  const initualFuncFreq = 2.5
-  const funcFreq = tweened(initualFuncFreq, { //this is the partial frequency for 2pi omitted for simplicity
+  const INITIAL_FUNC_FREQ = 2.5
+  const funcFreq = tweened(INITIAL_FUNC_FREQ, { //this is the partial frequency for 2pi omitted for simplicity
     duration: 500,
     easing: cubicOut
   })
@@ -47,8 +47,9 @@ import { TWO_PI } from './utils/constants';
   }
   $: points = getPoints(domain, func, stepSize)
 
-  const initialWindingFreq = 1
-	const windingFreq = tweened(initialWindingFreq, {
+  const INITIAL_WINDING_FREQ = 1
+  const WINDING_FREQ_MAX = 10
+	const windingFreq = tweened(INITIAL_WINDING_FREQ, {
     duration: 500,
     easing: cubicOut
   })
@@ -85,12 +86,12 @@ import { TWO_PI } from './utils/constants';
   <div>
     <span><b>Function Frequency: </b>{$funcFreq}</span>
     <input
-      max="10"
+      max={WINDING_FREQ_MAX}
       min="0.05"
       on:input={e => funcFreq.set(parseFloat(e.target.value))}
       step="0.05"
       type="range"
-      value={initualFuncFreq}
+      value={INITIAL_FUNC_FREQ}
     >
   </div>
 	<Plot drawProportion={$drawProportion} {points} windingFreq={$windingFreq}/>
@@ -103,12 +104,12 @@ import { TWO_PI } from './utils/constants';
       on:input={e => windingFreq.set(parseFloat(e.target.value))}
       step="0.01"
       type="range"
-      value={initialWindingFreq}
+      value={INITIAL_WINDING_FREQ}
     >
   </div>
   <Polar drawProportion={$drawProportion} freq={$windingFreq} {points}/>
 
-	<Plot drawProportion={$drawProportion} points={ftPoints} windingFreq={Infinity}/>
+	<Plot drawProportion={1/4} points={ftPoints} windingFreq={Infinity}/>
 </main>
 
 <style>
