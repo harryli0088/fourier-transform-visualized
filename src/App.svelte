@@ -17,7 +17,7 @@ import { TWO_PI } from './utils/constants';
 
   const onMountDrawProportion = 1
   const drawProportion = tweened(0, {
-    duration: 10000,
+    duration: 5000,
     easing: cubicOut
   })
   onMount(() => {
@@ -109,7 +109,7 @@ import { TWO_PI } from './utils/constants';
   </div>
   <Polar drawProportion={$drawProportion} freq={$windingFreq} {points}/>
 
-	<Plot drawProportion={1/4} points={ftPoints} windingFreq={Infinity}/>
+	<Plot drawProportion={$drawProportion} points={ftPoints} windingFreq={Infinity}/>
 </main>
 
 <style>

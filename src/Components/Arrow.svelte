@@ -15,14 +15,6 @@
   $: length = Math.hypot(x2 - x1,y2 - y1)
   $: x2Short = ratio * (x2 - x1)
   $: y2Short = ratio * (y2 - y1)
-
-  $: {
-    if(color === "gold") {
-      console.log("LENGTH", length)
-      console.log("x2Short", x2Short, x1)
-      console.log("y2Short", y2Short)
-    }
-  }
 </script>
 
 <defs>
