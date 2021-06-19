@@ -11,6 +11,7 @@
   // import fft, { zeroPad } from './utils/fft';
   import getCosineFourierTransform from './utils/getCosineFourierTransform';
   import getDefiniteIntegralFunction from './utils/getDefiniteIntegralFunction';
+import { TWO_PI } from './utils/constants';
 
   const domain: [number, number] = [0, 2*Math.PI]
 
@@ -24,11 +25,12 @@
   })
 
   const initualFuncFreq = 2.5
-  const funcFreq = tweened(initualFuncFreq, {
+  const funcFreq = tweened(initualFuncFreq, { //this is the partial frequency for 2pi omitted for simplicity
     duration: 500,
     easing: cubicOut
   })
-  $: func = getCos($funcFreq)
+  $: fullFuncFreq = TWO_PI * $funcFreq //multiply by 2pi to get the full frequency to use
+  $: func = getCos(fullFuncFreq)
   const stepSize: number = 0.001
   function getPoints(
     domain: [number, number],
@@ -62,7 +64,7 @@
   // })).slice(0, zeroPaddedPoints.length / 2).slice(0, 100)
   // $: console.log("dftPoints",dftPoints)
 
-  $: cosineFourierTransform = getCosineFourierTransform($funcFreq, 0)
+  $: cosineFourierTransform = getCosineFourierTransform(fullFuncFreq, 0)
   $: definiteIntegralFunction = getDefiniteIntegralFunction(cosineFourierTransform, domain[0], domain[1])
   $: getReal = (freq: number) => definiteIntegralFunction(freq).r
   $: ftPoints = getPoints([0, 10], getReal, stepSize)
