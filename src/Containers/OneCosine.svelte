@@ -5,14 +5,15 @@
 
   import Plot from "../Components/Plot.svelte";
   import Polar from "../Components/Polar.svelte";
+  import DrawProportion from '../Components/DrawProportion.svelte';
   // import complex from './utils/complexNumber';
-  import getCos from '../utils/getCos';
-  import type { MathFunc, PointType } from '../utils/types';
   // import fft, { zeroPad } from './utils/fft';
+  import getCos from '../utils/getCos';
   import getCosineFourierTransform from '../utils/getCosineFourierTransform';
   import getDefiniteIntegralFunction from '../utils/getDefiniteIntegralFunction';
-  import { STEP_SIZE, TWO_PI, WINDING_FREQ_MAX } from '../utils/constants';
   import getPoints from '../utils/getPoints';
+  // import type { MathFunc, PointType } from '../utils/types';
+  import { STEP_SIZE, TWO_PI, WINDING_FREQ_MAX } from '../utils/constants';
 
   const domain: [number, number] = [0, Math.PI]
 
@@ -58,17 +59,7 @@
 </script>
 
 <main>
-  <div>
-    <span><b>Draw Proportion: </b>{$drawProportion}</span>
-    <input
-      max="1"
-      min="0"
-      on:input={e => drawProportion.set(parseFloat(e.target.value))}
-      step="0.05"
-      type="range"
-      value={onMountDrawProportion}
-    >
-  </div>
+  <DrawProportion {drawProportion} initialValue={onMountDrawProportion}/>
   <div>
     <span><b>Function Frequency: </b>{$funcFreq}</span>
     <input
