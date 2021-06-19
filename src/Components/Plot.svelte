@@ -84,10 +84,11 @@
     xScale: MathFunc,
   ) {
     const windingFreqTicks: number[] = []
-    if(windingFreq > 0) {
-      let multiple = windingFreq * Math.ceil(domain[0]*windingFreq) //round up to the next multiple of the winding freq
-      for(multiple; multiple<domain[1]; multiple+=windingFreq) {
-        windingFreqTicks.push(xScale(multiple))
+    if(windingFreq > 0 && windingFreq !== Infinity) { //if we have meaningful winding frequencies to draw
+      const windingInverse = 1 / windingFreq //get the inverse of the winding frequency
+      let multiple = windingInverse * Math.ceil(domain[0]*windingInverse) //round up to the next multiple of the winding freq inverse
+      for(multiple; multiple<domain[1]; multiple+=windingInverse) { //increment by the winding freq inverse through the domain
+        windingFreqTicks.push(xScale(multiple)) //push a new tick
       }
     }
     return windingFreqTicks
