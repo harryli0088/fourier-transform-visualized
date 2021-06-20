@@ -106,7 +106,14 @@
       value={INITIAL_WINDING_FREQ}
     >
   </div>
-  <Polar definiteIntegralFunction={combinedDefiniteIntegralFunction} {domain} drawProportion={$drawProportion} freq={$windingFreq} {points}/>
+  <Polar
+    definiteIntegralFunction={combinedDefiniteIntegralFunction}
+    {domain}
+    drawProportion={$drawProportion}
+    freq={$windingFreq}
+    maxMagnitude={frequencies.length}
+    {points}
+  />
 
 	<Plot drawProportion={$drawProportion} points={ftPoints} windingFreq={Infinity} xTitle="Frequency (Hz)"/>
 </main>

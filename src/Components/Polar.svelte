@@ -3,6 +3,7 @@
   import type { PointType } from '../utils/types';
   import type { ComplexNumber } from '../utils/complexNumber';
   import { TWO_PI } from '../utils/constants';
+  import getRange from '../utils/getRange';
 
   export let definiteIntegralFunction: (freq: number) => ComplexNumber
   export let diameter:number = 500
@@ -11,6 +12,7 @@
   export let freq: number = 1 //cycles per second, ie Hz
   export let height: number = 500
   export let margin: {b: number, l: number, r: number, t: number} = {b:1,l:1,r:0,t:1}
+  export let maxMagnitude: number = 0
   export let points: PointType[] = []
   export let stroke: string = "black"
 
@@ -24,9 +26,8 @@
   $: diameter = Math.min(bottom - top, right - left)
   $: radius = diameter / 2
 
-
   $: lineIntervals = [-diameter/2, -diameter/4, 0, diameter/4, diameter/2]
-  $: console.log("diameter",diameter, "radius",radius)
+  
   
 
   function getPolarPoints(
@@ -40,7 +41,15 @@
   }
 
   $: polarPoints = getPolarPoints(freq, points)
-  $: pixelPoints = polarPoints.map(p => ({x: radius*p.x, y: radius*p.y}))
+  $: useMaxMagnitude = Math.ceil(
+    maxMagnitude > 0 //if the maxMaginitude props is valid
+    ? maxMagnitude //use it
+    : Math.max(...getRange(polarPoints, (p: PointType) => p.x), ...getRange(polarPoints)) //else dynamically calculate it
+  )
+  $: unitLengthPixels = radius / useMaxMagnitude //the length of a unit vector in pixels
+
+
+  $: pixelPoints = polarPoints.map(p => ({x: unitLengthPixels*p.x, y: unitLengthPixels*p.y}))
   $: pointStrings = pixelPoints.map(p => `${p.x},${p.y}`)
   $: sliceIndex = Math.ceil(pointStrings.length * drawProportion)
   $: arrowPoint = pixelPoints[sliceIndex - 1]
@@ -48,7 +57,7 @@
 
   $: centerOfMass = definiteIntegralFunction(freq)
   $: domainSpan = domain[1] - domain[0] //for the center of mass explanation, we need to divide by the span of the time domain (t2 - t1)
-  $: centerOfMassScale = radius / domainSpan //multiply the values by the scale to get to the right spot
+  $: centerOfMassScale = unitLengthPixels / domainSpan //multiply the values by the scale to get to the right spot
 </script>
 
 <main>
