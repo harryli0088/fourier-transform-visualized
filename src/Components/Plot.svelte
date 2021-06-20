@@ -8,7 +8,7 @@
 
   export let drawProportion: number = 1 //between 0 and 1, the proportion of the points to draw
   export let height: number = 200
-  export let margin: {b: number, l: number, r: number, t: number} = {b:20,l:1,r:0,t:10}
+  export let margin: {b: number, l: number, r: number, t: number} = {b:20,l:30,r:0,t:10}
   export let points: PointType[] = []
   export let range: [number, number] | null = null
   export let stroke: string = "black"
@@ -17,10 +17,10 @@
   export let xTickGap: number = 0.25
   export let xTickSize: number = 15
   export let yTickGap: number = 0.5
-  export let yTickSize: number = 25
+  export let yTickSize: number = 15
 
   $: domain = getDomain(points)
-  $: useRange = range || getRange(points) //use the range from props if provided, else use find the range of the points
+  $: useRange = range || getRange(points).map((n,i) => i===0?Math.floor(n):Math.ceil(n)) as [number, number] //use the range from props if provided, else use find the range of the points
   $: xTickHalfSize = xTickSize/2
   $: yTickHalfSize = yTickSize/2
 
@@ -38,17 +38,20 @@
   $: y0 = yScale(0)
 
 
-  function getLabels(domain: [number,number]) {
+  function getLabels(
+    domain: [number,number],
+    showZero: boolean = false
+  ) {
     const labels: number[] = []
     for(let i=Math.ceil(domain[0]); i<=domain[1]; i++) {
-      if(i !== 0) {
+      if(showZero || i !== 0) {
         labels.push(i)
       }
     }
     return labels
   }
   $: xLabels = getLabels(domain)
-  $: yLabels = getLabels(useRange)
+  $: yLabels = getLabels(useRange, true)
 
   $: pixelPoints = points.map(p => ({x: xScale(p.x), y: yScale(p.y)}))
   $: pointStrings = pixelPoints.map(p => `${p.x},${p.y}`)
@@ -63,7 +66,7 @@
     tickGap: number,
   ) {
     const ticks: {i: number, o: number}[] = []
-    for(let i=Math.ceil(domain[0]); i<domain[1]; i+=tickGap) {
+    for(let i=Math.ceil(domain[0]); i<=domain[1]; i+=tickGap) {
       ticks.push({i, o: scale(i)})
     }
     return ticks
@@ -97,7 +100,7 @@
 	<div bind:clientWidth={width}>
     <svg {width} {height}>
       <line x1={xScale(domain[0])} y1={y0} x2={xScale(domain[1])} y2={y0}/>
-      <line x1={x0} y1={yScale(useRange[0])} x2={x0} y2={useRange[1]}/>
+      <line x1={x0} y1={yScale(useRange[0])} x2={x0} y2={yScale(useRange[1])}/>
 
       {#each windingFreqTicks as t}
         <line class="winding-freq-tick" x1={t} y1={yScale(useRange[0])} x2={t} y2={yScale(useRange[1])}/>
@@ -116,7 +119,7 @@
         <text x={xScale(l)} y={y0 + xTickHalfSize} dy="1em" text-anchor="middle">{l}</text>
       {/each}
       {#each yLabels as l}
-        <text x={x0 + yTickSize} y={yScale(l)} dy="0.4em" text-anchor="start">{l}</text>
+        <text x={x0 - yTickHalfSize - 5} y={yScale(l)} dy="0.4em" text-anchor="end">{l}</text>
       {/each}
 
 
