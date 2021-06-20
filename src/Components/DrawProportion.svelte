@@ -20,7 +20,4 @@
 </main>
 
 <style>
-  input[type=range] {
-    width: 100%;
-  }
 </style>
