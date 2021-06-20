@@ -3,9 +3,6 @@
   import { tweened } from 'svelte/motion'
   import { cubicOut } from 'svelte/easing'
 
-  import Icon from 'fa-svelte'
-  import { faVolumeUp } from '@fortawesome/free-solid-svg-icons'
-
   import Plot from "../Components/Plot.svelte";
   import Polar from "../Components/Polar.svelte";
   import DrawProportion from '../Components/DrawProportion.svelte';
@@ -16,7 +13,6 @@
   import getDefiniteIntegralFunction from '../utils/getDefiniteIntegralFunction';
   import getPoints from '../utils/getPoints';
   // import type { MathFunc, PointType } from '../utils/types';
-  import playTone from '../utils/playTone'; 
   import { STEP_SIZE, TWO_PI, WINDING_FREQ_MAX } from '../utils/constants';
 
   const domain: [number, number] = [0, Math.PI]
@@ -28,11 +24,7 @@
   })
   onMount(() => {
     drawProportion.set(onMountDrawProportion)
-    
   })
-  function test() {
-    playTone(["440", "294"])
-  }
 
   const INITIAL_FUNC_FREQ = 2.5
   const funcFreq = tweened(INITIAL_FUNC_FREQ, { //this is the partial frequency for 2pi omitted for simplicity
@@ -67,7 +59,6 @@
 </script>
 
 <main>
-  <button on:click={test}>Test <Icon icon={faVolumeUp}/></button>
   <DrawProportion {drawProportion} initialValue={onMountDrawProportion}/>
   <div>
     <span><b>Function Frequency: </b>{$funcFreq}</span>
@@ -80,7 +71,7 @@
       value={INITIAL_FUNC_FREQ}
     >
   </div>
-	<Plot drawProportion={$drawProportion} {points} windingFreq={$windingFreq}/>
+	<Plot drawProportion={$drawProportion} {points} windingFreq={$windingFreq} xTitle="Time in seconds"/>
 
   <div>
     <span><b>Winding Frequency: </b> {$windingFreq}</span>

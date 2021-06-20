@@ -8,16 +8,17 @@
 
   export let drawProportion: number = 1 //between 0 and 1, the proportion of the points to draw
   export let height: number = 200
-  export let margin: {b: number, l: number, r: number, t: number} = {b:20,l:30,r:10,t:10}
+  export let margin: {b: number, l: number, r: number, t: number} = {b:10,l:30,r:10,t:10}
   export let points: PointType[] = []
   export let range: [number, number] | null = null
   export let stroke: string = "black"
   export let windingFreq: number = -1
-  export let xTitle: string = "Time in seconds"
   export let xTickGap: number = 0.25
   export let xTickSize: number = 15
+  export let xTitle: string = ""
   export let yTickGap: number = 0.5
   export let yTickSize: number = 15
+  export let yTitle: string = ""
 
   $: domain = getDomain(points)
   $: useRange = range || getRange(points).map((n,i) => i===0?Math.floor(n):Math.ceil(n)) as [number, number] //use the range from props if provided, else use find the range of the points
@@ -27,8 +28,8 @@
   
   let width:number = 500
 
-  $: bottom = height - margin.b
-  $: left = margin.l
+  $: bottom = height - margin.b - (xTitle===""?0:20)
+  $: left = margin.l + (yTitle===""?0:20)
   $: right = width - margin.r
   $: top = margin.t
 

@@ -10,7 +10,7 @@
   import Polar from "../Components/Polar.svelte";
   import DrawProportion from '../Components/DrawProportion.svelte';
   import complex from '../utils/complexNumber';
-  import getCos from '../utils/getCos';
+  import getCos, { getCombinedCos } from '../utils/getCos';
   import getCosineFourierTransform from '../utils/getCosineFourierTransform';
   import getDefiniteIntegralFunction from '../utils/getDefiniteIntegralFunction';
   import getPoints from '../utils/getPoints';
@@ -49,8 +49,7 @@
     }
   }
   $: fullFrequencies = frequencies.map(f => f * TWO_PI) //multiply by 2pi to get the full frequency to use
-  $: funcs = fullFrequencies.map(getCos)
-  $: combinedFunc = (t: number) => funcs.reduce((sum,func) => sum + func(t), 0)
+  $: combinedFunc = getCombinedCos(fullFrequencies)
   
   $: points = getPoints(domain, combinedFunc, STEP_SIZE)
 
@@ -96,7 +95,7 @@
   </div>
 
   <DrawProportion {drawProportion} initialValue={onMountDrawProportion}/>
-	<Plot drawProportion={$drawProportion} {points} windingFreq={$windingFreq}/>
+	<Plot drawProportion={$drawProportion} {points} windingFreq={$windingFreq} xTitle="Time in seconds"/>
 
   <div>
     <span><b>Winding Frequency: </b> {$windingFreq}</span>
