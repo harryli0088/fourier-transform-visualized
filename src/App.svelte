@@ -1,4 +1,7 @@
 <script lang="ts">
+  import Icon from 'fa-svelte'
+  import { faGithub } from '@fortawesome/free-brands-svg-icons'
+
   import MultipleCosines from "./Containers/MultipleCosines.svelte";
   import OneCosine from "./Containers/OneCosine.svelte";
 
@@ -8,14 +11,16 @@
   <header>
 		<div>
 			<h1>Fourier Transform Visualized</h1>
-			<p id="sub-heading">How car odometers can teach us to count in binary</p>
+			<p></p>
 			<div>
-				<a href="https://github.com/harryli0088/binary-visualized" target="_blank" rel="noopener noreferrer"><img src="img/github.svg" alt="github logo"/></a>
+				<a href="https://github.com/harryli0088/fourier-transform-visualized" target="_blank" rel="noopener noreferrer"><Icon icon={faGithub}/></a>
 			</div>
 		</div>
 	</header>
 
   <section>
+    <p>The Fourier Transform is a mathematical transformation that helps us break down functions over time into functions of <i>frequencies</i>. This transform is extremely important for signal processing in technology that we use every day, such as music, radar, WIFI, and phone calls.</p>
+
     <OneCosine/>
 
     <hr/>
@@ -26,7 +31,7 @@
   <footer>
 		<p>Built using <a href="https://svelte.dev/" target="_blank" rel="noopener noreferrer">Svelte</a> and <a href="https://www.typescriptlang.org/" target="_blank" rel="noopener noreferrer">Typescript</a></p>
 		<p>Github Repo: <a href="https://github.com/harryli0088/fourier-transform-visualized" target="_blank" rel="noopener noreferrer">https://github.com/harryli0088/fourier-transform-visualized</a></p>
-		<p>Github Logo provided by Font Awesome: <a href="https://fontawesome.com/license" target="_blank" rel="noopener noreferrer">https://fontawesome.com/license</a></p>
+		<p>Icons provided by Font Awesome: <a href="https://fontawesome.com/license" target="_blank" rel="noopener noreferrer">https://fontawesome.com/license</a></p>
 	</footer>
 </main>
 
@@ -50,4 +55,13 @@
   footer {
 		background-color: #ddd;
 	}
+
+  :global(.fa-svelte) {
+    margin-top: 2px;
+    margin-bottom: -2px;
+  }
+
+  :global(.icon-button) {
+    cursor: pointer;
+  }
 </style>

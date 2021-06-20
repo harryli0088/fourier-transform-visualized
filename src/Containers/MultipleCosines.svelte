@@ -3,6 +3,9 @@
   import { tweened } from 'svelte/motion'
   import { cubicOut } from 'svelte/easing'
 
+  import Icon from 'fa-svelte'
+  import { faTimes } from '@fortawesome/free-solid-svg-icons'
+
   import Plot from "../Components/Plot.svelte";
   import Polar from "../Components/Polar.svelte";
   import DrawProportion from '../Components/DrawProportion.svelte';
@@ -86,7 +89,7 @@
           value={f}
         />
         {#if frequencies.length > 1}
-          <button on:click={e => deleteFreq(i)}>X</button>
+          <span class="icon-button" on:click={e => deleteFreq(i)}><Icon icon={faTimes}/></span>
         {/if}
       </div>
     {/each}
