@@ -10,10 +10,11 @@
   import Polar from "../Components/Polar.svelte";
   import DrawProportion from '../Components/DrawProportion.svelte';
   import complex from '../utils/complexNumber';
-  import getCos, { getCombinedCos } from '../utils/getCos';
+  import { getCombinedCos } from '../utils/getCos';
   import getCosineFourierTransform from '../utils/getCosineFourierTransform';
   import getDefiniteIntegralFunction from '../utils/getDefiniteIntegralFunction';
   import getPoints from '../utils/getPoints';
+  import plural from '../utils/plural';
   import { STEP_SIZE, TWO_PI, WINDING_FREQ_MAX } from '../utils/constants';
 
   const domain: [number, number] = [0, Math.PI]
@@ -98,7 +99,7 @@
 	<Plot drawProportion={$drawProportion} {points} windingFreq={$windingFreq} xTitle="Time in seconds"/>
 
   <div>
-    <span><b>Winding Frequency: </b> {$windingFreq}</span>
+    <span><b>Winding Frequency: </b> {$windingFreq} {plural($windingFreq, "cycle")} per second</span>
     <input
       max={WINDING_FREQ_MAX}
       min="0"

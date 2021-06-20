@@ -13,6 +13,7 @@
   import getDefiniteIntegralFunction from '../utils/getDefiniteIntegralFunction';
   import getPoints from '../utils/getPoints';
   // import type { MathFunc, PointType } from '../utils/types';
+  import plural from '../utils/plural';
   import { STEP_SIZE, TWO_PI, WINDING_FREQ_MAX } from '../utils/constants';
 
   const domain: [number, number] = [0, Math.PI]
@@ -61,7 +62,7 @@
 <main>
   <DrawProportion {drawProportion} initialValue={onMountDrawProportion}/>
   <div>
-    <span><b>Function Frequency: </b>{$funcFreq}</span>
+    <span><b>Function Frequency: </b>{$funcFreq} {plural($funcFreq, "beat")} per second</span>
     <input
       max={WINDING_FREQ_MAX}
       min="0.05"
@@ -74,7 +75,7 @@
 	<Plot drawProportion={$drawProportion} {points} windingFreq={$windingFreq} xTitle="Time in seconds"/>
 
   <div>
-    <span><b>Winding Frequency: </b> {$windingFreq}</span>
+    <span><b>Winding Frequency: </b> {$windingFreq} {plural($windingFreq, "cycle")} per second</span>
     <input
       max={WINDING_FREQ_MAX}
       min="0"
