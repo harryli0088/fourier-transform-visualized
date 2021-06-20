@@ -62,7 +62,7 @@
 <main>
   <DrawProportion {drawProportion} initialValue={onMountDrawProportion}/>
   <div>
-    <span><b>Function Frequency: </b>{$funcFreq} {plural($funcFreq, "beat")} per second</span>
+    <span><b>Function Frequency: </b>{$funcFreq} {plural($funcFreq, "beat")} per second (Hz)</span>
     <input
       max={WINDING_FREQ_MAX}
       min="0.05"
@@ -75,7 +75,7 @@
 	<Plot drawProportion={$drawProportion} {points} windingFreq={$windingFreq} xTitle="Time in seconds"/>
 
   <div>
-    <span><b>Winding Frequency: </b> {$windingFreq} {plural($windingFreq, "cycle")} per second</span>
+    <span><b>Winding Frequency: </b> {$windingFreq} {plural($windingFreq, "cycle")} per second (Hz)</span>
     <input
       max={WINDING_FREQ_MAX}
       min="0"

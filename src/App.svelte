@@ -29,6 +29,16 @@
     <hr/>
 
     <MultipleCosines/>
+
+    <div style="text-align:center">
+      <h2>3Blue1Brown's Video</h2>
+
+      <div id="limitWidth">
+        <div id="videoContainer">
+          <iframe title="video" width="560" height="315" src="https://www.youtube.com/embed/spUNpyF58BY" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
   </section>
 
   <footer>
@@ -55,16 +65,28 @@
 		}
 	}
 
+  #limitWidth {
+		margin-left: auto;
+		margin-right: auto;
+		max-width: 700px;
+	}
+	#videoContainer {
+		position: relative;
+		padding-bottom: 56.25%;
+		padding-top: 30px;
+		height: 0;
+		overflow: hidden;
+	}
+	iframe {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+	}
+
+
   footer {
 		background-color: #ddd;
 	}
-
-  :global(.fa-svelte) {
-    margin-top: 2px;
-    margin-bottom: -2px;
-  }
-
-  :global(.icon-button) {
-    cursor: pointer;
-  }
 </style>

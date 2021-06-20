@@ -28,9 +28,7 @@
     drawProportion.set(onMountDrawProportion)
   })
 
-
-  const INITIAL_FUNC_FREQ = 2.5
-  let frequencies:number[] = [INITIAL_FUNC_FREQ, 7]
+  let frequencies:number[] = [2, 7]
   let newFreq: string = "1"
   function addFreq(e: Event) {
     e.preventDefault()
@@ -69,37 +67,45 @@
 
 <main>
   <form on:submit={addFreq}>
+    <span>Add another cosine function of </span>
     <input 
       bind:value={newFreq}
       max={1000}
       min={1}
       type="number"
     />
+    <span>
+      {plural(newFreq, "beat")} per second (Hz)
+    </span>
     <button type="submit">Add</button>
   </form>
 
   <div>
-    {#each frequencies as f, i}
-      <div>
-        <input
-          max={1000}
-          min={1}
-          on:change={e => editFreq(i, e.target.value)}
-          type="number"
-          value={f}
-        />
-        {#if frequencies.length > 1}
-          <span class="icon-button" on:click={e => deleteFreq(i)}><Icon icon={faTimes}/></span>
-        {/if}
-      </div>
-    {/each}
+    <ul>
+      {#each frequencies as f, i}
+        <li>
+          <span>Cosine of </span>
+          <input
+            max={1000}
+            min={1}
+            on:change={e => editFreq(i, e.target.value)}
+            type="number"
+            value={f}
+          />
+          <span>Hz</span>
+          {#if frequencies.length > 1}
+            <span class="icon-button" on:click={e => deleteFreq(i)}><Icon icon={faTimes}/></span>
+          {/if}
+        </li>
+      {/each}
+    </ul>
   </div>
 
   <DrawProportion {drawProportion} initialValue={onMountDrawProportion}/>
 	<Plot drawProportion={$drawProportion} {points} windingFreq={$windingFreq} xTitle="Time in seconds"/>
 
   <div>
-    <span><b>Winding Frequency: </b> {$windingFreq} {plural($windingFreq, "cycle")} per second</span>
+    <span><b>Winding Frequency: </b> {$windingFreq} {plural($windingFreq, "cycle")} per second (Hz)</span>
     <input
       max={WINDING_FREQ_MAX}
       min="0"
