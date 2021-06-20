@@ -3,9 +3,10 @@
   import { tweened } from 'svelte/motion'
   import { cubicOut } from 'svelte/easing'
 
+  import DrawProportion from '../Components/DrawProportion.svelte';
   import Plot from "../Components/Plot.svelte";
   import Polar from "../Components/Polar.svelte";
-  import DrawProportion from '../Components/DrawProportion.svelte';
+  import PolarFtContainer from './PolarFTContainer.svelte';
   // import complex from './utils/complexNumber';
   // import fft, { zeroPad } from './utils/fft';
   import getCos from '../utils/getCos';
@@ -14,7 +15,7 @@
   import getPoints from '../utils/getPoints';
   // import type { MathFunc, PointType } from '../utils/types';
   import plural from '../utils/plural';
-  import { STEP_SIZE, TWO_PI, WINDING_FREQ_MAX } from '../utils/constants';
+  import { POLAR_HEIGHT, STEP_SIZE, TWO_PI, WINDING_FREQ_MAX } from '../utils/constants';
 
   const domain: [number, number] = [0, Math.PI]
 
@@ -57,9 +58,11 @@
   $: definiteIntegralFunction = getDefiniteIntegralFunction(cosineFourierTransform, domain[0], domain[1])
   $: getReal = (freq: number) => definiteIntegralFunction(freq).r
   $: ftPoints = getPoints([0, 10], getReal, STEP_SIZE)
+
+  let width:number = 500
 </script>
 
-<main>
+<main bind:clientWidth={width}>
   <DrawProportion {drawProportion} initialValue={onMountDrawProportion}/>
   <div>
     <span><b>Function Frequency: </b>{$funcFreq} {plural($funcFreq, "beat")} per second (Hz)</span>
@@ -70,7 +73,7 @@
       step="0.05"
       type="range"
       value={INITIAL_FUNC_FREQ}
-    >
+    />
   </div>
 	<Plot drawProportion={$drawProportion} {points} windingFreq={$windingFreq} xTitle="Time in seconds"/>
 
@@ -83,11 +86,17 @@
       step="0.01"
       type="range"
       value={INITIAL_WINDING_FREQ}
-    >
+    />
   </div>
-  <Polar {definiteIntegralFunction} {domain} drawProportion={$drawProportion} freq={$windingFreq} maxMagnitude={1} {points}/>
 
-	<Plot drawProportion={$drawProportion} points={ftPoints} windingFreq={Infinity} xTitle="Winding Frequency (Hz)"/>
+  <PolarFtContainer>
+    <span slot="polar">
+      <Polar {definiteIntegralFunction} {domain} drawProportion={$drawProportion} freq={$windingFreq} height={POLAR_HEIGHT} maxMagnitude={1} {points}/>
+    </span>
+    <span slot="ft">
+      <Plot drawProportion={$windingFreq/WINDING_FREQ_MAX} points={ftPoints} windingFreq={Infinity} xTitle="Winding Frequency (Hz)"/>
+    </span>
+  </PolarFtContainer>
 </main>
 
 <style>

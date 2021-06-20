@@ -25,6 +25,7 @@
 </script>
 
 <main>
+  <h3>Examples from Sound</h3>
   <p>Consider the musical notes A440 and D294. A440 means that the sound wave oscillates at a frequency of 440 beats per second, aka 440 Hertz (Hz). D294 means that the sound wave oscillates at a frequency of 294 beats per second, aka 294 Hertz (Hz).</p>
   <div>
     <b>A440: </b> <button on:click={() => playTone(["440"])}>Play A440 <Icon icon={faVolumeUp}/></button>

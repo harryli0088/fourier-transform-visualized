@@ -60,29 +60,27 @@
   $: centerOfMassScale = unitLengthPixels / domainSpan //multiply the values by the scale to get to the right spot
 </script>
 
-<main>
-	<div bind:clientWidth={width}>
-    <svg {width} {height}>
-      <g>
-        <g transform={`translate(${left + radius},${top + radius})`}>
-          {#each lineIntervals as l}
-            <line class="tick" x1={-radius} y1={l} x2={radius} y2={l}/>
-          {/each}
-          {#each lineIntervals as l}
-            <line class="tick" x1={l} y1={-radius} x2={l} y2={radius}/>
-          {/each}
-          <path d={pathD} fill="none" {stroke}/>
-          
-          {#if drawProportion !== 1 && arrowPoint}
-            <Arrow x1={0} y1={0} x2={arrowPoint.x} y2={arrowPoint.y}/>
-          {/if}
+<div bind:clientWidth={width}>
+  <svg {width} {height}>
+    <g>
+      <g transform={`translate(${left + radius},${top + radius})`}>
+        {#each lineIntervals as l}
+          <line class="tick" x1={-radius} y1={l} x2={radius} y2={l}/>
+        {/each}
+        {#each lineIntervals as l}
+          <line class="tick" x1={l} y1={-radius} x2={l} y2={radius}/>
+        {/each}
+        <path d={pathD} fill="none" {stroke}/>
+        
+        {#if drawProportion !== 1 && arrowPoint}
+          <Arrow x1={0} y1={0} x2={arrowPoint.x} y2={arrowPoint.y}/>
+        {/if}
 
-          <circle cx={centerOfMass.r*centerOfMassScale} cy={-centerOfMass.i*centerOfMassScale} r={10} fill="red"/>
-      </g>
-      </g>
-    </svg>
-  </div>
-</main>
+        <circle cx={centerOfMass.r*centerOfMassScale} cy={-centerOfMass.i*centerOfMassScale} r={10} fill="red"/>
+    </g>
+    </g>
+  </svg>
+</div>
 
 <style>
   .tick {

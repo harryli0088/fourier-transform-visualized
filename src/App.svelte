@@ -8,7 +8,7 @@
 
 </script>
 
-<main style="--tablet-padding:calc(50vw - 300px + 1em);--desktop-padding:calc(50vw - 500px)">
+<main style="--tablet-padding:calc(50vw - 400px + 1em);--desktop-padding:calc(50vw - 600px)">
   <header>
 		<div>
 			<h1>Fourier Transform Visualized</h1>
@@ -52,13 +52,13 @@
   header, section, footer {
 		padding: 1em;
 	}
-	@media only screen and (min-width: 600px) {
+	@media only screen and (min-width: 800px) {
 		header, section, footer {
 			padding-left: var(--tablet-padding);
 			padding-right: var(--tablet-padding);
 		}
 	}
-	@media only screen and (min-width: 1200px) {
+	@media only screen and (min-width: 1400px) {
 		header, section, footer {
 			padding-left: var(--desktop-padding);
 			padding-right: var(--desktop-padding);

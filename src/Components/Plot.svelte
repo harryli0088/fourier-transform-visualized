@@ -97,41 +97,39 @@
   $: windingFreqTicks = getWindingFreqTicks(domain, windingFreq, xScale)
 </script>
 
-<main>
-	<div bind:clientWidth={width}>
-    <svg {width} {height}>
-      <line x1={xScale(domain[0])} y1={y0} x2={xScale(domain[1])} y2={y0}/>
-      <line x1={x0} y1={yScale(useRange[0])} x2={x0} y2={yScale(useRange[1])}/>
+<div bind:clientWidth={width}>
+  <svg {width} {height}>
+    <line x1={xScale(domain[0])} y1={y0} x2={xScale(domain[1])} y2={y0}/>
+    <line x1={x0} y1={yScale(useRange[0])} x2={x0} y2={yScale(useRange[1])}/>
 
-      {#each windingFreqTicks as t}
-        <line class="winding-freq-tick" x1={t} y1={yScale(useRange[0])} x2={t} y2={yScale(useRange[1])}/>
-      {/each}
+    {#each windingFreqTicks as t}
+      <line class="winding-freq-tick" x1={t} y1={yScale(useRange[0])} x2={t} y2={yScale(useRange[1])}/>
+    {/each}
 
-      <path d={pathD} fill="none" {stroke}/>
+    <path d={pathD} fill="none" {stroke}/>
 
-      {#each xTicks as t}
-        <line x1={t.o} y1={y0 + getTickSize(t.i,xTickHalfSize)} x2={t.o} y2={y0 - getTickSize(t.i,xTickHalfSize)}/>
-      {/each}
-      {#each yTicks as t}
-        <line x1={x0 + getTickSize(t.i,yTickHalfSize)} y1={t.o} x2={x0 - getTickSize(t.i,yTickHalfSize)} y2={t.o}/>
-      {/each}
+    {#each xTicks as t}
+      <line x1={t.o} y1={y0 + getTickSize(t.i,xTickHalfSize)} x2={t.o} y2={y0 - getTickSize(t.i,xTickHalfSize)}/>
+    {/each}
+    {#each yTicks as t}
+      <line x1={x0 + getTickSize(t.i,yTickHalfSize)} y1={t.o} x2={x0 - getTickSize(t.i,yTickHalfSize)} y2={t.o}/>
+    {/each}
 
-      {#each xLabels as l}
-        <text x={xScale(l)} y={y0 + xTickHalfSize} dy="1em" text-anchor="middle">{l}</text>
-      {/each}
-      {#each yLabels as l}
-        <text x={x0 - yTickHalfSize - 5} y={yScale(l)} dy="0.4em" text-anchor="end">{l}</text>
-      {/each}
+    {#each xLabels as l}
+      <text x={xScale(l)} y={y0 + xTickHalfSize} dy="1em" text-anchor="middle">{l}</text>
+    {/each}
+    {#each yLabels as l}
+      <text x={x0 - yTickHalfSize - 5} y={yScale(l)} dy="0.4em" text-anchor="end">{l}</text>
+    {/each}
 
 
-      {#if drawProportion !== 1 && arrowPoint}
-        <Arrow x1={arrowPoint.x} y1={y0} x2={arrowPoint.x} y2={arrowPoint.y} color={"gray"}/>
-      {/if}
-      
-      <text x={xScale((domain[1]-domain[0])/2)} y={yScale(useRange[0])} dy="1.1em" text-anchor="middle">{xTitle}</text>
-    </svg>
-  </div>
-</main>
+    {#if drawProportion !== 1 && arrowPoint}
+      <Arrow x1={arrowPoint.x} y1={y0} x2={arrowPoint.x} y2={arrowPoint.y} color={"gray"}/>
+    {/if}
+    
+    <text x={xScale((domain[1]-domain[0])/2)} y={yScale(useRange[0])} dy="1.1em" text-anchor="middle">{xTitle}</text>
+  </svg>
+</div>
 
 <style>
   path {

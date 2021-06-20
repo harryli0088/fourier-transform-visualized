@@ -6,16 +6,18 @@
   import Icon from 'fa-svelte'
   import { faTimes } from '@fortawesome/free-solid-svg-icons'
 
+  import DrawProportion from '../Components/DrawProportion.svelte';
   import Plot from "../Components/Plot.svelte";
   import Polar from "../Components/Polar.svelte";
-  import DrawProportion from '../Components/DrawProportion.svelte';
+  import PolarFtContainer from './PolarFTContainer.svelte';
+
   import complex from '../utils/complexNumber';
   import { getCombinedCos } from '../utils/getCos';
   import getCosineFourierTransform from '../utils/getCosineFourierTransform';
   import getDefiniteIntegralFunction from '../utils/getDefiniteIntegralFunction';
   import getPoints from '../utils/getPoints';
   import plural from '../utils/plural';
-  import { STEP_SIZE, TWO_PI, WINDING_FREQ_MAX } from '../utils/constants';
+  import { POLAR_HEIGHT, STEP_SIZE, TWO_PI, WINDING_FREQ_MAX } from '../utils/constants';
 
   const domain: [number, number] = [0, Math.PI]
 
@@ -75,7 +77,7 @@
       type="number"
     />
     <span>
-      {plural(newFreq, "beat")} per second (Hz)
+      {plural(parseInt(newFreq), "beat")} per second (Hz)
     </span>
     <button type="submit">Add</button>
   </form>
@@ -115,16 +117,23 @@
       value={INITIAL_WINDING_FREQ}
     >
   </div>
-  <Polar
-    definiteIntegralFunction={combinedDefiniteIntegralFunction}
-    {domain}
-    drawProportion={$drawProportion}
-    freq={$windingFreq}
-    maxMagnitude={frequencies.length}
-    {points}
-  />
 
-	<Plot drawProportion={$drawProportion} points={ftPoints} windingFreq={Infinity} xTitle="Frequency (Hz)"/>
+  <PolarFtContainer>
+    <span slot="polar">
+      <Polar
+        definiteIntegralFunction={combinedDefiniteIntegralFunction}
+        {domain}
+        drawProportion={$drawProportion}
+        freq={$windingFreq}
+        height={POLAR_HEIGHT}
+        maxMagnitude={frequencies.length}
+        {points}
+      />
+    </span>
+    <span slot="ft">
+      <Plot drawProportion={$drawProportion} points={ftPoints} windingFreq={Infinity} xTitle="Frequency (Hz)"/>
+    </span>
+  </PolarFtContainer>
 </main>
 
 <style>
