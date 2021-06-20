@@ -108,7 +108,7 @@
   </div>
   <Polar definiteIntegralFunction={combinedDefiniteIntegralFunction} {domain} drawProportion={$drawProportion} freq={$windingFreq} {points}/>
 
-	<Plot drawProportion={$drawProportion} points={ftPoints} windingFreq={Infinity}/>
+	<Plot drawProportion={$drawProportion} points={ftPoints} windingFreq={Infinity} xTitle="Frequency (Hz)"/>
 </main>
 
 <style>

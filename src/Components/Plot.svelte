@@ -8,24 +8,18 @@
 
   export let drawProportion: number = 1 //between 0 and 1, the proportion of the points to draw
   export let height: number = 200
-  export let margin: {b: number, l: number, r: number, t: number} = {b:1,l:1,r:0,t:1}
+  export let margin: {b: number, l: number, r: number, t: number} = {b:20,l:1,r:0,t:10}
   export let points: PointType[] = []
   export let range: [number, number] | null = null
   export let stroke: string = "black"
   export let windingFreq: number = -1
+  export let xTitle: string = "Time in seconds"
   export let xTickGap: number = 0.25
   export let xTickSize: number = 15
   export let yTickGap: number = 0.5
-  export let yTickSize: number = 15
+  export let yTickSize: number = 25
 
   $: domain = getDomain(points)
-  function getPointsRange(points: PointType[]):[number, number] {
-    const yValues = points.map(p => p.y)
-    if(yValues.length > 0) {
-      return [Math.min(...yValues), Math.max(...yValues)]
-    }
-    return [-1,1]
-  }
   $: useRange = range || getRange(points) //use the range from props if provided, else use find the range of the points
   $: xTickHalfSize = xTickSize/2
   $: yTickHalfSize = yTickSize/2
@@ -46,7 +40,7 @@
 
   function getLabels(domain: [number,number]) {
     const labels: number[] = []
-    for(let i=Math.ceil(domain[0]); i<domain[1]; i++) {
+    for(let i=Math.ceil(domain[0]); i<=domain[1]; i++) {
       if(i !== 0) {
         labels.push(i)
       }
@@ -78,7 +72,7 @@
     return value%1===0 ? tickSize : tickSize/2
   }
   $: xTicks = getTicks(domain, xScale, xTickGap)
-  $: yTicks = getTicks(domain, yScale, yTickGap)
+  $: yTicks = getTicks(useRange, yScale, yTickGap)
 
 
   function getWindingFreqTicks(
@@ -108,6 +102,9 @@
       {#each windingFreqTicks as t}
         <line class="winding-freq-tick" x1={t} y1={yScale(useRange[0])} x2={t} y2={yScale(useRange[1])}/>
       {/each}
+
+      <path d={pathD} fill="none" {stroke}/>
+
       {#each xTicks as t}
         <line x1={t.o} y1={y0 + getTickSize(t.i,xTickHalfSize)} x2={t.o} y2={y0 - getTickSize(t.i,xTickHalfSize)}/>
       {/each}
@@ -118,12 +115,16 @@
       {#each xLabels as l}
         <text x={xScale(l)} y={y0 + xTickHalfSize} dy="1em" text-anchor="middle">{l}</text>
       {/each}
+      {#each yLabels as l}
+        <text x={x0 + yTickSize} y={yScale(l)} dy="0.4em" text-anchor="start">{l}</text>
+      {/each}
 
-      <path d={pathD} fill="none" {stroke}/>
 
       {#if drawProportion !== 1 && arrowPoint}
         <Arrow x1={arrowPoint.x} y1={y0} x2={arrowPoint.x} y2={arrowPoint.y} color={"gray"}/>
       {/if}
+      
+      <text x={xScale((domain[1]-domain[0])/2)} y={yScale(useRange[0])} dy="1.1em" text-anchor="middle">{xTitle}</text>
     </svg>
   </div>
 </main>
