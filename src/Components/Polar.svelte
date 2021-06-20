@@ -2,6 +2,7 @@
   import Arrow from './Arrow.svelte';
   import type { PointType } from '../utils/types';
   import type { ComplexNumber } from '../utils/complexNumber';
+  import { TWO_PI } from '../utils/constants';
 
   export let definiteIntegralFunction: (freq: number) => ComplexNumber
   export let diameter:number = 500
@@ -28,23 +29,18 @@
   $: console.log("diameter",diameter, "radius",radius)
   
 
-  function getPixelPoints(
+  function getPolarPoints(
     freq: number,
     points: PointType[],
-    radius: number,
   ):PointType[] {
-    const pixelPoints: PointType[] = new Array(points.length)
-
-    points.forEach((p, i) => {
-      const theta = p.x * freq * 2 * Math.PI
-      const magnitude = radius * p.y
-      pixelPoints[i] = {x: magnitude*Math.cos(theta), y: magnitude*Math.sin(theta)}
+    return points.map((p) => {
+      const theta = p.x * freq * TWO_PI
+      return {x: p.y*Math.cos(theta), y: p.y*Math.sin(theta)}
     })
-
-    return pixelPoints
   }
 
-  $: pixelPoints = getPixelPoints(freq, points, radius)
+  $: polarPoints = getPolarPoints(freq, points)
+  $: pixelPoints = polarPoints.map(p => ({x: radius*p.x, y: radius*p.y}))
   $: pointStrings = pixelPoints.map(p => `${p.x},${p.y}`)
   $: sliceIndex = Math.ceil(pointStrings.length * drawProportion)
   $: arrowPoint = pixelPoints[sliceIndex - 1]
