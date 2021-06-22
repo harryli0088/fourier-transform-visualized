@@ -26,15 +26,23 @@
 
     <Sound/>
 
+    <br/><br/><br/><br/>
+
     <Intro/>
+
+    <br/><br/><br/><br/>
 
     <COM/>
 
+    <br/><br/><br/><br/>
+
     <OneCosine/>
 
-    <hr/>
+    <br/><br/><br/><br/>
 
     <MultipleCosines/>
+
+    <br/><br/><br/><br/>
 
     <div style="text-align:center">
       <h2>3Blue1Brown's Video</h2>
@@ -93,6 +101,6 @@
 
 
   footer {
-		background-color: #ddd;
+		background-color: #222;
 	}
 </style>

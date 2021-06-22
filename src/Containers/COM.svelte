@@ -43,10 +43,10 @@
 
 	<Plot {points} windingFreq={$windingFreq} xTitle="Time in seconds"/>
 
-  <div>
-    <button on:click={play}>Play</button>
-    <span><b>Winding Frequency: </b> {$windingFreq.toFixed(1)} {plural($windingFreq, "cycle")} per second (Hz)</span>
-  </div>
+  
+  <div><button on:click={play}>Play</button></div>
+  <div><b>Winding Frequency: </b> {$windingFreq.toFixed(1)} {plural($windingFreq, "cycle")} per second (Hz)</div>
+  
 
   <PolarFtContainer>
     <span slot="polar">
@@ -56,6 +56,8 @@
       <Plot drawProportion={$windingFreq/WINDING_FREQ_MAX} points={ftPoints} stroke={GREEN} windingFreq={Infinity} xTitle="Winding Frequency (Hz)"/>
     </span>
   </PolarFtContainer>
+
+  <p>This green line is the Fourier Transform! In these examples, there will be spikes around 0 because all the cosine functions are shifted up to be positive. (You could shift the cosine functions back down to be between -1 and 1, but negative values can be tricky to think about). Notice that when our winding frequency is 2Hz, the wire lines up nicely, so that we get a small spike of mass.</p>
 </main>
 
 <style>
