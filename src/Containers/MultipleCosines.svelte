@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { onMount } from 'svelte'
+  // import { onMount } from 'svelte'
   import { tweened } from 'svelte/motion'
   import { cubicOut } from 'svelte/easing'
 
   import Icon from 'fa-svelte'
   import { faTimes } from '@fortawesome/free-solid-svg-icons'
 
-  import DrawProportion from '../Components/DrawProportion.svelte';
+  // import DrawProportion from '../Components/DrawProportion.svelte';
   import Plot from "../Components/Plot.svelte";
   import Polar from "../Components/Polar.svelte";
   import PolarFtContainer from './PolarFTContainer.svelte';
@@ -19,15 +19,16 @@
   import getPoints from '../utils/getPoints';
   import plural from '../utils/plural';
 
-  const onMountDrawProportion = 1
-  const drawProportion = tweened(0, {
-    duration: 5000,
-    easing: cubicOut
-  })
-  onMount(() => {
-    drawProportion.set(onMountDrawProportion)
-  })
+  // const onMountDrawProportion = 1
+  // const drawProportion = tweened(0, {
+  //   duration: 5000,
+  //   easing: cubicOut
+  // })
+  // onMount(() => {
+  //   drawProportion.set(onMountDrawProportion)
+  // })
 
+  const SHIFTED = false
   let frequencies:number[] = [2, 7]
   let newFreq: string = "1"
   function addFreq(e: Event) {
@@ -48,7 +49,7 @@
     }
   }
   $: fullFrequencies = frequencies.map(f => f * TWO_PI) //multiply by 2pi to get the full frequency to use
-  $: combinedFunc = getCombinedCos(fullFrequencies)
+  $: combinedFunc = getCombinedCos(fullFrequencies, SHIFTED)
   
   $: points = getPoints(DOMAIN, combinedFunc, STEP_SIZE)
 
@@ -58,7 +59,7 @@
     easing: cubicOut
   })
 
-  $: cosineFourierTransforms = fullFrequencies.map(f => getCosineFourierTransform(f, 0))
+  $: cosineFourierTransforms = fullFrequencies.map(f => getCosineFourierTransform(f, 0, SHIFTED))
   $: definiteIntegralFunctions = cosineFourierTransforms.map(t => getDefiniteIntegralFunction(t, DOMAIN[0], DOMAIN[1]))
   $: combinedDefiniteIntegralFunction = (freq: number) => definiteIntegralFunctions.reduce((sum, func) => complex.add(sum,func(freq)), complex.makeNew({}))
   $: getReal = (freq: number) => combinedDefiniteIntegralFunction(freq).r
@@ -66,6 +67,7 @@
 </script>
 
 <main>
+  <h2>Add Multiple Functions Together</h2>
   <form on:submit={addFreq}>
     <span>Add another cosine function of </span>
     <input 
@@ -101,8 +103,8 @@
     </ul>
   </div>
 
-  <DrawProportion {drawProportion} initialValue={onMountDrawProportion}/>
-	<Plot drawProportion={$drawProportion} {points} windingFreq={$windingFreq} xTitle="Time in seconds"/>
+  <!-- <DrawProportion {drawProportion} initialValue={onMountDrawProportion}/> -->
+	<Plot {points} windingFreq={$windingFreq} xTitle="Time in seconds"/>
 
   <div>
     <span><b>Winding Frequency: </b> {$windingFreq} {plural($windingFreq, "cycle")} per second (Hz)</span>
@@ -121,7 +123,6 @@
       <Polar
         definiteIntegralFunction={combinedDefiniteIntegralFunction}
         domain={DOMAIN}
-        drawProportion={$drawProportion}
         freq={$windingFreq}
         height={POLAR_HEIGHT}
         maxMagnitude={frequencies.length}

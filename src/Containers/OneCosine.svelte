@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { onMount } from 'svelte'
+  // import { onMount } from 'svelte'
   import { tweened } from 'svelte/motion'
   import { cubicOut } from 'svelte/easing'
 
-  import DrawProportion from '../Components/DrawProportion.svelte';
+  // import DrawProportion from '../Components/DrawProportion.svelte';
   import Plot from "../Components/Plot.svelte";
   import Polar from "../Components/Polar.svelte";
   import PolarFtContainer from './PolarFTContainer.svelte';
@@ -18,22 +18,23 @@
   // import type { MathFunc, PointType } from '../utils/types';
   import plural from '../utils/plural';
 
-  const onMountDrawProportion = 1
-  const drawProportion = tweened(0, {
-    duration: 5000,
-    easing: cubicOut
-  })
-  onMount(() => {
-    drawProportion.set(onMountDrawProportion)
-  })
+  // const onMountDrawProportion = 1
+  // const drawProportion = tweened(0, {
+  //   duration: 5000,
+  //   easing: cubicOut
+  // })
+  // onMount(() => {
+  //   drawProportion.set(onMountDrawProportion)
+  // })
 
+  const SHIFTED = false
   const INITIAL_FUNC_FREQ = 2
   const funcFreq = tweened(INITIAL_FUNC_FREQ, { //this is the partial frequency for 2pi omitted for simplicity
     duration: 500,
     easing: cubicOut
   })
   $: fullFuncFreq = TWO_PI * $funcFreq //multiply by 2pi to get the full frequency to use
-  $: func = getCos(fullFuncFreq)
+  $: func = getCos(fullFuncFreq, 0, SHIFTED)
   $: points = getPoints(DOMAIN, func, STEP_SIZE)
 
   const INITIAL_WINDING_FREQ = 1
@@ -53,16 +54,15 @@
   // })).slice(0, zeroPaddedPoints.length / 2).slice(0, 100)
   // $: console.log("dftPoints",dftPoints)
 
-  $: cosineFourierTransform = getCosineFourierTransform(fullFuncFreq, 0)
+  $: cosineFourierTransform = getCosineFourierTransform(fullFuncFreq, 0, SHIFTED)
   $: definiteIntegralFunction = getDefiniteIntegralFunction(cosineFourierTransform, DOMAIN[0], DOMAIN[1])
   $: getReal = (freq: number) => definiteIntegralFunction(freq).r
   $: ftPoints = getPoints([0, 10], getReal, STEP_SIZE)
-
-  let width:number = 500
 </script>
 
-<main bind:clientWidth={width}>
-  <DrawProportion {drawProportion} initialValue={onMountDrawProportion}/>
+<main>
+  <h2>One Cosine Playground</h2>
+  <!-- <DrawProportion {drawProportion} initialValue={onMountDrawProportion}/> -->
   <div>
     <span><b>Function Frequency: </b>{$funcFreq} {plural($funcFreq, "beat")} per second (Hz)</span>
     <input
@@ -74,7 +74,7 @@
       value={INITIAL_FUNC_FREQ}
     />
   </div>
-	<Plot drawProportion={$drawProportion} {points} windingFreq={$windingFreq} xTitle="Time in seconds"/>
+	<Plot {points} windingFreq={$windingFreq} xTitle="Time in seconds"/>
 
   <div>
     <span><b>Winding Frequency: </b> {$windingFreq} {plural($windingFreq, "cycle")} per second (Hz)</span>
@@ -90,7 +90,7 @@
 
   <PolarFtContainer>
     <span slot="polar">
-      <Polar {definiteIntegralFunction} domain={DOMAIN} drawProportion={$drawProportion} freq={$windingFreq} height={POLAR_HEIGHT} maxMagnitude={1} {points}/>
+      <Polar {definiteIntegralFunction} domain={DOMAIN} freq={$windingFreq} height={POLAR_HEIGHT} maxMagnitude={1} {points}/>
     </span>
     <span slot="ft">
       <Plot drawProportion={$windingFreq/WINDING_FREQ_MAX} points={ftPoints} stroke={GREEN} windingFreq={Infinity} xTitle="Winding Frequency (Hz)"/>

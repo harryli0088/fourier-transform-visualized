@@ -57,7 +57,7 @@
     </span>
   </PolarFtContainer>
 
-  <p>This green line is the Fourier Transform! In these examples, there will be spikes around 0 because all the cosine functions are shifted up to be positive. (You could shift the cosine functions back down to be between -1 and 1, but negative values can be tricky to think about). Notice that when our winding frequency is 2Hz, the wire lines up nicely, so that we get a small spike of mass.</p>
+  <p>This green line is the Fourier Transform! In this example, there is a spike around 0 because the cosine function is shifted up to be positive. Notice that when our winding frequency is 2Hz, the wire lines up nicely, so that we get a small spike of mass. This is how we know that the function has a base frequency of 2! In the following examples, we will shift the cosine functions back down to be between -1 and 1.</p>
 </main>
 
 <style>

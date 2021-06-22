@@ -76,7 +76,7 @@
         {/if}
 
         {#if showCOM}
-          <circle cx={centerOfMass.r*centerOfMassScale} cy={-centerOfMass.i*centerOfMassScale} r={10} fill={GREEN}/>
+          <circle cx={centerOfMass.r*centerOfMassScale} cy={-centerOfMass.i*centerOfMassScale} r={7} fill={GREEN}/>
         {/if}
     </g>
     </g>

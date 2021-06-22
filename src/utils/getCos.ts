@@ -21,13 +21,15 @@ export default function getCos(
 /**
  * Given multiple frequencies to add,
  * return a function that, given the time, returns the sum of the cosines
- * @param freqs array of frequencies to add up
- * @returns     a function that, given the time, returns the sum of the cosines
+ * @param freqs   array of frequencies to add up
+ * @param shifted if true, shift the cosine up 1, then divide by 2 to keep the range between 0 and 1
+ * @returns       a function that, given the time, returns the sum of the cosines
  */
 export function getCombinedCos(
-  freqs: number[] = [1]
+  freqs: number[] = [1],
+  shifted: boolean = COSINE_SHIFTED
 ) {
-  const funcs = freqs.map(f => getCos(f)) //map all the frequencies to cosine functions
+  const funcs = freqs.map(f => getCos(f, 0, shifted)) //map all the frequencies to cosine functions
   /**
    * @param t time in seconds
    * @returns sum of all the cosine functions at time t
