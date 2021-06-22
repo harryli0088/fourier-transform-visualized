@@ -2,6 +2,7 @@
   import Icon from 'fa-svelte'
   import { faGithub } from '@fortawesome/free-brands-svg-icons'
 
+  import Intro from './Containers/Intro.svelte';
   import MultipleCosines from "./Containers/MultipleCosines.svelte";
   import OneCosine from "./Containers/OneCosine.svelte";
   import Sound from './Containers/Sound.svelte';
@@ -23,6 +24,8 @@
     <p>The Fourier Transform is a mathematical transformation that helps us break down functions over time into functions of <i>frequencies</i>. This transform is extremely important for signal processing in technology that we use every day, such as music, radar, WIFI, and phone calls.</p>
 
     <Sound/>
+
+    <Intro/>
 
     <OneCosine/>
 

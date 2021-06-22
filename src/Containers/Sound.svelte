@@ -49,7 +49,11 @@
   <Plot points={combinedPoints} stroke="#A569BD" xTitle="Time"/>
 
   <p>For each point in time, we sum the values of A440 and D294. Where both functions peak, those peaks add up. Where both functions dip, those dips subtract down. Where one function peaks and the other dips, they cancel out.</p>
-  <p>Adding up two different functions is easy enough, but is there a way to work backwards? What if we started with the summed function, and we wanted to figure out what the input functions were?</p>
+  <p>Adding up two different functions is easy enough, but is there a way to work backwards? What if we started with the summed function, and we wanted to figure out what the input functions were? For example,</p>
+  <ul>
+    <li>Our sound recording has an annoying high pitched note. How can we filter it out?</li>
+    <li>WIFI or our phones operate at certain frequencies. How can we listen for one particular frequency?</li>
+  </ul>
 </main>
 
 <style>
