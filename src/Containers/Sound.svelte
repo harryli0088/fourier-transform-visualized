@@ -4,10 +4,10 @@
 
   import Plot from "../Components/Plot.svelte";
 
+  import { BLUE, PURPLE, RED, TWO_PI } from '../utils/constants';
   import getCos from '../utils/getCos';
   import getPoints from '../utils/getPoints';
   import playTone from '../utils/playTone';
-  import { TWO_PI } from '../utils/constants';
 
   const DOMAIN:[number, number] = [0, 0.02]
   const STEP_SIZE = 0.00005
@@ -30,14 +30,14 @@
   <div>
     <b>A440: </b> <button on:click={() => playTone(["440"])}>Play A440 <Icon icon={faVolumeUp}/></button>
   </div>
-  <Plot points={A440Points} stroke="#E74C3C" xTitle="Time"/>
+  <Plot points={A440Points} stroke={RED} xTitle="Time"/>
 
   <br/><br/>
 
   <div>
     <b>D294: </b> <button on:click={() => playTone(["294"])}>Play D294 <Icon icon={faVolumeUp}/></button>
   </div>
-  <Plot points={D294Points} stroke="#3498DB" xTitle="Time"/>
+  <Plot points={D294Points} stroke={BLUE} xTitle="Time"/>
 
   <p>Notice that D294 seems more stretched out than A440. This because A440 oscillates more frequently that D294. What happens when we play the two notes together?</p>
 
@@ -46,7 +46,7 @@
   <div>
     <b>Combined: </b> <button on:click={() => playTone(["440", "294"])}>Play A440 and D294 <Icon icon={faVolumeUp}/></button>
   </div>
-  <Plot points={combinedPoints} stroke="#A569BD" xTitle="Time"/>
+  <Plot points={combinedPoints} stroke={PURPLE} xTitle="Time"/>
 
   <p>For each point in time, we sum the values of A440 and D294. Where both functions peak, those peaks add up. Where both functions dip, those dips subtract down. Where one function peaks and the other dips, they cancel out.</p>
   <p>Adding up two different functions is easy enough, but is there a way to work backwards? What if we started with the summed function, and we wanted to figure out what the input functions were? For example,</p>

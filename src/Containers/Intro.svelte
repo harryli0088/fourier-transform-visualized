@@ -7,43 +7,52 @@
   import Plot from "../Components/Plot.svelte";
   import Polar from "../Components/Polar.svelte";
 
-  import { DOMAIN, POLAR_HEIGHT, STEP_SIZE, TWO_PI } from '../utils/constants';
+  import { BLUE, DOMAIN, POLAR_HEIGHT, PURPLE, RED, STEP_SIZE, TWO_PI } from '../utils/constants';
   import getCos from '../utils/getCos';
   import getCosineFourierTransform from "../utils/getCosineFourierTransform";
   import getPoints from '../utils/getPoints';
   import getDefiniteIntegralFunction from "../utils/getDefiniteIntegralFunction";
+  import plural from "../utils/plural";
 
-  const freq = 3
+  const freq = 2
   const fullFuncFreq = TWO_PI * freq //multiply by 2pi to get the full frequency to use
   const func = getCos(fullFuncFreq)
   const points = getPoints(DOMAIN, func, STEP_SIZE)
 
-  const rotateTime = (DOMAIN[1] - DOMAIN[0]) * 1000
-  const rotate = tweened(0, {
-    duration: rotateTime,
-    easing: linear
-  })
-  onMount(() => {
-    const setRotate = () => {
-      rotate.set(0, {duration: 0})
-      rotate.set(1)
-    }
-    setRotate()
-    setInterval(setRotate, rotateTime)
-  })
+  let speedFactor: number = 1
+  const totalSeconds = (DOMAIN[1] - DOMAIN[0])
+  const drawProportion = tweened(0, { easing: linear })
+
+  let interval = null
   
+  function resetAnimation(totalSeconds: number) {
+    const totalMilliseconds = totalSeconds * 1000
+    clearInterval(interval)
+    function resetDrawProportion() {
+      drawProportion.set(0, {duration: 0})
+      drawProportion.set(1, {duration: totalMilliseconds})
+    }
+    resetDrawProportion()
+    interval = setInterval(resetDrawProportion, totalMilliseconds)
+  }
+
+  $: resetAnimation(totalSeconds/speedFactor)
+
+  // onMount(() => resetAnimation(totalSeconds))
+
   $: cosineFourierTransform = getCosineFourierTransform(fullFuncFreq, 0)
   $: definiteIntegralFunction = getDefiniteIntegralFunction(cosineFourierTransform, DOMAIN[0], DOMAIN[1])
 
   const windingFreq = 0.5
+  $: windingProportion = Math.round(360 * $drawProportion * totalSeconds * windingFreq)
 </script>
 
 <main>
   <h3>Cosine Introduction</h3>
-  <p>Let's take a look at this cosine function that has a frequency of {freq} cycles per second. You can see that this function moves down and up {freq} times in one second.</p>
-	<Plot {points} xTitle="Time in seconds"/>
+  <p>Let's take a look at this cosine function that has a frequency of {freq} {plural(freq, "cycle")} per second. You can see that this function moves down and up {freq} {plural(freq, "time")} in one second.</p>
+	<Plot drawProportion={$drawProportion} {points} stroke={RED} xTitle="Time in seconds"/>
 
-  <p>Next let's look at this winding function that spins at a frequency of 2 cycles per second</p>
+  <p>Next let's look at this winding function that spins at a frequency of {windingFreq} {plural(windingFreq, "cycle")} per second</p>
   <svg width={210} height={210}>
     <g transform="translate(5,5)">
       <line x1={0} y1={0} x2={200} y2={0}/>
@@ -55,21 +64,39 @@
       <line x1={200} y1={0} x2={200} y2={200}/>
     </g>
 
-    <g style={`transform:translate(105px, 105px) rotate(${360 * $rotate}deg);`}>
+    <g style={`transform:translate(105px, 105px) rotate(${windingProportion}deg);`}>
       <Arrow x1={0} y1={0} x2={100} y2={0}/>
-      <circle cx={100} cy={0} r={5}/>
+      <circle cx={100} cy={0} r={5} fill={BLUE}/>
     </g>
   </svg>
 
   <p>What happens when we multiply the values of the cosine function by the winding function?</p>
 
-  <Polar {definiteIntegralFunction} drawProportion={$rotate} domain={DOMAIN} freq={windingFreq} height={POLAR_HEIGHT} maxMagnitude={1} {points}/>
+  <button on:click={() => {
+    speedFactor /= 2
+  }}>Slow</button>
+
+<button on:click={() => {
+  clearInterval(interval)
+  drawProportion.set($drawProportion, {duration: 0})
+}}>Stop</button>
+
+  <Polar
+    {definiteIntegralFunction}
+    drawProportion={$drawProportion}
+    domain={DOMAIN}
+    freq={windingFreq}
+    height={POLAR_HEIGHT}
+    maxMagnitude={1}
+    {points}
+    stroke={PURPLE}
+  />
 </main>
 
 <style>
-  /* g.rotate {
+  /* g.drawProportion {
     animation-iteration-count: infinite;
-    animation-name: rotate;
+    animation-name: drawProportion;
     animation-duration: 2s;
     animation-timing-function: linear;
   } */
@@ -79,12 +106,12 @@
     stroke-width: 2px;
   }
 /* 
-  @keyframes rotate {
+  @keyframes drawProportion {
     from {
-      transform: translate(105px, 105px) rotate(0deg);
+      transform: translate(105px, 105px) drawProportion(0deg);
     }
     to {
-      transform: translate(105px, 105px) rotate(360deg);
+      transform: translate(105px, 105px) drawProportion(360deg);
     }
   } */
 </style>
