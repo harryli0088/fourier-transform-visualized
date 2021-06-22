@@ -107,7 +107,7 @@
 	<Plot {points} windingFreq={$windingFreq} xTitle="Time in seconds"/>
 
   <div>
-    <span><b>Winding Frequency: </b> {$windingFreq} {plural($windingFreq, "cycle")} per second (Hz)</span>
+    <span><b>Winding Frequency: </b> {$windingFreq.toFixed(1)} {plural($windingFreq, "cycle")} per second (Hz)</span>
     <input
       max={WINDING_FREQ_MAX}
       min="0"

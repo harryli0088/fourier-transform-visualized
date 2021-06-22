@@ -1,6 +1,9 @@
 <script lang="ts">
   import { tweened } from 'svelte/motion'
-  import { cubicOut } from 'svelte/easing'
+  import { cubicInOut } from 'svelte/easing'
+
+  import Icon from 'fa-svelte'
+  import { faPlay } from '@fortawesome/free-solid-svg-icons'
 
   import Plot from "../Components/Plot.svelte";
   import Polar from "../Components/Polar.svelte";
@@ -22,11 +25,13 @@
   const WINDING_FREQ_MAX = 3
 	const windingFreq = tweened(INITIAL_WINDING_FREQ, {
     duration: 500,
-    easing: cubicOut
+    easing: cubicInOut
   })
   function play() {
     windingFreq.set(0, {duration: 0})
-    windingFreq.set(WINDING_FREQ_MAX, {duration: 20000})
+    windingFreq.set(funcFreq, {duration: 10000}).then(() => {
+      windingFreq.set(WINDING_FREQ_MAX, {duration: 5000})
+    })
   }
 
 
@@ -44,7 +49,7 @@
 	<Plot {points} windingFreq={$windingFreq} xTitle="Time in seconds"/>
 
   
-  <div><button on:click={play}>Play</button></div>
+  <div><button on:click={play}>Play <Icon icon={faPlay}/></button></div>
   <div><b>Winding Frequency: </b> {$windingFreq.toFixed(1)} {plural($windingFreq, "cycle")} per second (Hz)</div>
   
 

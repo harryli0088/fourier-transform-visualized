@@ -127,7 +127,7 @@
 
 
     {#if drawProportion !== 1 && arrowPoint}
-      <Arrow x1={arrowPoint.x} y1={y0} x2={arrowPoint.x} y2={arrowPoint.y} color={"gray"}/>
+      <Arrow x1={arrowPoint.x} y1={y0} x2={arrowPoint.x} y2={arrowPoint.y}/>
     {/if}
     
     <text x={xScale((domain[1]-domain[0])/2)} y={yScale(useRange[0])} dy="1.1em" text-anchor="middle">{xTitle}</text>

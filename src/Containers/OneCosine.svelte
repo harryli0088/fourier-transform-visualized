@@ -62,9 +62,10 @@
 
 <main>
   <h2>One Cosine Playground</h2>
+  <p>In this playground, you can change the frequency of one cosine function and the frequency of our winding function, and see how the Fourier Transform changes.</p>
   <!-- <DrawProportion {drawProportion} initialValue={onMountDrawProportion}/> -->
   <div>
-    <span><b>Function Frequency: </b>{$funcFreq} {plural($funcFreq, "beat")} per second (Hz)</span>
+    <span><b>Function Frequency: </b>{$funcFreq.toFixed(1)} {plural($funcFreq, "beat")} per second (Hz)</span>
     <input
       max={WINDING_FREQ_MAX}
       min="0.05"
@@ -77,7 +78,7 @@
 	<Plot {points} windingFreq={$windingFreq} xTitle="Time in seconds"/>
 
   <div>
-    <span><b>Winding Frequency: </b> {$windingFreq} {plural($windingFreq, "cycle")} per second (Hz)</span>
+    <span><b>Winding Frequency: </b> {$windingFreq.toFixed(1)} {plural($windingFreq, "cycle")} per second (Hz)</span>
     <input
       max={WINDING_FREQ_MAX}
       min="0"

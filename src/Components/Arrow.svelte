@@ -1,7 +1,7 @@
 <script lang="ts">
   export let arrowHeight: number = 3
   export let arrowWidth: number = 5
-  export let color: string = "gray"
+  export let color: string = "#ccc"
   export let x1: number = 0
   export let x2: number = 0
   export let y1: number = 0
@@ -23,12 +23,11 @@
   </marker>
 </defs>
 <g transform={`translate(${x1},${y1}) scale(${length / DEFAULT_LENGTH})`}>
-  <line class="arrow" x1={0} y1={0} x2={x2Short} y2={y2Short} marker-end="url(#arrow)" />
+  <line class="arrow" x1={0} y1={0} x2={x2Short} y2={y2Short} marker-end="url(#arrow)" stroke={color}/>
 </g>
 
 <style>
   .arrow {
-    stroke: gray;
     stroke-width: 3px;
   }
 </style>

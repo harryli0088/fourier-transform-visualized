@@ -27,7 +27,7 @@
   $: diameter = Math.min(bottom - top, right - left)
   $: radius = diameter / 2
 
-  $: lineIntervals = [-diameter/2, -diameter/4, 0, diameter/4, diameter/2]
+  $: lineIntervals = [-diameter/2, 0, diameter/2] //[-diameter/2, -diameter/4, 0, diameter/4, diameter/2]
   
   function getPolarPoints(
     freq: number,
