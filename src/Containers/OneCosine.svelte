@@ -9,7 +9,7 @@
   import PolarFtContainer from './PolarFTContainer.svelte';
 
   // import complex from './utils/complexNumber';
-  import { DOMAIN, POLAR_HEIGHT, STEP_SIZE, TWO_PI, WINDING_FREQ_MAX } from '../utils/constants';
+  import { DOMAIN, GREEN, POLAR_HEIGHT, STEP_SIZE, TWO_PI, WINDING_FREQ_MAX } from '../utils/constants';
   // import fft, { zeroPad } from './utils/fft';
   import getCos from '../utils/getCos';
   import getCosineFourierTransform from '../utils/getCosineFourierTransform';
@@ -93,7 +93,7 @@
       <Polar {definiteIntegralFunction} domain={DOMAIN} drawProportion={$drawProportion} freq={$windingFreq} height={POLAR_HEIGHT} maxMagnitude={1} {points}/>
     </span>
     <span slot="ft">
-      <Plot drawProportion={$windingFreq/WINDING_FREQ_MAX} points={ftPoints} windingFreq={Infinity} xTitle="Winding Frequency (Hz)"/>
+      <Plot drawProportion={$windingFreq/WINDING_FREQ_MAX} points={ftPoints} stroke={GREEN} windingFreq={Infinity} xTitle="Winding Frequency (Hz)"/>
     </span>
   </PolarFtContainer>
 </main>

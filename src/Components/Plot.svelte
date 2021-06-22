@@ -5,13 +5,14 @@
   import getDomain from '../utils/getDomain';
   import getRange from '../utils/getRange';
   import type { MathFunc, PointType } from '../utils/types';
+  import { RED } from '../utils/constants';
 
   export let drawProportion: number = 1 //between 0 and 1, the proportion of the points to draw
   export let height: number = 200
   export let margin: {b: number, l: number, r: number, t: number} = {b:10,l:30,r:10,t:10}
   export let points: PointType[] = []
   export let range: [number, number] | null = null
-  export let stroke: string = "black"
+  export let stroke: string = RED
   export let windingFreq: number = -1
   export let xTickGap: number = 0.25
   export let xTickSize: number = 15

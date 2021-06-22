@@ -2,7 +2,7 @@
   import Arrow from './Arrow.svelte';
   import type { PointType } from '../utils/types';
   import type { ComplexNumber } from '../utils/complexNumber';
-  import { TWO_PI } from '../utils/constants';
+  import { GREEN, PURPLE, TWO_PI } from '../utils/constants';
   import getRange from '../utils/getRange';
 
   export let definiteIntegralFunction: (freq: number) => ComplexNumber
@@ -14,7 +14,7 @@
   export let margin: {b: number, l: number, r: number, t: number} = {b:1,l:1,r:0,t:1}
   export let maxMagnitude: number = 0
   export let points: PointType[] = []
-  export let stroke: string = "black"
+  export let stroke: string = PURPLE
 
   let width: number = 500
 
@@ -74,7 +74,7 @@
           <Arrow x1={0} y1={0} x2={arrowPoint.x} y2={arrowPoint.y}/>
         {/if}
 
-        <circle cx={centerOfMass.r*centerOfMassScale} cy={-centerOfMass.i*centerOfMassScale} r={10} fill="red"/>
+        <circle cx={centerOfMass.r*centerOfMassScale} cy={-centerOfMass.i*centerOfMassScale} r={10} fill={GREEN}/>
     </g>
     </g>
   </svg>

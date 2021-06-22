@@ -12,14 +12,12 @@
   import PolarFtContainer from './PolarFTContainer.svelte';
 
   import complex from '../utils/complexNumber';
+  import { DOMAIN, GREEN, POLAR_HEIGHT, STEP_SIZE, TWO_PI, WINDING_FREQ_MAX } from '../utils/constants';
   import { getCombinedCos } from '../utils/getCos';
   import getCosineFourierTransform from '../utils/getCosineFourierTransform';
   import getDefiniteIntegralFunction from '../utils/getDefiniteIntegralFunction';
   import getPoints from '../utils/getPoints';
   import plural from '../utils/plural';
-  import { POLAR_HEIGHT, STEP_SIZE, TWO_PI, WINDING_FREQ_MAX } from '../utils/constants';
-
-  const domain: [number, number] = [0, Math.PI]
 
   const onMountDrawProportion = 1
   const drawProportion = tweened(0, {
@@ -52,7 +50,7 @@
   $: fullFrequencies = frequencies.map(f => f * TWO_PI) //multiply by 2pi to get the full frequency to use
   $: combinedFunc = getCombinedCos(fullFrequencies)
   
-  $: points = getPoints(domain, combinedFunc, STEP_SIZE)
+  $: points = getPoints(DOMAIN, combinedFunc, STEP_SIZE)
 
   const INITIAL_WINDING_FREQ = 1
 	const windingFreq = tweened(INITIAL_WINDING_FREQ, {
@@ -61,7 +59,7 @@
   })
 
   $: cosineFourierTransforms = fullFrequencies.map(f => getCosineFourierTransform(f, 0))
-  $: definiteIntegralFunctions = cosineFourierTransforms.map(t => getDefiniteIntegralFunction(t, domain[0], domain[1]))
+  $: definiteIntegralFunctions = cosineFourierTransforms.map(t => getDefiniteIntegralFunction(t, DOMAIN[0], DOMAIN[1]))
   $: combinedDefiniteIntegralFunction = (freq: number) => definiteIntegralFunctions.reduce((sum, func) => complex.add(sum,func(freq)), complex.makeNew({}))
   $: getReal = (freq: number) => combinedDefiniteIntegralFunction(freq).r
   $: ftPoints = getPoints([0, 10], getReal, STEP_SIZE)
@@ -122,7 +120,7 @@
     <span slot="polar">
       <Polar
         definiteIntegralFunction={combinedDefiniteIntegralFunction}
-        {domain}
+        domain={DOMAIN}
         drawProportion={$drawProportion}
         freq={$windingFreq}
         height={POLAR_HEIGHT}
@@ -131,7 +129,7 @@
       />
     </span>
     <span slot="ft">
-      <Plot drawProportion={$drawProportion} points={ftPoints} windingFreq={Infinity} xTitle="Frequency (Hz)"/>
+      <Plot drawProportion={$windingFreq/WINDING_FREQ_MAX} points={ftPoints} stroke={GREEN} windingFreq={Infinity} xTitle="Frequency (Hz)"/>
     </span>
   </PolarFtContainer>
 </main>
