@@ -1,37 +1,41 @@
 <script lang="ts">
   import { tweened } from "svelte/motion";
-  import { cubicOut } from "svelte/easing";
+  import { linear } from "svelte/easing";
   import { onMount } from "svelte";
 
   import Arrow from "../Components/Arrow.svelte";
   import Plot from "../Components/Plot.svelte";
   import Polar from "../Components/Polar.svelte";
 
+  import { DOMAIN, POLAR_HEIGHT, STEP_SIZE, TWO_PI } from '../utils/constants';
   import getCos from '../utils/getCos';
   import getCosineFourierTransform from "../utils/getCosineFourierTransform";
   import getPoints from '../utils/getPoints';
-  import { POLAR_HEIGHT, STEP_SIZE, TWO_PI } from '../utils/constants';
   import getDefiniteIntegralFunction from "../utils/getDefiniteIntegralFunction";
 
-  const domain: [number, number] = [0, Math.PI]
   const freq = 3
   const fullFuncFreq = TWO_PI * freq //multiply by 2pi to get the full frequency to use
   const func = getCos(fullFuncFreq)
-  const points = getPoints(domain, func, STEP_SIZE)
+  const points = getPoints(DOMAIN, func, STEP_SIZE)
 
+  const rotateTime = (DOMAIN[1] - DOMAIN[0]) * 1000
   const rotate = tweened(0, {
-    duration: 2000,
-    easing: cubicOut
+    duration: rotateTime,
+    easing: linear
   })
   onMount(() => {
-    setInterval(() => {
+    const setRotate = () => {
       rotate.set(0, {duration: 0})
       rotate.set(1)
-    }, 2000)
+    }
+    setRotate()
+    setInterval(setRotate, rotateTime)
   })
-
+  
   $: cosineFourierTransform = getCosineFourierTransform(fullFuncFreq, 0)
-  $: definiteIntegralFunction = getDefiniteIntegralFunction(cosineFourierTransform, domain[0], domain[1])
+  $: definiteIntegralFunction = getDefiniteIntegralFunction(cosineFourierTransform, DOMAIN[0], DOMAIN[1])
+
+  const windingFreq = 0.5
 </script>
 
 <main>
@@ -51,7 +55,7 @@
       <line x1={200} y1={0} x2={200} y2={200}/>
     </g>
 
-    <g class="rotate">
+    <g style={`transform:translate(105px, 105px) rotate(${360 * $rotate}deg);`}>
       <Arrow x1={0} y1={0} x2={100} y2={0}/>
       <circle cx={100} cy={0} r={5}/>
     </g>
@@ -59,22 +63,22 @@
 
   <p>What happens when we multiply the values of the cosine function by the winding function?</p>
 
-  <Polar {definiteIntegralFunction} drawProportion={$rotate} {domain} freq={0.5} height={POLAR_HEIGHT} maxMagnitude={1} {points}/>
+  <Polar {definiteIntegralFunction} drawProportion={$rotate} domain={DOMAIN} freq={windingFreq} height={POLAR_HEIGHT} maxMagnitude={1} {points}/>
 </main>
 
 <style>
-  g.rotate {
+  /* g.rotate {
     animation-iteration-count: infinite;
     animation-name: rotate;
     animation-duration: 2s;
     animation-timing-function: linear;
-  }
+  } */
 
   line {
     stroke: gray;
     stroke-width: 2px;
   }
-
+/* 
   @keyframes rotate {
     from {
       transform: translate(105px, 105px) rotate(0deg);
@@ -82,5 +86,5 @@
     to {
       transform: translate(105px, 105px) rotate(360deg);
     }
-  }
+  } */
 </style>

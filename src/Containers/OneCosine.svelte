@@ -7,7 +7,9 @@
   import Plot from "../Components/Plot.svelte";
   import Polar from "../Components/Polar.svelte";
   import PolarFtContainer from './PolarFTContainer.svelte';
+
   // import complex from './utils/complexNumber';
+  import { DOMAIN, POLAR_HEIGHT, STEP_SIZE, TWO_PI, WINDING_FREQ_MAX } from '../utils/constants';
   // import fft, { zeroPad } from './utils/fft';
   import getCos from '../utils/getCos';
   import getCosineFourierTransform from '../utils/getCosineFourierTransform';
@@ -15,9 +17,6 @@
   import getPoints from '../utils/getPoints';
   // import type { MathFunc, PointType } from '../utils/types';
   import plural from '../utils/plural';
-  import { POLAR_HEIGHT, STEP_SIZE, TWO_PI, WINDING_FREQ_MAX } from '../utils/constants';
-
-  const domain: [number, number] = [0, Math.PI]
 
   const onMountDrawProportion = 1
   const drawProportion = tweened(0, {
@@ -35,7 +34,7 @@
   })
   $: fullFuncFreq = TWO_PI * $funcFreq //multiply by 2pi to get the full frequency to use
   $: func = getCos(fullFuncFreq)
-  $: points = getPoints(domain, func, STEP_SIZE)
+  $: points = getPoints(DOMAIN, func, STEP_SIZE)
 
   const INITIAL_WINDING_FREQ = 1
 	const windingFreq = tweened(INITIAL_WINDING_FREQ, {
@@ -55,7 +54,7 @@
   // $: console.log("dftPoints",dftPoints)
 
   $: cosineFourierTransform = getCosineFourierTransform(fullFuncFreq, 0)
-  $: definiteIntegralFunction = getDefiniteIntegralFunction(cosineFourierTransform, domain[0], domain[1])
+  $: definiteIntegralFunction = getDefiniteIntegralFunction(cosineFourierTransform, DOMAIN[0], DOMAIN[1])
   $: getReal = (freq: number) => definiteIntegralFunction(freq).r
   $: ftPoints = getPoints([0, 10], getReal, STEP_SIZE)
 
@@ -91,7 +90,7 @@
 
   <PolarFtContainer>
     <span slot="polar">
-      <Polar {definiteIntegralFunction} {domain} drawProportion={$drawProportion} freq={$windingFreq} height={POLAR_HEIGHT} maxMagnitude={1} {points}/>
+      <Polar {definiteIntegralFunction} domain={DOMAIN} drawProportion={$drawProportion} freq={$windingFreq} height={POLAR_HEIGHT} maxMagnitude={1} {points}/>
     </span>
     <span slot="ft">
       <Plot drawProportion={$windingFreq/WINDING_FREQ_MAX} points={ftPoints} windingFreq={Infinity} xTitle="Winding Frequency (Hz)"/>

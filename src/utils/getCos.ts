@@ -1,7 +1,20 @@
+import { COSINE_SHIFTED } from "./constants"
+
+/**
+ * Returns a cosine function given an input time t in the form cos(at + b)
+ * @param freq    the frequency "a" term
+ * @param offset  the phase shift "b" term
+ * @param shifted if true, shift the cosine up 1, then divide by 2 to keep the range between 0 and 1
+ * @returns       cosine function
+ */
 export default function getCos(
   freq: number = 1,
   offset: number = 0,
+  shifted: boolean = COSINE_SHIFTED
 ) {
+  if(shifted) {
+    return (t: number) => (Math.cos(freq*t + offset) + 1) / 2
+  }
   return (t: number) => Math.cos(freq*t + offset)
 }
 
@@ -14,7 +27,7 @@ export default function getCos(
 export function getCombinedCos(
   freqs: number[] = [1]
 ) {
-  const funcs = freqs.map(getCos) //map all the frequencies to cosine functions
+  const funcs = freqs.map(f => getCos(f)) //map all the frequencies to cosine functions
   /**
    * @param t time in seconds
    * @returns sum of all the cosine functions at time t
