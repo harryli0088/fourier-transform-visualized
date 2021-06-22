@@ -2,6 +2,7 @@
   import Icon from 'fa-svelte'
   import { faGithub } from '@fortawesome/free-brands-svg-icons'
 
+  import COM from './Containers/COM.svelte';
   import Intro from './Containers/Intro.svelte';
   import MultipleCosines from "./Containers/MultipleCosines.svelte";
   import OneCosine from "./Containers/OneCosine.svelte";
@@ -26,6 +27,8 @@
     <Sound/>
 
     <Intro/>
+
+    <COM/>
 
     <OneCosine/>
 

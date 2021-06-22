@@ -27,7 +27,7 @@
     drawProportion.set(onMountDrawProportion)
   })
 
-  const INITIAL_FUNC_FREQ = 2.5
+  const INITIAL_FUNC_FREQ = 2
   const funcFreq = tweened(INITIAL_FUNC_FREQ, { //this is the partial frequency for 2pi omitted for simplicity
     duration: 500,
     easing: cubicOut

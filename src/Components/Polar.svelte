@@ -14,6 +14,7 @@
   export let margin: {b: number, l: number, r: number, t: number} = {b:1,l:1,r:0,t:1}
   export let maxMagnitude: number = 0
   export let points: PointType[] = []
+  export let showCOM: boolean = true
   export let stroke: string = PURPLE
 
   let width: number = 500
@@ -74,7 +75,9 @@
           <Arrow x1={0} y1={0} x2={arrowPoint.x} y2={arrowPoint.y}/>
         {/if}
 
-        <circle cx={centerOfMass.r*centerOfMassScale} cy={-centerOfMass.i*centerOfMassScale} r={10} fill={GREEN}/>
+        {#if showCOM}
+          <circle cx={centerOfMass.r*centerOfMassScale} cy={-centerOfMass.i*centerOfMassScale} r={10} fill={GREEN}/>
+        {/if}
     </g>
     </g>
   </svg>

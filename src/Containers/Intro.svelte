@@ -48,9 +48,9 @@
 </script>
 
 <main>
-  <h3>Cosine Introduction</h3>
+  <h2>Cosine Introduction</h2>
   <p>Let's take a look at this cosine function that has a frequency of {freq} {plural(freq, "cycle")} per second. You can see that this function moves down and up {freq} {plural(freq, "time")} in one second.</p>
-	<Plot drawProportion={$drawProportion} {points} stroke={RED} xTitle="Time in seconds"/>
+	<Plot drawProportion={$drawProportion} {points} stroke={RED} {windingFreq} xTitle="Time in seconds"/>
 
   <p>Next let's look at this winding function that spins at a frequency of {windingFreq} {plural(windingFreq, "cycle")} per second</p>
   <svg width={210} height={210}>
@@ -89,29 +89,14 @@
     height={POLAR_HEIGHT}
     maxMagnitude={1}
     {points}
+    showCOM={false}
     stroke={PURPLE}
   />
 </main>
 
 <style>
-  /* g.drawProportion {
-    animation-iteration-count: infinite;
-    animation-name: drawProportion;
-    animation-duration: 2s;
-    animation-timing-function: linear;
-  } */
-
   line {
     stroke: gray;
     stroke-width: 2px;
   }
-/* 
-  @keyframes drawProportion {
-    from {
-      transform: translate(105px, 105px) drawProportion(0deg);
-    }
-    to {
-      transform: translate(105px, 105px) drawProportion(360deg);
-    }
-  } */
 </style>

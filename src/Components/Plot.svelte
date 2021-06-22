@@ -5,7 +5,7 @@
   import getDomain from '../utils/getDomain';
   import getRange from '../utils/getRange';
   import type { MathFunc, PointType } from '../utils/types';
-  import { RED } from '../utils/constants';
+  import { BLUE, RED } from '../utils/constants';
 
   export let drawProportion: number = 1 //between 0 and 1, the proportion of the points to draw
   export let height: number = 200
@@ -90,7 +90,9 @@
       const windingInverse = 1 / windingFreq //get the inverse of the winding frequency
       let multiple = windingInverse * Math.ceil(domain[0]*windingInverse) //round up to the next multiple of the winding freq inverse
       for(multiple; multiple<domain[1]; multiple+=windingInverse) { //increment by the winding freq inverse through the domain
-        windingFreqTicks.push(xScale(multiple)) //push a new tick
+        if(multiple > 0) { //if the multiple is greater than zero
+          windingFreqTicks.push(xScale(multiple)) //push a new tick
+        }
       }
     }
     return windingFreqTicks
@@ -100,20 +102,20 @@
 
 <div bind:clientWidth={width}>
   <svg {width} {height}>
-    <line x1={xScale(domain[0])} y1={y0} x2={xScale(domain[1])} y2={y0}/>
-    <line x1={x0} y1={yScale(useRange[0])} x2={x0} y2={yScale(useRange[1])}/>
+    <line class="gray" x1={xScale(domain[0])} y1={y0} x2={xScale(domain[1])} y2={y0}/>
+    <line class="gray" x1={x0} y1={yScale(useRange[0])} x2={x0} y2={yScale(useRange[1])}/>
 
     {#each windingFreqTicks as t}
-      <line class="winding-freq-tick" x1={t} y1={yScale(useRange[0])} x2={t} y2={yScale(useRange[1])}/>
+      <line class="winding-freq-tick" stroke={BLUE} x1={t} y1={yScale(useRange[0])} x2={t} y2={yScale(useRange[1])}/>
     {/each}
 
     <path d={pathD} fill="none" {stroke}/>
 
     {#each xTicks as t}
-      <line x1={t.o} y1={y0 + getTickSize(t.i,xTickHalfSize)} x2={t.o} y2={y0 - getTickSize(t.i,xTickHalfSize)}/>
+      <line class="gray" x1={t.o} y1={y0 + getTickSize(t.i,xTickHalfSize)} x2={t.o} y2={y0 - getTickSize(t.i,xTickHalfSize)}/>
     {/each}
     {#each yTicks as t}
-      <line x1={x0 + getTickSize(t.i,yTickHalfSize)} y1={t.o} x2={x0 - getTickSize(t.i,yTickHalfSize)} y2={t.o}/>
+      <line class="gray" x1={x0 + getTickSize(t.i,yTickHalfSize)} y1={t.o} x2={x0 - getTickSize(t.i,yTickHalfSize)} y2={t.o}/>
     {/each}
 
     {#each xLabels as l}
@@ -138,8 +140,11 @@
   }
 
   line {
-    stroke: gray;
     stroke-width: 2px;
+  }
+
+  line.gray {
+    stroke: gray;
   }
 
   .winding-freq-tick {
