@@ -1,11 +1,17 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
+
   import COM from './Containers/COM.svelte';
+  import Header from './Containers/Header.svelte';
   import Intro from './Containers/Intro.svelte';
   import MultipleCosines from "./Containers/MultipleCosines.svelte";
   import OneCosine from "./Containers/OneCosine.svelte";
   import Sound from './Containers/Sound.svelte';
-import Header from './Containers/Header.svelte';
+  import initMathJax from './utils/initMathJax';
 
+  onMount(() => {
+    initMathJax()
+  })
 </script>
 
 <main style="--tablet-padding:calc(50vw - 400px + 1em);--desktop-padding:calc(50vw - 600px)">
@@ -56,8 +62,14 @@ import Header from './Containers/Header.svelte';
       <h2>Questions I had while making this site</h2>
 
       <div>
+        <h3>What is the derivation for these Fourier Transforms?</h3>
+
+        <p>{`$$\\int{x^2 }$$`}</p>
+      </div>
+
+      <div>
         <h3>Why is the Fourier Transform so squiggly? Shouldn't the transform identify the specific pure frequencies?</h3>
-        <p>These Fourier Transforms are squiggly because the transform is bounded over times t=0 to t=3. If we were integrating between -∞ and ∞, then we would get dirac deltas at the specific pure frequencies. <a href="https://en.wikipedia.org/wiki/Fourier_transform#Definition" target="_blank" rel="noopener noreferrer">Wikipedia</a>, <a href="https://www.thefouriertransform.com/pairs/sinusoids.php" target="_blank" rel="noopener noreferrer">thefouriertransform.com</a></p>
+        <p>These Fourier Transforms are squiggly because the integral is bounded over times t=0 to t=3. If we were integrating between -∞ and ∞, then we would get dirac deltas at the specific pure frequencies. <a href="https://en.wikipedia.org/wiki/Fourier_transform#Definition" target="_blank" rel="noopener noreferrer">Wikipedia</a>, <a href="https://www.thefouriertransform.com/pairs/sinusoids.php" target="_blank" rel="noopener noreferrer">thefouriertransform.com</a></p>
       </div>
     </div>
   </section>
