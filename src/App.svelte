@@ -17,7 +17,7 @@ import Header from './Containers/Header.svelte';
     <p>The Fourier Transform is a mathematical transformation that helps us break down functions over time into functions of <i>frequencies</i>. This transform is extremely important for signal processing in technology that we use every day, such as music, radar, WIFI, and phone calls.</p>
 
     <br/><br/><br/><br/>
-    
+
     <Sound/>
 
     <br/><br/><br/><br/>
@@ -47,6 +47,17 @@ import Header from './Containers/Header.svelte';
         <div id="videoContainer">
           <iframe title="video" width="560" height="315" src="https://www.youtube.com/embed/spUNpyF58BY" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
+      </div>
+    </div>
+
+    <br/><br/><br/><br/>
+
+    <div>
+      <h2>Questions I had while making this site</h2>
+
+      <div>
+        <h3>Why is the Fourier Transform so squiggly? Shouldn't the transform identify the specific pure frequencies?</h3>
+        <p>These Fourier Transforms are squiggly because the transform is bounded over times t=0 to t=3. If we were integrating between -∞ and ∞, then we would get dirac deltas at the specific pure frequencies. <a href="https://en.wikipedia.org/wiki/Fourier_transform#Definition" target="_blank" rel="noopener noreferrer">Wikipedia</a>, <a href="https://www.thefouriertransform.com/pairs/sinusoids.php" target="_blank" rel="noopener noreferrer">thefouriertransform.com</a></p>
       </div>
     </div>
   </section>
