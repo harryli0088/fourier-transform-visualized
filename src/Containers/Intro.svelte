@@ -1,6 +1,6 @@
 <script lang="ts">
   import { tweened } from "svelte/motion";
-  import { linear } from "svelte/easing";
+  import { cubicOut, linear } from "svelte/easing";
 
   import Icon from 'fa-svelte'
   import { faFastBackward, faFastForward, faPlay } from '@fortawesome/free-solid-svg-icons'
@@ -9,7 +9,7 @@
   import Plot from "../Components/Plot.svelte";
   import Polar from "../Components/Polar.svelte";
 
-  import { BLUE, DOMAIN, POLAR_HEIGHT, PURPLE, RED, STEP_SIZE, TWO_PI } from '../utils/constants';
+  import { BLUE, DOMAIN, POLAR_HEIGHT, PURPLE, RED, STEP_SIZE, TWO_PI, WINDING_FREQ_MAX } from '../utils/constants';
   import getCos from '../utils/getCos';
   import getCosineFourierTransform from "../utils/getCosineFourierTransform";
   import getPoints from '../utils/getPoints';
@@ -45,8 +45,12 @@
   $: cosineFourierTransform = getCosineFourierTransform(fullFuncFreq, 0)
   $: definiteIntegralFunction = getDefiniteIntegralFunction(cosineFourierTransform, DOMAIN[0], DOMAIN[1])
 
-  const windingFreq = 1
-  $: windingProportion = 360 * $drawProportion * totalSeconds * windingFreq
+  const INITIAL_WINDING_FREQ = 1
+	const windingFreq = tweened(INITIAL_WINDING_FREQ, {
+    duration: 500,
+    easing: cubicOut
+  })
+  $: windingProportion = 360 * $drawProportion * totalSeconds * $windingFreq
 </script>
 
 <main>
@@ -62,9 +66,23 @@
   </div>
 
   <p>Let's take a look at this cosine function that has a frequency of {freq} {plural(freq, "cycle")} per second. You can see that this function moves down and up {freq} {plural(freq, "time")} in one second.</p>
-	<Plot drawProportion={$drawProportion} {points} stroke={RED} {windingFreq} xTitle="Time in seconds"/>
+	<Plot drawProportion={$drawProportion} {points} stroke={RED} windingFreq={$windingFreq} xTitle="Time in seconds"/>
+  
 
-  <p>Next let's look at this winding function that spins at a frequency of {windingFreq} {plural(windingFreq, "cycle")} per second, ie it takes {1/windingFreq} {plural(windingFreq, "second")} to make one full cycle.</p>
+  <p>Next let's look at this winding function that spins at a frequency of {$windingFreq.toFixed(1)} {plural($windingFreq, "cycle")} per second, ie it takes <span style={`border: 2px dashed ${BLUE};padding:0.3em;`}>{(1/$windingFreq).toFixed(1)} {plural($windingFreq, "second")}</span> to make one full cycle. You can adjust the slider to change the winding frequency.</p>
+  
+  <div>
+    <span><b>Winding Frequency: </b> {$windingFreq.toFixed(1)} {plural($windingFreq, "cycle")} per second (Hz)</span>
+    <input
+      max={WINDING_FREQ_MAX}
+      min="0"
+      on:input={e => windingFreq.set(parseFloat(e.target.value))}
+      step="0.01"
+      type="range"
+      value={INITIAL_WINDING_FREQ}
+    />
+  </div>
+
   <div style="text-align: center;">
     <svg width={210} height={210}>
       <g transform="translate(5,5)">
@@ -92,7 +110,7 @@
         {definiteIntegralFunction}
         drawProportion={$drawProportion}
         domain={DOMAIN}
-        freq={windingFreq}
+        freq={$windingFreq}
         height={POLAR_HEIGHT}
         maxMagnitude={1}
         {points}
@@ -101,6 +119,13 @@
       />
     </div>
   </div>
+
+  <p>The red cosine function oscillates between 0 and 1. At the same time, the blue winding function winds around in a circular pattern. When we "multiply" these two functions together, we get a winding purple function that </p>
+  <ul>
+    <li>Grows outward when the red cosine moves up</li>
+    <li>Shrinks inwards when the red cosine moves down</li>
+  </ul>
+  <p>Try changing the winding frequency and see how the purple resulting function changes. The results can be quite pretty!</p>
 </main>
 
 <style>
