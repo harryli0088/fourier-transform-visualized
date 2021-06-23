@@ -102,3 +102,11 @@ text {
 .label {
   margin-bottom: 0.5em;
 }
+
+code {
+  padding: .2em .4em;
+  margin: 0;
+  font-size: 1em;
+  background-color: gray;
+  border-radius: 5px;
+}
