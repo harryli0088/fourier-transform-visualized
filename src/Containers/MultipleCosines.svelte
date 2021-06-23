@@ -67,7 +67,7 @@
 </script>
 
 <main>
-  <h2>Add Multiple Functions Together</h2>
+  <h2>Add Multiple Cosines Together</h2>
   <form on:submit={addFreq}>
     <span>Add another cosine function of </span>
     <input 

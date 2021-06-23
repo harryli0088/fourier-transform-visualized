@@ -1,7 +1,9 @@
 <script lang="ts">
   import { tweened } from "svelte/motion";
   import { linear } from "svelte/easing";
-  import { onMount } from "svelte";
+
+  import Icon from 'fa-svelte'
+  import { faFastBackward, faFastForward, faPlay } from '@fortawesome/free-solid-svg-icons'
 
   import Arrow from "../Components/Arrow.svelte";
   import Plot from "../Components/Plot.svelte";
@@ -19,7 +21,7 @@
   const func = getCos(fullFuncFreq)
   const points = getPoints(DOMAIN, func, STEP_SIZE)
 
-  let speedFactor: number = 1
+  let speedFactor: number = 1/2
   const totalSeconds = (DOMAIN[1] - DOMAIN[0])
   const drawProportion = tweened(0, { easing: linear })
 
@@ -38,13 +40,11 @@
 
   $: resetAnimation(totalSeconds/speedFactor)
 
-  // onMount(() => resetAnimation(totalSeconds))
-
   $: cosineFourierTransform = getCosineFourierTransform(fullFuncFreq, 0)
   $: definiteIntegralFunction = getDefiniteIntegralFunction(cosineFourierTransform, DOMAIN[0], DOMAIN[1])
 
   const windingFreq = 0.5
-  $: windingProportion = Math.round(360 * $drawProportion * totalSeconds * windingFreq)
+  $: windingProportion = 360 * $drawProportion * totalSeconds * windingFreq
 </script>
 
 <main>
@@ -52,7 +52,7 @@
   <p>Let's take a look at this cosine function that has a frequency of {freq} {plural(freq, "cycle")} per second. You can see that this function moves down and up {freq} {plural(freq, "time")} in one second.</p>
 	<Plot drawProportion={$drawProportion} {points} stroke={RED} {windingFreq} xTitle="Time in seconds"/>
 
-  <p>Next let's look at this winding function that spins at a frequency of {windingFreq} {plural(windingFreq, "cycle")} per second</p>
+  <p>Next let's look at this winding function that spins at a frequency of {windingFreq} {plural(windingFreq, "cycle")} per second, ie it takes {1/windingFreq} seconds to make one full cycle.</p>
   <svg width={210} height={210}>
     <g transform="translate(5,5)">
       <line x1={0} y1={0} x2={200} y2={0}/>
@@ -72,14 +72,13 @@
 
   <p>What happens when we multiply the values of the cosine function by the winding function?</p>
 
-  <button on:click={() => {
-    speedFactor /= 2
-  }}>Slow</button>
+  <div><b>Speed: </b> {speedFactor>=1 ? speedFactor : `1/${1/speedFactor}`}x</div>
+  <div>
+    <button on:click={() => speedFactor /= 2}><Icon icon={faFastBackward}/> Slow Down</button>
+    <button on:click={() => speedFactor = 1}>Play Normal <Icon icon={faPlay}/></button>
+    <button on:click={() => speedFactor *= 2}>Speed Up <Icon icon={faFastForward}/></button>
+  </div>
 
-<button on:click={() => {
-  clearInterval(interval)
-  drawProportion.set($drawProportion, {duration: 0})
-}}>Stop</button>
 
   <Polar
     {definiteIntegralFunction}
