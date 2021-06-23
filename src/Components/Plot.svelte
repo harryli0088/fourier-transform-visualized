@@ -56,7 +56,7 @@
   $: yLabels = getLabels(useRange, true)
 
   $: pixelPoints = points.map(p => ({x: xScale(p.x), y: yScale(p.y)}))
-  $: pointStrings = pixelPoints.map(p => `${p.x},${p.y}`)
+  $: pointStrings = pixelPoints.map(p => `${p.x.toFixed(2)},${p.y.toFixed(2)}`)
   $: sliceIndex = Math.ceil(pointStrings.length * drawProportion)
   $: arrowPoint = pixelPoints[sliceIndex - 1]
   $: pathD = `M ${pointStrings.slice(0, sliceIndex).join(" ")}`

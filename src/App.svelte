@@ -1,25 +1,17 @@
 <script lang="ts">
-  import Icon from 'fa-svelte'
-  import { faGithub } from '@fortawesome/free-brands-svg-icons'
-
   import COM from './Containers/COM.svelte';
   import Intro from './Containers/Intro.svelte';
   import MultipleCosines from "./Containers/MultipleCosines.svelte";
   import OneCosine from "./Containers/OneCosine.svelte";
   import Sound from './Containers/Sound.svelte';
+import Header from './Containers/Header.svelte';
 
 </script>
 
 <main style="--tablet-padding:calc(50vw - 400px + 1em);--desktop-padding:calc(50vw - 600px)">
   <header>
-		<div>
-			<h1>Fourier Transform Visualized</h1>
-			<p>Inspired by <a href="https://www.youtube.com/watch?v=spUNpyF58BY" target="_blank" rel="noopener noreferrer">3Blue1Brown</a></p>
-			<div>
-				<a href="https://github.com/harryli0088/fourier-transform-visualized" target="_blank" rel="noopener noreferrer"><Icon icon={faGithub}/></a>
-			</div>
-		</div>
-	</header>
+    <Header/>
+  </header>
 
   <section>
     <p>The Fourier Transform is a mathematical transformation that helps us break down functions over time into functions of <i>frequencies</i>. This transform is extremely important for signal processing in technology that we use every day, such as music, radar, WIFI, and phone calls.</p>
@@ -46,6 +38,8 @@
 
     <div style="text-align:center">
       <h2>3Blue1Brown's Video</h2>
+
+      <p>Most of this site's material was taken from 3Blue1Brown's fantastic video about the Fourier Transform.</p>
 
       <div id="limitWidth">
         <div id="videoContainer">
