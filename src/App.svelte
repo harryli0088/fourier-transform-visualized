@@ -73,6 +73,10 @@ import Header from './Containers/Header.svelte';
 		}
 	}
 
+  header {
+    background-color: #444;
+  }
+
   #limitWidth {
 		margin-left: auto;
 		margin-right: auto;

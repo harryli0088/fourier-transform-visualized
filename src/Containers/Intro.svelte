@@ -21,7 +21,9 @@
   const func = getCos(fullFuncFreq)
   const points = getPoints(DOMAIN, func, STEP_SIZE)
 
-  let speedFactor: number = 1/2
+  let speedFactor: number = 1/4
+  const speedFactorMax = 4
+  const speedFactorMin = 1/16
   const totalSeconds = (DOMAIN[1] - DOMAIN[0])
   const drawProportion = tweened(0, { easing: linear })
 
@@ -43,16 +45,26 @@
   $: cosineFourierTransform = getCosineFourierTransform(fullFuncFreq, 0)
   $: definiteIntegralFunction = getDefiniteIntegralFunction(cosineFourierTransform, DOMAIN[0], DOMAIN[1])
 
-  const windingFreq = 0.5
+  const windingFreq = 1
   $: windingProportion = 360 * $drawProportion * totalSeconds * windingFreq
 </script>
 
 <main>
   <h2>Cosine Introduction</h2>
+
+  <div>
+    <div><b>Speed: </b> {speedFactor>=1 ? speedFactor : `1/${1/speedFactor}`}x</div>
+    <div>
+      <button on:click={() => speedFactor = Math.max(speedFactorMin, speedFactor/2)} disabled={Math.round(1/speedFactor)>=Math.round(1/speedFactorMin)}><Icon icon={faFastBackward}/> Slow Down</button>
+      <button on:click={() => speedFactor = 1}>Play Normal <Icon icon={faPlay}/></button>
+      <button on:click={() => speedFactor = Math.min(speedFactorMax, speedFactor*2)} disabled={Math.round(speedFactor)>=speedFactorMax}>Speed Up <Icon icon={faFastForward}/></button>
+    </div>
+  </div>
+  
   <p>Let's take a look at this cosine function that has a frequency of {freq} {plural(freq, "cycle")} per second. You can see that this function moves down and up {freq} {plural(freq, "time")} in one second.</p>
 	<Plot drawProportion={$drawProportion} {points} stroke={RED} {windingFreq} xTitle="Time in seconds"/>
 
-  <p>Next let's look at this winding function that spins at a frequency of {windingFreq} {plural(windingFreq, "cycle")} per second, ie it takes {1/windingFreq} seconds to make one full cycle.</p>
+  <p>Next let's look at this winding function that spins at a frequency of {windingFreq} {plural(windingFreq, "cycle")} per second, ie it takes {1/windingFreq} {plural(windingFreq, "second")} to make one full cycle.</p>
   <svg width={210} height={210}>
     <g transform="translate(5,5)">
       <line x1={0} y1={0} x2={200} y2={0}/>
@@ -71,14 +83,6 @@
   </svg>
 
   <p>What happens when we multiply the values of the cosine function by the winding function?</p>
-
-  <div><b>Speed: </b> {speedFactor>=1 ? speedFactor : `1/${1/speedFactor}`}x</div>
-  <div>
-    <button on:click={() => speedFactor /= 2}><Icon icon={faFastBackward}/> Slow Down</button>
-    <button on:click={() => speedFactor = 1}>Play Normal <Icon icon={faPlay}/></button>
-    <button on:click={() => speedFactor *= 2}>Speed Up <Icon icon={faFastForward}/></button>
-  </div>
-
 
   <Polar
     {definiteIntegralFunction}

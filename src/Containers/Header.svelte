@@ -10,11 +10,11 @@
 </script>
 
 <main>
-  <div>
+  <div id="github-container">
     <h1>Fourier Transform Visualized</h1>
-    <p>Inspired by <a href="https://www.youtube.com/watch?v=spUNpyF58BY" target="_blank" rel="noopener noreferrer">3Blue1Brown</a></p>
-    <div>
-      <a href="https://github.com/harryli0088/fourier-transform-visualized" target="_blank" rel="noopener noreferrer"><Icon icon={faGithub}/></a>
+    <p><i>Inspired by <a href="https://www.youtube.com/watch?v=spUNpyF58BY" target="_blank" rel="noopener noreferrer">3Blue1Brown</a></i></p>
+    <div id="github" class="icon-button">
+      <a href="https://github.com/harryli0088/fourier-transform-visualized" target="_blank" rel="noopener noreferrer" style="color: inherit"><Icon icon={faGithub}/></a>
     </div>
   </div>
 
@@ -46,6 +46,16 @@
 </main>
 
 <style>
+  #github-container {
+    position: relative;
+  }
+  #github {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 2em;
+  }
+
   svg {
     width: 100%;
   }

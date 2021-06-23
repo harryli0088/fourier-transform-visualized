@@ -95,6 +95,7 @@
             value={f}
           />
           <span>Hz</span>
+          &nbsp;&nbsp;&nbsp;
           {#if frequencies.length > 1}
             <span class="icon-button" on:click={e => deleteFreq(i)}><Icon icon={faTimes}/></span>
           {/if}
