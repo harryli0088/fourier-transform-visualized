@@ -16,6 +16,8 @@ import Header from './Containers/Header.svelte';
   <section>
     <p>The Fourier Transform is a mathematical transformation that helps us break down functions over time into functions of <i>frequencies</i>. This transform is extremely important for signal processing in technology that we use every day, such as music, radar, WIFI, and phone calls.</p>
 
+    <br/><br/><br/><br/>
+    
     <Sound/>
 
     <br/><br/><br/><br/>

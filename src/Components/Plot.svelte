@@ -9,7 +9,7 @@
 
   export let drawProportion: number = 1 //between 0 and 1, the proportion of the points to draw
   export let height: number = 200
-  export let margin: {b: number, l: number, r: number, t: number} = {b:10,l:30,r:10,t:10}
+  export let margin: {b: number, l: number, r: number, t: number} = {b:10,l:35,r:10,t:10}
   export let points: PointType[] = []
   export let range: [number, number] | null = null
   export let stroke: string = RED
@@ -29,7 +29,7 @@
   
   let width:number = 500
 
-  $: bottom = height - margin.b - (xTitle===""?0:20)
+  $: bottom = height - margin.b - (xTitle===""?0:30)
   $: left = margin.l + (yTitle===""?0:20)
   $: right = width - margin.r
   $: top = margin.t
@@ -130,7 +130,7 @@
       <Arrow x1={arrowPoint.x} y1={y0} x2={arrowPoint.x} y2={arrowPoint.y}/>
     {/if}
     
-    <text x={xScale((domain[1]-domain[0])/2)} y={yScale(useRange[0])} dy="1.1em" text-anchor="middle">{xTitle}</text>
+    <text x={xScale((domain[1]-domain[0])/2)} y={height - 5} text-anchor="middle">{xTitle}</text>
   </svg>
 </div>
 

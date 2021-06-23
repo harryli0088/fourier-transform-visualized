@@ -50,7 +50,7 @@
 
 	<Plot {points} windingFreq={$windingFreq} xTitle="Time in seconds"/>
 
-  <div><b>Winding Frequency: </b> {$windingFreq.toFixed(1)} {plural($windingFreq, "cycle")} per second (Hz)</div>
+  <div class="label"><b>Winding Frequency: </b> {$windingFreq.toFixed(1)} {plural($windingFreq, "cycle")} per second (Hz)</div>
   
 
   <PolarFtContainer>

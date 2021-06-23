@@ -96,4 +96,9 @@ button:disabled {
 
 text {
   fill: #fff;
+  font-size: 0.9em;
+}
+
+.label {
+  margin-bottom: 0.5em;
 }

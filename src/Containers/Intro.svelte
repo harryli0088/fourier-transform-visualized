@@ -53,48 +53,54 @@
   <h2>Cosine Introduction</h2>
 
   <div>
-    <div><b>Speed: </b> {speedFactor>=1 ? speedFactor : `1/${1/speedFactor}`}x</div>
+    <div class="label"><b>Speed: </b> {speedFactor>=1 ? speedFactor : `1/${1/speedFactor}`}x</div>
     <div>
       <button on:click={() => speedFactor = Math.max(speedFactorMin, speedFactor/2)} disabled={Math.round(1/speedFactor)>=Math.round(1/speedFactorMin)}><Icon icon={faFastBackward}/> Slow Down</button>
       <button on:click={() => speedFactor = 1}>Play Normal <Icon icon={faPlay}/></button>
       <button on:click={() => speedFactor = Math.min(speedFactorMax, speedFactor*2)} disabled={Math.round(speedFactor)>=speedFactorMax}>Speed Up <Icon icon={faFastForward}/></button>
     </div>
   </div>
-  
+
   <p>Let's take a look at this cosine function that has a frequency of {freq} {plural(freq, "cycle")} per second. You can see that this function moves down and up {freq} {plural(freq, "time")} in one second.</p>
 	<Plot drawProportion={$drawProportion} {points} stroke={RED} {windingFreq} xTitle="Time in seconds"/>
 
   <p>Next let's look at this winding function that spins at a frequency of {windingFreq} {plural(windingFreq, "cycle")} per second, ie it takes {1/windingFreq} {plural(windingFreq, "second")} to make one full cycle.</p>
-  <svg width={210} height={210}>
-    <g transform="translate(5,5)">
-      <line x1={0} y1={0} x2={200} y2={0}/>
-      <line x1={0} y1={100} x2={200} y2={100}/>
-      <line x1={0} y1={200} x2={200} y2={200}/>
-
-      <line x1={0} y1={0} x2={0} y2={200}/>
-      <line x1={100} y1={0} x2={100} y2={200}/>
-      <line x1={200} y1={0} x2={200} y2={200}/>
-    </g>
-
-    <g style={`transform:translate(105px, 105px) rotate(${windingProportion}deg);`}>
-      <Arrow x1={0} y1={0} x2={100} y2={0}/>
-      <circle cx={100} cy={0} r={5} fill={BLUE}/>
-    </g>
-  </svg>
+  <div style="text-align: center;">
+    <svg width={210} height={210}>
+      <g transform="translate(5,5)">
+        <line x1={0} y1={0} x2={200} y2={0}/>
+        <line x1={0} y1={100} x2={200} y2={100}/>
+        <line x1={0} y1={200} x2={200} y2={200}/>
+  
+        <line x1={0} y1={0} x2={0} y2={200}/>
+        <line x1={100} y1={0} x2={100} y2={200}/>
+        <line x1={200} y1={0} x2={200} y2={200}/>
+      </g>
+  
+      <g style={`transform:translate(105px, 105px) rotate(${windingProportion}deg);`}>
+        <Arrow x1={0} y1={0} x2={100} y2={0}/>
+        <circle cx={100} cy={0} r={5} fill={BLUE}/>
+      </g>
+    </svg>
+  </div>
 
   <p>What happens when we multiply the values of the cosine function by the winding function?</p>
 
-  <Polar
-    {definiteIntegralFunction}
-    drawProportion={$drawProportion}
-    domain={DOMAIN}
-    freq={windingFreq}
-    height={POLAR_HEIGHT}
-    maxMagnitude={1}
-    {points}
-    showCOM={false}
-    stroke={PURPLE}
-  />
+  <div style="display: flex; justify-content: center">
+    <div style="width: 200px">
+      <Polar
+        {definiteIntegralFunction}
+        drawProportion={$drawProportion}
+        domain={DOMAIN}
+        freq={windingFreq}
+        height={POLAR_HEIGHT}
+        maxMagnitude={1}
+        {points}
+        showCOM={false}
+        stroke={PURPLE}
+      />
+    </div>
+  </div>
 </main>
 
 <style>
