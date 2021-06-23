@@ -73,6 +73,8 @@
         <p>The real portion of the transform is what's plotted in these visualizations. The imaginary part represents the phase shift.</p>
       </div>
 
+      <br/>
+
       <div>
         <h3>Why is the Fourier Transform so squiggly? Shouldn't the transform identify the specific pure frequencies?</h3>
         <p>These Fourier Transforms are squiggly because the integral is bounded over times t=0 to t=3. If we were integrating between -∞ and ∞, then we would get dirac deltas at the specific pure frequencies. <a href="https://en.wikipedia.org/wiki/Fourier_transform#Definition" target="_blank" rel="noopener noreferrer">Wikipedia</a>, <a href="https://www.thefouriertransform.com/pairs/sinusoids.php" target="_blank" rel="noopener noreferrer">thefouriertransform.com</a></p>
