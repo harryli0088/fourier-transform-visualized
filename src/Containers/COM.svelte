@@ -46,13 +46,12 @@
 
   <p>Now imagine that the purple polar plot is a wound up piece of wire with some mass. We can mark the center of mass of this wire as the green dot. Next, we can plot the x coordinate of this center of mass. Finally, watch what happens to the center of mass as we change the winding frequency.</p>
 
-  <div><button on:click={play}>Play <Icon icon={faPlay}/></button></div>
-
 	<Plot {points} windingFreq={$windingFreq} xTitle="Time in seconds"/>
+
+  <div><button on:click={play}>Play <Icon icon={faPlay}/></button></div>
 
   <div class="label"><b>Winding Frequency: </b> {$windingFreq.toFixed(1)} {plural($windingFreq, "cycle")} per second (Hz)</div>
   
-
   <PolarFtContainer>
     <span slot="polar">
       <Polar {definiteIntegralFunction} domain={DOMAIN} freq={$windingFreq} height={POLAR_HEIGHT} maxMagnitude={1} {points}/>

@@ -37,7 +37,7 @@
   $: func = getCos(fullFuncFreq, 0, SHIFTED)
   $: points = getPoints(DOMAIN, func, STEP_SIZE)
 
-  const INITIAL_WINDING_FREQ = WINDING_FREQ_MAX
+  const INITIAL_WINDING_FREQ = 3
 	const windingFreq = tweened(INITIAL_WINDING_FREQ, {
     duration: 500,
     easing: cubicOut

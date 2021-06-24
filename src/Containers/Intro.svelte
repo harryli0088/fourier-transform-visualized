@@ -60,7 +60,7 @@
     <div class="label"><b>Speed: </b> {speedFactor>=1 ? speedFactor : `1/${1/speedFactor}`}x</div>
     <div>
       <button on:click={() => speedFactor = Math.max(speedFactorMin, speedFactor/2)} disabled={Math.round(1/speedFactor)>=Math.round(1/speedFactorMin)}><Icon icon={faFastBackward}/> Slow Down</button>
-      <button on:click={() => speedFactor = 1}>Play Normal <Icon icon={faPlay}/></button>
+      <!-- <button on:click={() => speedFactor = 1}>Play Normal <Icon icon={faPlay}/></button> -->
       <button on:click={() => speedFactor = Math.min(speedFactorMax, speedFactor*2)} disabled={Math.round(speedFactor)>=speedFactorMax}>Speed Up <Icon icon={faFastForward}/></button>
     </div>
   </div>
@@ -69,7 +69,7 @@
 	<Plot drawProportion={$drawProportion} {points} stroke={RED} windingFreq={$windingFreq} xTitle="Time in seconds"/>
   
 
-  <p>Next let's look at this winding function that spins at a frequency of {$windingFreq.toFixed(1)} {plural($windingFreq, "cycle")} per second, ie it takes <span style={`border: 2px dashed ${BLUE};padding:0.3em;`}>{(1/$windingFreq).toFixed(1)} {plural($windingFreq, "second")}</span> to make one full cycle. You can adjust the slider to change the winding frequency.</p>
+  <p>Next let's look at this winding function that spins at a frequency of {$windingFreq.toFixed(1)} {plural($windingFreq, "cycle")} per second, ie it takes <span style={`margin-top: 3px;display: inline-block;border: 2px dashed ${BLUE};padding:0.3em;`}>{(1/$windingFreq).toFixed(1)} {plural($windingFreq, "second")}</span> to make one full cycle. You can adjust the slider to change the winding frequency.</p>
   
   <div>
     <span><b>Winding Frequency: </b> {$windingFreq.toFixed(1)} {plural($windingFreq, "cycle")} per second (Hz)</span>
