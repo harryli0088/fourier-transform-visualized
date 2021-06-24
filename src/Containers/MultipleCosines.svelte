@@ -53,7 +53,7 @@
   
   $: points = getPoints(DOMAIN, combinedFunc, STEP_SIZE)
 
-  const INITIAL_WINDING_FREQ = 1
+  const INITIAL_WINDING_FREQ = WINDING_FREQ_MAX
 	const windingFreq = tweened(INITIAL_WINDING_FREQ, {
     duration: 500,
     easing: cubicOut
@@ -68,6 +68,8 @@
 
 <main>
   <h2>Add Multiple Cosines Together</h2>
+
+  <p>In this playground, you can add multiple cosine functions together with different frequencies. </p>
   <form on:submit={addFreq}>
     <span>Add another cosine function of </span>
     <input 
