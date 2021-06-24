@@ -5,6 +5,6 @@ export default function playTone(
   duration: string = "2n",
 ) {
   const synth = new PolySynth(Synth).toDestination()
-  synth.volume.value = -10
+  synth.volume.value = -24
   synth.triggerAttackRelease(note, duration, toneNow())
 }
