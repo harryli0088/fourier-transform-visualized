@@ -2,12 +2,17 @@
   import Icon from 'fa-svelte'
   import { faVolumeUp } from '@fortawesome/free-solid-svg-icons'
 
+  import { detect } from 'detect-browser'
+
   import Plot from "../Components/Plot.svelte";
 
   import { BLUE, PURPLE, RED, TWO_PI } from '../utils/constants';
   import getCos from '../utils/getCos';
   import getPoints from '../utils/getPoints';
   import playTone from '../utils/playTone';
+
+  const browser = detect()
+  console.log("browser", browser)
 
   const DOMAIN:[number, number] = [0, 0.02]
   const STEP_SIZE = 0.00005
@@ -27,6 +32,9 @@
 <main>
   <h2>Examples from Sound</h2>
   <p>Consider the musical notes A440 and D294. A440 means that the sound wave oscillates at a frequency of 440 beats per second, aka 440 Hertz (Hz). D294 means that the sound wave oscillates at a frequency of 294 beats per second, aka 294 Hertz (Hz).</p>
+  {#if browser.os === "iOS"}
+    <p>(You need to turn silent mode off to hear the sounds)</p>
+  {/if}
   <div>
     <b>A440: </b> <button on:click={() => playTone(["440"])}>Play A440 <Icon icon={faVolumeUp}/></button>
   </div>
