@@ -77,7 +77,7 @@
       max={WINDING_FREQ_MAX}
       min="0"
       on:input={e => windingFreq.set(parseFloat(e.target.value))}
-      step="0.01"
+      step="0.1"
       type="range"
       value={INITIAL_WINDING_FREQ}
     />
