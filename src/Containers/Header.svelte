@@ -20,7 +20,7 @@
 <main>
   <div id="github-container">
     <h1>Fourier Transform Visualized</h1>
-    <p><i>Inspired by <a href="https://www.youtube.com/watch?v=spUNpyF58BY" target="_blank" rel="noopener noreferrer">3Blue1Brown</a></i></p>
+    <p>Inspired by <a href="https://www.youtube.com/watch?v=spUNpyF58BY" target="_blank" rel="noopener noreferrer">3Blue1Brown</a></p>
     <div id="github" class="icon-button">
       <a href="https://github.com/harryli0088/fourier-transform-visualized" target="_blank" rel="noopener noreferrer" style="color: inherit"><Icon icon={faGithub}/></a>
     </div>
@@ -69,7 +69,7 @@
   }
   line {
     stroke: gray;
-    stroke-width: 2px;
+    stroke-width: 1px;
   }
   path {
     stroke-width: 2px;
