@@ -18,10 +18,10 @@
   const STEP_SIZE = 0.00005
 
   const A440 = getCos(TWO_PI*440)
-  const A440Points = getPoints(DOMAIN, A440, STEP_SIZE)
+  const A440Points = getPoints(DOMAIN, A440, 1000)
 
   const D294 = getCos(TWO_PI*294)
-  const D294Points = getPoints(DOMAIN, D294, STEP_SIZE)
+  const D294Points = getPoints(DOMAIN, D294, 1000)
 
   const combinedPoints = A440Points.map((p,i) => ({
     x: p.x,

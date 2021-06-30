@@ -3,10 +3,10 @@
   import { cubicOut } from 'svelte/easing'
 
   import Plot from "../Components/Plot.svelte";
-  import Polar from "../Components/Polar.svelte";
-  import PolarFtContainer from './PolarFTContainer.svelte';
 
-  import { DOMAIN, GREEN, POLAR_HEIGHT, TWO_PI, WINDING_FREQ_MAX } from '../utils/constants';
+  import complex from '../utils/complexNumber';
+  import { DOMAIN, TWO_PI, WINDING_FREQ_MAX } from '../utils/constants';
+  import fft from '../utils/fft';
   import getCos from '../utils/getCos';
   import getCosineFourierTransform from '../utils/getCosineFourierTransform';
   import getDefiniteIntegralFunction from '../utils/getDefiniteIntegralFunction';
@@ -23,11 +23,15 @@
   $: func = getCos(fullFuncFreq, 0, SHIFTED)
   $: points = getPoints(DOMAIN, func)
 
-  const INITIAL_WINDING_FREQ = 3
-	const windingFreq = tweened(INITIAL_WINDING_FREQ, {
-    duration: 500,
-    easing: cubicOut
-  })
+  $: zeroPaddedPoints = getPoints(DOMAIN, func, 4096).map(
+    p => complex.makeNew({r: p.y})
+  )
+  $: span = DOMAIN[1] - DOMAIN[0]
+  $: dftPoints = fft(zeroPaddedPoints).map((n,i) => ({
+    x: i/span,
+    y: complex.magnitude(n) / points.length
+  })).slice(0, zeroPaddedPoints.length / 2).slice(0, 10*span + 1)
+  $: console.log("zeroPaddedPoints.length",zeroPaddedPoints.length)
 
   $: cosineFourierTransform = getCosineFourierTransform(fullFuncFreq, 0, SHIFTED)
   $: definiteIntegralFunction = getDefiniteIntegralFunction(cosineFourierTransform, DOMAIN[0], DOMAIN[1])
@@ -36,9 +40,8 @@
 </script>
 
 <main>
-  <h2>One Cosine Playground</h2>
-  <p>In this playground, you can change the frequency of one cosine function and the frequency of our winding function, and see how the Fourier Transform changes.</p>
-  <!-- <DrawProportion {drawProportion} initialValue={onMountDrawProportion}/> -->
+  <h2>Discrete Fourier Transform</h2>
+  <p></p>
   <div>
     <span><b>Function Frequency: </b>{$funcFreq.toFixed(1)} {plural($funcFreq, "beat")} per second (Hz)</span>
     <input
@@ -50,28 +53,9 @@
       value={INITIAL_FUNC_FREQ}
     />
   </div>
-	<Plot {points} windingFreq={$windingFreq} xTitle="Time in seconds"/>
-
-  <div>
-    <span><b>Winding Frequency: </b> {$windingFreq.toFixed(1)} {plural($windingFreq, "cycle")} per second (Hz)</span>
-    <input
-      max={WINDING_FREQ_MAX}
-      min="0"
-      on:input={e => windingFreq.set(parseFloat(e.target.value))}
-      step="0.1"
-      type="range"
-      value={INITIAL_WINDING_FREQ}
-    />
-  </div>
-
-  <PolarFtContainer>
-    <span slot="polar">
-      <Polar {definiteIntegralFunction} domain={DOMAIN} freq={$windingFreq} height={POLAR_HEIGHT} maxMagnitude={1} {points}/>
-    </span>
-    <span slot="ft">
-      <Plot drawProportion={$windingFreq/WINDING_FREQ_MAX} points={ftPoints} stroke={GREEN} windingFreq={Infinity} xTitle="Winding Frequency (Hz)"/>
-    </span>
-  </PolarFtContainer>
+  <Plot {points} xTitle="Time in seconds"/>
+  <Plot points={ftPoints} xTitle="Fourier Transform"/>
+	<Plot points={dftPoints} xTitle="Discrete Fourier Transform"/>
 </main>
 
 <style>

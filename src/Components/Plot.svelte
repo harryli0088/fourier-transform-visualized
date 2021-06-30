@@ -109,8 +109,6 @@
       <line class="winding-freq-tick" stroke={BLUE} x1={t} y1={yScale(useRange[0])} x2={t} y2={yScale(useRange[1])}/>
     {/each}
 
-    <path d={pathD} fill="none" {stroke}/>
-
     {#each xTicks as t}
       <line class="gray" x1={t.o} y1={y0 + getTickSize(t.i,xTickHalfSize)} x2={t.o} y2={y0 - getTickSize(t.i,xTickHalfSize)}/>
     {/each}
@@ -131,6 +129,8 @@
     {/if}
     
     <text x={xScale((domain[1]-domain[0])/2)} y={height - 5} text-anchor="middle">{xTitle}</text>
+
+    <path d={pathD} fill="none" {stroke}/>
   </svg>
 </div>
 

@@ -12,7 +12,7 @@
   import PolarFtContainer from './PolarFTContainer.svelte';
 
   import complex from '../utils/complexNumber';
-  import { DOMAIN, GREEN, POLAR_HEIGHT, STEP_SIZE, TWO_PI, WINDING_FREQ_MAX } from '../utils/constants';
+  import { DOMAIN, GREEN, POLAR_HEIGHT, TWO_PI, WINDING_FREQ_MAX } from '../utils/constants';
   import { getCombinedCos } from '../utils/getCos';
   import getCosineFourierTransform from '../utils/getCosineFourierTransform';
   import getDefiniteIntegralFunction from '../utils/getDefiniteIntegralFunction';
@@ -51,7 +51,7 @@
   $: fullFrequencies = frequencies.map(f => f * TWO_PI) //multiply by 2pi to get the full frequency to use
   $: combinedFunc = getCombinedCos(fullFrequencies, SHIFTED)
   
-  $: points = getPoints(DOMAIN, combinedFunc, STEP_SIZE)
+  $: points = getPoints(DOMAIN, combinedFunc)
 
   const INITIAL_WINDING_FREQ = 3
 	const windingFreq = tweened(INITIAL_WINDING_FREQ, {
@@ -63,7 +63,7 @@
   $: definiteIntegralFunctions = cosineFourierTransforms.map(t => getDefiniteIntegralFunction(t, DOMAIN[0], DOMAIN[1]))
   $: combinedDefiniteIntegralFunction = (freq: number) => definiteIntegralFunctions.reduce((sum, func) => complex.add(sum,func(freq)), complex.makeNew({}))
   $: getReal = (freq: number) => combinedDefiniteIntegralFunction(freq).r
-  $: ftPoints = getPoints([0, 10], getReal, STEP_SIZE)
+  $: ftPoints = getPoints([0, 10], getReal)
 </script>
 
 <main>

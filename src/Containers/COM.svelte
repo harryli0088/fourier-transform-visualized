@@ -9,7 +9,7 @@
   import Polar from "../Components/Polar.svelte";
   import PolarFtContainer from './PolarFTContainer.svelte';
 
-  import { DOMAIN, GREEN, POLAR_HEIGHT, STEP_SIZE, TWO_PI } from '../utils/constants';
+  import { DOMAIN, GREEN, POLAR_HEIGHT, TWO_PI } from '../utils/constants';
   import getCos from '../utils/getCos';
   import getCosineFourierTransform from '../utils/getCosineFourierTransform';
   import getDefiniteIntegralFunction from '../utils/getDefiniteIntegralFunction';
@@ -19,7 +19,7 @@
   const funcFreq = 2
   const fullFuncFreq = TWO_PI * funcFreq //multiply by 2pi to get the full frequency to use
   const func = getCos(fullFuncFreq)
-  const points = getPoints(DOMAIN, func, STEP_SIZE)
+  const points = getPoints(DOMAIN, func)
 
   const INITIAL_WINDING_FREQ = 0
   const WINDING_FREQ_MAX = 3
@@ -38,7 +38,7 @@
   const cosineFourierTransform = getCosineFourierTransform(fullFuncFreq, 0)
   const definiteIntegralFunction = getDefiniteIntegralFunction(cosineFourierTransform, DOMAIN[0], DOMAIN[1])
   const getReal = (freq: number) => definiteIntegralFunction(freq).r
-  const ftPoints = getPoints([0, WINDING_FREQ_MAX], getReal, STEP_SIZE)
+  const ftPoints = getPoints([0, WINDING_FREQ_MAX], getReal)
 </script>
 
 <main>

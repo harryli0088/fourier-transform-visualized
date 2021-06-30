@@ -3,13 +3,21 @@ import type { MathFunc, PointType } from "./types"
 export default function getPoints(
   domain: [number, number],
   func: MathFunc,
-  stepSize: number,
+  numPoints?: number,
+  includeEndPoint: boolean = true
 ):PointType[] {
-  const points: PointType[] = []
-  for(let i=domain[0]; i<domain[1]; i+=stepSize) {
-    points.push({x: i, y: func(i)})
+  const start = domain[0]
+  const span = domain[1] - start
+  if(!(numPoints > 0)) {
+    numPoints = 1000 * span
   }
-  points.push({x: domain[1], y: func(domain[1])})
+  const total = numPoints + (includeEndPoint ? -1 : 0)
+
+  const points: PointType[] = []
+  for(let i=0; i<numPoints; ++i) {
+    const x = start + span*i/total
+    points.push({x, y: func(x)})
+  }
 
   return points
 }

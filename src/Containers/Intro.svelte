@@ -9,7 +9,7 @@
   import Plot from "../Components/Plot.svelte";
   import Polar from "../Components/Polar.svelte";
 
-  import { BLUE, DOMAIN, POLAR_HEIGHT, PURPLE, RED, STEP_SIZE, TWO_PI, WINDING_FREQ_MAX } from '../utils/constants';
+  import { BLUE, DOMAIN, POLAR_HEIGHT, PURPLE, RED, TWO_PI, WINDING_FREQ_MAX } from '../utils/constants';
   import getCos from '../utils/getCos';
   import getCosineFourierTransform from "../utils/getCosineFourierTransform";
   import getPoints from '../utils/getPoints';
@@ -19,7 +19,7 @@
   const freq = 2
   const fullFuncFreq = TWO_PI * freq //multiply by 2pi to get the full frequency to use
   const func = getCos(fullFuncFreq)
-  const points = getPoints(DOMAIN, func, STEP_SIZE)
+  const points = getPoints(DOMAIN, func)
 
   let speedFactor: number = 1/4
   const speedFactorMax = 4

@@ -2,6 +2,7 @@
   import { onMount } from 'svelte';
 
   import COM from './Containers/COM.svelte';
+  import DFT from './Containers/DFT.svelte';
   import Header from './Containers/Header.svelte';
   import Intro from './Containers/Intro.svelte';
   import MultipleCosines from "./Containers/MultipleCosines.svelte";
@@ -58,7 +59,7 @@
 
     <br/><br/><br/><br/>
 
-    <p>(In the future I would like to add a section about the Discrete Fourier Transform)</p>
+    <DFT/>
 
     <br/><br/><br/><br/>
 
@@ -76,7 +77,7 @@
           <p>(simplifying) {`$$= \\frac{1}2\\int^{t2}_{t1}({ cos((a-2πtf)t+b) + cos((a+2πf)t+b) + i*sin((a-2πf)t+b) +i*sin((-a-2πf)t-b) }) dt$$`}</p>
           <p>(after integrating) {`$$= \\frac{1}2\\Bigl( \\frac{sin((a-2πf)t+b)}{a-2πf} + \\frac{sin((a+2πf)t+b)}{a+2πf} - i*\\frac{cos((a-2πf)t+b)}{a-2πf} + i*\\frac{cos((-a-2πf)t-b)}{a+2πf} \\Bigr) \\enspace {\\Bigr|^{t1}_{t2}}$$`}</p>
         </div>
-        
+
         <p>The real portion of the transform is what's plotted in these visualizations. The imaginary part represents the phase shift.</p>
       </div>
 
