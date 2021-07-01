@@ -69,9 +69,9 @@
 <main>
   <h2>Add Multiple Cosines Together</h2>
 
-  <p>In this playground, you can add multiple cosine functions together with different frequencies. </p>
+  <p>In this playground, you can add multiple cosine signals together with different frequencies. </p>
   <form on:submit={addFreq}>
-    <span>Add another cosine function of </span>
+    <span>Add another cosine signal of </span>
     <input 
       bind:value={newFreq}
       max={1000}

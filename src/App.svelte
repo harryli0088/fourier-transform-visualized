@@ -68,7 +68,7 @@
 
       <div>
         <h3>What is the derivation for these Fourier Transforms?</h3>
-        <p>One cosine function has the form {`$ cos(a*t + b)$`}, where {`$a$`} represents the frequency, {`$b$`} represents the phase shift (not used), and {`$t$`} represents time. In the below formulas, {`$f$`} is an input frequency, and {`$i$`} is the imaginary unit.</p>
+        <p>One cosine function has the form {`$ cos(a*t + b)$`}, where {`$a$`} represents the frequency, {`$b$`} represents the phase shift (not used in this site), and {`$t$`} represents time. In the below formulas, {`$f$`} is an input frequency, and {`$i$`} is the imaginary unit.</p>
 
         <div style="width: 100%;overflow-x: auto;">
           <p>The Fourier Transform is {`$$F(f) = \\int^{t2}_{t1}{ cos(at + b) * e^{(-2πitf)} } dt$$`}</p>

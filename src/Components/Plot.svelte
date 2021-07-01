@@ -7,7 +7,8 @@
   import type { MathFunc, PointType } from '../utils/types';
   import { BLUE, RED } from '../utils/constants';
 
-  export let discrete: boolean = false
+  export let discrete: boolean = false //whether or not to draw in discrete mode
+  export let discreteCircleR: number = 4 //the default radius of circles in discrete mode
   export let drawProportion: number = 1 //between 0 and 1, the proportion of the points to draw
   export let height: number = 200
   export let margin: {b: number, l: number, r: number, t: number} = {b:10,l:35,r:10,t:10}
@@ -133,7 +134,7 @@
 
     {#if discrete}
       {#each slicedPointStrings as p}
-        <circle cx={p.x} cy={p.y} r={4} fill={stroke} stroke="none"/>
+        <circle cx={p.x} cy={p.y} r={discreteCircleR} fill={stroke} stroke="none"/>
       {/each}
     {:else}
       <path d={`M ${slicedPointStrings.map(p => `${p.x},${p.y}`).join(" ")}`} fill="none" {stroke}/>

@@ -65,7 +65,7 @@
     </div>
   </div>
 
-  <p>Let's take a look at this cosine function that has a frequency of {freq} {plural(freq, "cycle")} per second. You can see that this function moves down and up {freq} {plural(freq, "time")} in one second.</p>
+  <p>Let's take a look at this cosine signal that has a frequency of {freq} {plural(freq, "cycle")} per second. You can see that this signal moves down and up {freq} {plural(freq, "time")} in one second.</p>
 	<Plot drawProportion={$drawProportion} {points} stroke={RED} windingFreq={$windingFreq} xTitle="Time in seconds"/>
   
 
@@ -102,7 +102,7 @@
     </svg>
   </div>
 
-  <p>What happens when we multiply the values of the cosine function by the winding function?</p>
+  <p>What happens when we multiply the values of the cosine signal by the winding function?</p>
 
   <div style="display: flex; justify-content: center">
     <div style="width: 200px">
@@ -120,7 +120,7 @@
     </div>
   </div>
 
-  <p>The red cosine function oscillates between 0 and 1. At the same time, the blue winding function winds around in a circular pattern. When we "multiply" these two functions together, we get a winding purple function that </p>
+  <p>The red cosine signal oscillates between 0 and 1. At the same time, the blue winding function winds around in a circular pattern. When we "multiply" these two functions together, we get a winding purple function that </p>
   <ul>
     <li>Grows outward when the red cosine moves up</li>
     <li>Shrinks inwards when the red cosine moves down</li>
