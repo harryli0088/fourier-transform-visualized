@@ -7,6 +7,7 @@
   import type { MathFunc, PointType } from '../utils/types';
   import { BLUE, RED } from '../utils/constants';
 
+  export let discrete: boolean = false
   export let drawProportion: number = 1 //between 0 and 1, the proportion of the points to draw
   export let height: number = 200
   export let margin: {b: number, l: number, r: number, t: number} = {b:10,l:35,r:10,t:10}
@@ -56,10 +57,10 @@
   $: yLabels = getLabels(useRange, true)
 
   $: pixelPoints = points.map(p => ({x: xScale(p.x), y: yScale(p.y)}))
-  $: pointStrings = pixelPoints.map(p => `${p.x.toFixed(2)},${p.y.toFixed(2)}`)
+  $: pointStrings = pixelPoints.map(p => ({x: p.x.toFixed(2), y: p.y.toFixed(2)}))
   $: sliceIndex = Math.ceil(pointStrings.length * drawProportion)
   $: arrowPoint = pixelPoints[sliceIndex - 1]
-  $: pathD = `M ${pointStrings.slice(0, sliceIndex).join(" ")}`
+  $: slicedPointStrings = pointStrings.slice(0, sliceIndex)
 
 
   function getTicks(
@@ -130,7 +131,13 @@
     
     <text x={xScale((domain[1]-domain[0])/2)} y={height - 5} text-anchor="middle">{xTitle}</text>
 
-    <path d={pathD} fill="none" {stroke}/>
+    {#if discrete}
+      {#each slicedPointStrings as p}
+        <circle cx={p.x} cy={p.y} r={4} fill={stroke} stroke="none"/>
+      {/each}
+    {:else}
+      <path d={`M ${slicedPointStrings.map(p => `${p.x},${p.y}`).join(" ")}`} fill="none" {stroke}/>
+    {/if}
   </svg>
 </div>
 

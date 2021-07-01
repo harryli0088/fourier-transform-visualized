@@ -79,7 +79,7 @@
       {/each}
     </select>
   </div>
-	<Plot points={dftPoints} xTitle="Discrete Fourier Transform"/>
+	<Plot discrete={true} points={dftPoints} xTitle="Discrete Fourier Transform"/>
 </main>
 
 <style>
