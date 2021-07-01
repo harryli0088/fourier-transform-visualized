@@ -22,18 +22,31 @@
   export let yTickSize: number = 15
   export let yTitle: string = ""
 
+  /**
+   * Given the span and the maximum number of desired labels,
+   * return the size of the label increment
+   * @param span      the span of the data
+   * @param maxLabels the maximum number of labels
+   * @return          the label increment to use
+   */
   function getLabelIncrement(
     span: number,
-    maxTicks: number
+    maxLabels: number
   ) {
-    const rawIncrement = span / maxTicks
-    if(rawIncrement < 1) return 1
-    if(rawIncrement < 5) return 5
-    return Math.ceil(rawIncrement / 10)*10
+    const rawIncrement = span / maxLabels //get the unrounded label increment
+    if(rawIncrement < 1) return 1 //if the raw increment is less than 1, use 1 for simplicity
+    if(rawIncrement < 5) return 5 //use 5 for simplicity
+    return Math.ceil(rawIncrement / 10)*10 //round up to the next multiple of 10
   }
 
+  /**
+   * Process the range and determine the label increment
+   * @param maxLabels maximum number of labels
+   * @param range     optionally, the range to use
+   * @returns         the range to use and the label increment
+   */
   function processRange(
-    maxTicks: number,
+    maxLabels: number,
     range?: [number, number]
   ) {
     let useRange: [number, number]
@@ -43,34 +56,47 @@
     else { //else find the range of the points
       useRange = getRange(points).map((n,i) => i===0?Math.floor(n):Math.ceil(n)) as [number, number]
     }
-    const rangeSpan = useRange[1] - useRange[0]
-    const labelIncrement = getLabelIncrement(rangeSpan, maxTicks)
-    useRange[1] = Math.ceil(useRange[1] / labelIncrement) * labelIncrement
+    const rangeSpan = useRange[1] - useRange[0] //get the span of this range
+    const labelIncrement = getLabelIncrement(rangeSpan, maxLabels) //get the label increment
+    useRange[0] = Math.floor(useRange[0] / labelIncrement) * labelIncrement //move down the start the range to the next multiple of the increment
+    useRange[1] = Math.ceil(useRange[1] / labelIncrement) * labelIncrement //move up the end of the range to the next multiple of the increment
+    
     return {
       labelIncrement,
       useRange, 
     }
   }
 
+  /* Figure out the Domain and Range data */
   $: domain = getDomain(points)
-  $: maxYTicks = height / 30
+  $: maxYLabels = height / 30
   $: ({
     labelIncrement: yLabelIncrement,
     useRange,
-  } = processRange(maxYTicks, range))
+  } = processRange(maxYLabels, range))
 
+  /* Dimensions and Margins */
   let width:number = 500
   $: bottom = height - margin.b - (xTitle===""?0:30)
   $: left = margin.l + (yTitle===""?0:20)
   $: right = width - margin.r
   $: top = margin.t
 
+  /* Pixel Scales */
   $: xScale = scaleLinear<number,number>().domain(domain).range([left, right])
   $: x0 = xScale(0)
   $: yScale = scaleLinear<number,number>().domain(useRange).range([bottom, top])
   $: y0 = yScale(0)
 
+  /* Convert Data to Pixel Positions */
+  $: pixelPoints = points.map(p => ({x: xScale(p.x), y: yScale(p.y)}))
+  $: pointStrings = pixelPoints.map(p => ({x: p.x.toFixed(2), y: p.y.toFixed(2)}))
+  $: sliceIndex = Math.ceil(pointStrings.length * drawProportion)
+  $: arrowPoint = pixelPoints[sliceIndex - 1]
+  $: slicedPointStrings = pointStrings.slice(0, sliceIndex)
 
+
+  /* Axis Labels */
   function getLabels(
     domain: [number,number],
     showZero: boolean = false,
@@ -87,13 +113,9 @@
   $: xLabels = getLabels(domain)
   $: yLabels = getLabels(useRange, true, yLabelIncrement)
 
-  $: pixelPoints = points.map(p => ({x: xScale(p.x), y: yScale(p.y)}))
-  $: pointStrings = pixelPoints.map(p => ({x: p.x.toFixed(2), y: p.y.toFixed(2)}))
-  $: sliceIndex = Math.ceil(pointStrings.length * drawProportion)
-  $: arrowPoint = pixelPoints[sliceIndex - 1]
-  $: slicedPointStrings = pointStrings.slice(0, sliceIndex)
+  
 
-
+  /* Axis Ticks */
   function getTicks(
     domain: [number, number],
     scale: MathFunc,
@@ -114,6 +136,8 @@
   $: yTicks = getTicks(useRange, yScale, yLabelIncrement===1?0.5:yLabelIncrement)
 
 
+
+  /* Winding Frequency Ticks */
   function getWindingFreqTicks(
     domain: [number, number],
     windingFreq: number,
