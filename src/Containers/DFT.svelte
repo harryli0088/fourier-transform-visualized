@@ -17,8 +17,8 @@
   $: timeSpan = domain[1] - domain[0]
   $: timeSpanText = `${timeSpan.toFixed(1)} ${plural(timeSpan, "second")}`
 
-  const sampleOptions = [512, 1024, 2048, 4096, 8192]
-  let numSamples = 512
+  const sampleOptions = [64, 128, 256, 512, 1024, 2048, 4096, 8192]
+  let numSamples = 64
   $: numSamplesText = `${numSamples} ${plural(numSamples, "sample")}`
 
   const SHIFTED = false
@@ -43,7 +43,7 @@
   $: console.log("dftPoints",dftPoints.length)
   $: sliceDftPoints = fft(dftPoints).map((n,i) => ({
     x: i/timeSpan,
-    y: complex.magnitude(n) / points.length
+    y: complex.magnitude(n)
   })).slice(0, dftPoints.length / 2).slice(0, 10*timeSpan + 1)
   $: sampleRate = numSamples / timeSpan
   $: sampleRateText = `${sampleRate.toFixed(1)} ${plural(sampleRate, "sample")} per second (Hz)`
