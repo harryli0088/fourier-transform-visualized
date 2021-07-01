@@ -39,9 +39,8 @@
 
   /* Discrete Fourier Transform */
   
-  $: dftPoints = points.map(
-    p => complex.makeNew({r: p.y})
-  )
+  $: dftPoints = points.map(p => complex.makeNew({r: p.y}))
+  $: console.log("dftPoints",dftPoints.length)
   $: sliceDftPoints = fft(dftPoints).map((n,i) => ({
     x: i/timeSpan,
     y: complex.magnitude(n) / points.length
@@ -52,7 +51,7 @@
 
 <main>
   <h2>Discrete Fourier Transform</h2>
-  <p></p>
+  <p>Fourier Transforms on continuous functions work great when we know exactly how the signals behave (so far our signals have all been cosines). Often though, real world signals are not so predictable, so we want to sample an incoming signal. Once we start taking discrete samples, we need to use the <b>Discrete Fourier Transform</b>. The DFT is similar to the regular Fourier Transform, but is instead used on discretely sampled signals. In this playground, you can play with a basic example of the DFT.</p>
   <div>
     <timeSpan><b>Signal Frequency: </b>{$funcFreq.toFixed(1)} {plural($funcFreq, "beat")} per second (Hz)</timeSpan>
     <input
