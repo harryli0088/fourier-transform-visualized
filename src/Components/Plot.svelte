@@ -13,24 +13,53 @@
   export let height: number = 200
   export let margin: {b: number, l: number, r: number, t: number} = {b:10,l:35,r:10,t:10}
   export let points: PointType[] = []
-  export let range: [number, number] | null = null
+  export let range: [number, number] | undefined = undefined
   export let stroke: string = RED
   export let windingFreq: number = -1
   export let xTickGap: number = 0.25
   export let xTickSize: number = 15
   export let xTitle: string = ""
-  export let yTickGap: number = 0.5
   export let yTickSize: number = 15
   export let yTitle: string = ""
 
+  function getLabelIncrement(
+    span: number,
+    maxTicks: number
+  ) {
+    const rawIncrement = span / maxTicks
+    if(rawIncrement < 1) return 1
+    if(rawIncrement < 5) return 5
+    return Math.ceil(rawIncrement / 10)*10
+  }
+
+  function processRange(
+    maxTicks: number,
+    range?: [number, number]
+  ) {
+    let useRange: [number, number]
+    if(range) { //use the range from props if provided
+      useRange = range
+    }
+    else { //else find the range of the points
+      useRange = getRange(points).map((n,i) => i===0?Math.floor(n):Math.ceil(n)) as [number, number]
+    }
+    const rangeSpan = useRange[1] - useRange[0]
+    const labelIncrement = getLabelIncrement(rangeSpan, maxTicks)
+    useRange[1] = Math.ceil(useRange[1] / labelIncrement) * labelIncrement
+    return {
+      labelIncrement,
+      useRange, 
+    }
+  }
+
   $: domain = getDomain(points)
-  $: useRange = range || getRange(points).map((n,i) => i===0?Math.floor(n):Math.ceil(n)) as [number, number] //use the range from props if provided, else use find the range of the points
-  $: xTickHalfSize = xTickSize/2
-  $: yTickHalfSize = yTickSize/2
+  $: maxYTicks = height / 30
+  $: ({
+    labelIncrement: yLabelIncrement,
+    useRange,
+  } = processRange(maxYTicks, range))
 
-  
   let width:number = 500
-
   $: bottom = height - margin.b - (xTitle===""?0:30)
   $: left = margin.l + (yTitle===""?0:20)
   $: right = width - margin.r
@@ -44,10 +73,11 @@
 
   function getLabels(
     domain: [number,number],
-    showZero: boolean = false
+    showZero: boolean = false,
+    increment: number = 1
   ) {
     const labels: number[] = []
-    for(let i=Math.ceil(domain[0]); i<=domain[1]; i++) {
+    for(let i=Math.ceil(domain[0]); i<=domain[1]; i+=increment) {
       if(showZero || i !== 0) {
         labels.push(i)
       }
@@ -55,7 +85,7 @@
     return labels
   }
   $: xLabels = getLabels(domain)
-  $: yLabels = getLabels(useRange, true)
+  $: yLabels = getLabels(useRange, true, yLabelIncrement)
 
   $: pixelPoints = points.map(p => ({x: xScale(p.x), y: yScale(p.y)}))
   $: pointStrings = pixelPoints.map(p => ({x: p.x.toFixed(2), y: p.y.toFixed(2)}))
@@ -78,8 +108,10 @@
   function getTickSize(value: number, tickSize: number) {
     return value%1===0 ? tickSize : tickSize/2
   }
+  $: xTickHalfSize = xTickSize/2
   $: xTicks = getTicks(domain, xScale, xTickGap)
-  $: yTicks = getTicks(useRange, yScale, yTickGap)
+  $: yTickHalfSize = yTickSize/2
+  $: yTicks = getTicks(useRange, yScale, yLabelIncrement===1?0.5:yLabelIncrement)
 
 
   function getWindingFreqTicks(
