@@ -5,13 +5,14 @@
   import getDomain from '../utils/getDomain';
   import getRange from '../utils/getRange';
   import type { MathFunc, PointType } from '../utils/types';
+  import measureTextWidth from '../utils/measureTextWidth';
   import { BLUE, RED } from '../utils/constants';
 
   export let discrete: boolean = false //whether or not to draw in discrete mode
   export let discreteCircleR: number = 4 //the default radius of circles in discrete mode
   export let drawProportion: number = 1 //between 0 and 1, the proportion of the points to draw
   export let height: number = 200
-  export let margin: {b: number, l: number, r: number, t: number} = {b:10,l:35,r:10,t:10}
+  export let margin: {b: number, l: number, r: number, t: number} = {b:10,l:15,r:10,t:10}
   export let points: PointType[] = []
   export let range: [number, number] | undefined = undefined
   export let stroke: string = RED
@@ -47,6 +48,7 @@
    */
   function processRange(
     maxLabels: number,
+    points: PointType[],
     range?: [number, number]
   ) {
     let useRange: [number, number]
@@ -73,28 +75,7 @@
   $: ({
     labelIncrement: yLabelIncrement,
     useRange,
-  } = processRange(maxYLabels, range))
-
-  /* Dimensions and Margins */
-  let width:number = 500
-  $: bottom = height - margin.b - (xTitle===""?0:30)
-  $: left = margin.l + (yTitle===""?0:20)
-  $: right = width - margin.r
-  $: top = margin.t
-
-  /* Pixel Scales */
-  $: xScale = scaleLinear<number,number>().domain(domain).range([left, right])
-  $: x0 = xScale(0)
-  $: yScale = scaleLinear<number,number>().domain(useRange).range([bottom, top])
-  $: y0 = yScale(0)
-
-  /* Convert Data to Pixel Positions */
-  $: pixelPoints = points.map(p => ({x: xScale(p.x), y: yScale(p.y)}))
-  $: pointStrings = pixelPoints.map(p => ({x: p.x.toFixed(2), y: p.y.toFixed(2)}))
-  $: sliceIndex = Math.ceil(pointStrings.length * drawProportion)
-  $: arrowPoint = pixelPoints[sliceIndex - 1]
-  $: slicedPointStrings = pointStrings.slice(0, sliceIndex)
-
+  } = processRange(maxYLabels, points, range))
 
   /* Axis Labels */
   function getLabels(
@@ -113,7 +94,6 @@
   $: xLabels = getLabels(domain)
   $: yLabels = getLabels(useRange, true, yLabelIncrement)
 
-  
 
   /* Axis Ticks */
   function getTicks(
@@ -134,6 +114,29 @@
   $: xTicks = getTicks(domain, xScale, xTickGap)
   $: yTickHalfSize = yTickSize/2
   $: yTicks = getTicks(useRange, yScale, yLabelIncrement===1?0.5:yLabelIncrement)
+
+
+
+  /* Dimensions and Margins */
+  let width:number = 500
+  $: yLabelsMaxWidth = Math.max(...yLabels.map(l => measureTextWidth(l)))
+  $: bottom = height - margin.b - (xTitle===""?0:30)
+  $: left = margin.l + (yTitle===""?0:20) + yLabelsMaxWidth + yTickHalfSize
+  $: right = width - margin.r
+  $: top = margin.t
+
+  /* Pixel Scales */
+  $: xScale = scaleLinear<number,number>().domain(domain).range([left, right])
+  $: x0 = xScale(0)
+  $: yScale = scaleLinear<number,number>().domain(useRange).range([bottom, top])
+  $: y0 = yScale(0)
+
+  /* Convert Data to Pixel Positions */
+  $: pixelPoints = points.map(p => ({x: xScale(p.x), y: yScale(p.y)}))
+  $: pointStrings = pixelPoints.map(p => ({x: p.x.toFixed(2), y: p.y.toFixed(2)}))
+  $: sliceIndex = Math.ceil(pointStrings.length * drawProportion)
+  $: arrowPoint = pixelPoints[sliceIndex - 1]
+  $: slicedPointStrings = pointStrings.slice(0, sliceIndex)
 
 
 

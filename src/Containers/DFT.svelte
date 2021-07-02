@@ -17,7 +17,7 @@
   $: timeSpan = domain[1] - domain[0]
   $: timeSpanText = `${timeSpan.toFixed(1)} ${plural(timeSpan, "second")}`
 
-  const sampleOptions = [64, 128, 256, 512, 1024, 2048, 4096, 8192]
+  const sampleOptions = [64, 128, 256, 512, 1024, 2048]
   let numSamples = 64
   $: numSamplesText = `${numSamples} ${plural(numSamples, "sample")}`
 
@@ -86,7 +86,7 @@
     <b>Sample Rate: </b> {numSamplesText} / {timeSpanText} = {sampleRateText}
   </div>
   
-  <Plot discrete discreteCircleR={1} {points} xTitle="Time in seconds"/>
+  <Plot discrete discreteCircleR={2} {points} xTitle="Time in seconds"/>
   <!-- <Plot points={ftPoints} xTitle="Fourier Transform" stroke={GREEN}/> -->
 
 
