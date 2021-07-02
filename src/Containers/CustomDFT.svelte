@@ -6,7 +6,7 @@
   import Plot from "../Components/Plot.svelte";
 
   import complex from '../utils/complexNumber';
-  import { DOMAIN, GREEN, TWO_PI, WINDING_FREQ_MAX } from '../utils/constants';
+  import { DOMAIN, GREEN, RED } from '../utils/constants';
   import fft, { zeroPad } from '../utils/fft';
   import getCos from '../utils/getCos';
   import getDftData from '../utils/getDftData';
@@ -85,7 +85,7 @@
     function draw() {
       ctx.clearRect(0,0,width,height)
 
-      ctx.fillStyle = "blue"
+      ctx.fillStyle = RED
       canvasYValues.forEach((v,i) => {
         const x = i * cellWidth
         ctx.fillRect(x,v,cellWidth,cellWidth)
@@ -94,17 +94,19 @@
   })
 </script>
 
-<main bind:clientWidth={width}>
+<main>
   <div><button on:click={reset}>Clear</button></div>
   
-  <canvas
-    bind:this={canvas}
-    {height}
-    on:mousemove={onMouseMove}
-    on:touchmove={onTouchMove}
-    style="background:pink"
-    {width}
-  />
+  <div bind:clientWidth={width}>
+    <canvas
+      bind:this={canvas}
+      {height}
+      on:mousemove={onMouseMove}
+      on:touchmove={onTouchMove}
+      style="background:gray"
+      {width}
+    />
+  </div>
 
   <div>
     <b>Number of Samples: </b>
