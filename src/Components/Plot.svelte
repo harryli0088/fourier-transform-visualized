@@ -10,6 +10,7 @@
 
   export let discrete: boolean = false //whether or not to draw in discrete mode
   export let discreteCircleR: number = 4 //the default radius of circles in discrete mode
+  export let domain: [number, number] | undefined = undefined
   export let drawProportion: number = 1 //between 0 and 1, the proportion of the points to draw
   export let height: number = 200
   export let margin: {b: number, l: number, r: number, t: number} = {b:10,l:15,r:10,t:10}
@@ -70,7 +71,7 @@
   }
 
   /* Figure out the Domain and Range data */
-  $: domain = getDomain(points)
+  $: useDomain = domain || getDomain(points)
   $: maxYLabels = height / 30
   $: ({
     labelIncrement: yLabelIncrement,
@@ -91,7 +92,7 @@
     }
     return labels
   }
-  $: xLabels = getLabels(domain)
+  $: xLabels = getLabels(useDomain)
   $: yLabels = getLabels(useRange, true, yLabelIncrement)
 
 
@@ -111,7 +112,7 @@
     return value%1===0 ? tickSize : tickSize/2
   }
   $: xTickHalfSize = xTickSize/2
-  $: xTicks = getTicks(domain, xScale, xTickGap)
+  $: xTicks = getTicks(useDomain, xScale, xTickGap)
   $: yTickHalfSize = yTickSize/2
   $: yTicks = getTicks(useRange, yScale, yLabelIncrement===1?0.5:yLabelIncrement)
 
@@ -126,7 +127,7 @@
   $: top = margin.t
 
   /* Pixel Scales */
-  $: xScale = scaleLinear<number,number>().domain(domain).range([left, right])
+  $: xScale = scaleLinear<number,number>().domain(useDomain).range([left, right])
   $: x0 = xScale(0)
   $: yScale = scaleLinear<number,number>().domain(useRange).range([bottom, top])
   $: y0 = yScale(0)
@@ -158,12 +159,12 @@
     }
     return windingFreqTicks
   }
-  $: windingFreqTicks = getWindingFreqTicks(domain, windingFreq, xScale)
+  $: windingFreqTicks = getWindingFreqTicks(useDomain, windingFreq, xScale)
 </script>
 
 <div bind:clientWidth={width}>
   <svg {width} {height}>
-    <line class="gray" x1={xScale(domain[0])} y1={y0} x2={xScale(domain[1])} y2={y0}/>
+    <line class="gray" x1={xScale(useDomain[0])} y1={y0} x2={xScale(useDomain[1])} y2={y0}/>
     <line class="gray" x1={x0} y1={yScale(useRange[0])} x2={x0} y2={yScale(useRange[1])}/>
 
     {#each windingFreqTicks as t}
@@ -189,7 +190,7 @@
       <Arrow x1={arrowPoint.x} y1={y0} x2={arrowPoint.x} y2={arrowPoint.y}/>
     {/if}
     
-    <text x={xScale((domain[1]-domain[0])/2)} y={height - 5} text-anchor="middle">{xTitle}</text>
+    <text x={xScale((useDomain[1]-useDomain[0])/2)} y={height - 5} text-anchor="middle">{xTitle}</text>
 
     {#if discrete}
       {#each slicedPointStrings as p}

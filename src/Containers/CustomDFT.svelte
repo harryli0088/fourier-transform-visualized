@@ -1,33 +1,30 @@
 <script lang="ts">
   import { afterUpdate } from 'svelte'
-  import { tweened } from 'svelte/motion'
-  import { cubicOut } from 'svelte/easing'
 
   import Plot from "../Components/Plot.svelte";
 
-  import complex from '../utils/complexNumber';
   import { DOMAIN, GREEN, RED } from '../utils/constants';
-  import fft, { zeroPad } from '../utils/fft';
-  import getCos from '../utils/getCos';
+  import { zeroPad } from '../utils/fft';
   import getDftData from '../utils/getDftData';
-  import getPoints from '../utils/getPoints';
   import plural from '../utils/plural';
 
   //DPR is important for improving the picture quality of the canvas, especially for text
   //based off this fiddle http://jsfiddle.net/65maD/83/ from this stack answer https://stackoverflow.com/a/54027313
   const DPR = window.devicePixelRatio
   let canvas
+  const CANVAS_MARGIN = {b:13,l:32,r:7,t:10}
 
   const sampleOptions = [64, 128, 256, 512, 1024]
   let numSamples = 64
   $: numSamplesText = `${numSamples} ${plural(numSamples, "sample")}`
 
+  const height = 200
+  const halfHeight = height / 2
   let width = 500
-  $: cellWidth = width / numSamples
+  $: canvasHeight = height - CANVAS_MARGIN.b - CANVAS_MARGIN.t
+  $: canvasWidth = width - CANVAS_MARGIN.l - CANVAS_MARGIN.r
+  $: cellWidth = canvasWidth / numSamples
   $: halfCellWidth = cellWidth / 2
-  $: numCellsHigh = Math.ceil(200 / cellWidth) //how many cells high the canvas is
-  $: height = numCellsHigh * cellWidth
-  $: halfHeight = height / 2
 
   let domain: [number, number] = [DOMAIN[0], DOMAIN[1]]
   $: timeSpan = domain[1] - domain[0]
@@ -100,14 +97,30 @@
 <main>
   <div><button on:click={reset}>Clear</button></div>
   
-  <div bind:clientWidth={width}>
+  <div bind:clientWidth={width} style="position:relative;">
+    <div style={`
+      background:#444;
+      position:absolute;
+      bottom:${CANVAS_MARGIN.b}px;
+      left:${CANVAS_MARGIN.l}px;
+      right:${CANVAS_MARGIN.r}px;
+      top:${CANVAS_MARGIN.t}px;
+    `}/>
+
+    <Plot domain={[0,3]} {height} range={[-1,1]}/>
+
     <canvas
       bind:this={canvas}
-      {height}
+      height={canvasHeight}
       on:mousemove={onMouseMove}
       on:touchmove={onTouchMove}
-      style="background:gray"
-      {width}
+      style={`
+        background-color:pink;
+        position:absolute;
+        left:${CANVAS_MARGIN.l}px;
+        top:${CANVAS_MARGIN.t}px;
+      `}
+      width={canvasWidth}
     />
   </div>
 
