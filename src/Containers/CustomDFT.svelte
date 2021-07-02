@@ -24,6 +24,7 @@
 
   let width = 500
   $: cellWidth = width / numSamples
+  $: halfCellWidth = cellWidth / 2
   $: numCellsHigh = Math.ceil(200 / cellWidth) //how many cells high the canvas is
   $: height = numCellsHigh * cellWidth
   $: halfHeight = height / 2
@@ -36,6 +37,7 @@
   function reset() {
     canvasYValues = []
   }
+  $: reset() && numSamples //trigger a reset when the number of samples changes
   function onMouseMove(e) {
     handleMove(e.clientX, e.clientY)
   }
@@ -50,7 +52,6 @@
     const canvasY = clientY - dimensions.top
 
     const cellX = Math.floor(canvasX / cellWidth)
-    console.log("cellX", cellX, canvasYValues.length)
     if(cellX >= canvasYValues.length) {
       const lastYValue = canvasYValues[canvasYValues.length-1]
       const lastCanvasY = lastYValue===undefined ? halfHeight : lastYValue
@@ -88,7 +89,9 @@
       ctx.fillStyle = RED
       canvasYValues.forEach((v,i) => {
         const x = i * cellWidth
-        ctx.fillRect(x,v,cellWidth,cellWidth)
+        ctx.beginPath()
+        ctx.arc(x + halfCellWidth, v + halfCellWidth, 2, 0, 2 * Math.PI)
+        ctx.fill()
       })
   	}
   })
@@ -110,7 +113,7 @@
 
   <div>
     <b>Number of Samples: </b>
-    <select bind:value={numSamples} on:change={reset}>
+    <select bind:value={numSamples}>
       {#each sampleOptions as s}
         <option value={s}>{s}</option>
       {/each}
