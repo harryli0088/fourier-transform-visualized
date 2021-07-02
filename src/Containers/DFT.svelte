@@ -8,8 +8,7 @@
   import { DOMAIN, GREEN, TWO_PI, WINDING_FREQ_MAX } from '../utils/constants';
   import fft from '../utils/fft';
   import getCos from '../utils/getCos';
-  // import getCosineFourierTransform from '../utils/getCosineFourierTransform';
-  // import getDefiniteIntegralFunction from '../utils/getDefiniteIntegralFunction';
+  import getDftData from '../utils/getDftData';
   import getPoints from '../utils/getPoints';
   import plural from '../utils/plural';
 
@@ -17,7 +16,7 @@
   $: timeSpan = domain[1] - domain[0]
   $: timeSpanText = `${timeSpan.toFixed(1)} ${plural(timeSpan, "second")}`
 
-  const sampleOptions = [64, 128, 256, 512, 1024, 2048]
+  const sampleOptions = [64, 128, 256, 512, 1024]
   let numSamples = 64
   $: numSamplesText = `${numSamples} ${plural(numSamples, "sample")}`
 
@@ -31,27 +30,17 @@
   $: func = getCos(fullFuncFreq, 0, SHIFTED)
   $: points = getPoints(domain, func, numSamples)
 
-  /* Continuous Fourier Transform */
-  // $: cosineFourierTransform = getCosineFourierTransform(fullFuncFreq, 0, SHIFTED)
-  // $: definiteIntegralFunction = getDefiniteIntegralFunction(cosineFourierTransform, domain[0], domain[1])
-  // $: getReal = (freq: number) => definiteIntegralFunction(freq).r
-  // $: ftPoints = getPoints([0, 10], getReal)
-
   /* Discrete Fourier Transform */
-  
-  $: dftPoints = points.map(p => complex.makeNew({r: p.y}))
-  $: console.log("dftPoints",dftPoints.length)
-  $: sliceDftPoints = fft(dftPoints).map((n,i) => ({
-    x: i/timeSpan,
-    y: complex.magnitude(n)
-  })).slice(0, dftPoints.length / 2).slice(0, 10*timeSpan + 1)
-  $: sampleRate = numSamples / timeSpan
-  $: sampleRateText = `${sampleRate.toFixed(1)} ${plural(sampleRate, "sample")} per second (Hz)`
+  $: ({
+    sampleRate,
+    sampleRateText,
+    slicedDftPoints,
+  } = getDftData(points, timeSpan))
 </script>
 
 <main>
   <h2>Discrete Fourier Transform</h2>
-  <p>Fourier Transforms on continuous functions work great when we know exactly how the signals behave (so far our signals have all been cosines). Often though, real world signals are not so predictable, so we want to sample an incoming signal. Once we start taking discrete samples, we need to use the <b>Discrete Fourier Transform</b>. The DFT is similar to the regular Fourier Transform, but is instead used on discretely sampled signals. In this playground, you can play with a basic example of the DFT.</p>
+  <p>Fourier Transforms on continuous functions work great when we know exactly how the signals behave (so far our signals have all been simple cosines). Often though, the real world is not so simple or predictable, so we want to sample an incoming signal. Once we start taking discrete samples, we need to use the <b>Discrete Fourier Transform</b>. The DFT is similar to the regular Fourier Transform, but is instead used on discretely sampled signals. In this playground, you can play with a basic example of the DFT.</p>
   <div>
     <timeSpan><b>Signal Frequency: </b>{$funcFreq.toFixed(1)} {plural($funcFreq, "beat")} per second (Hz)</timeSpan>
     <input
@@ -90,7 +79,7 @@
   <!-- <Plot points={ftPoints} xTitle="Fourier Transform" stroke={GREEN}/> -->
 
 
-	<Plot discrete={true} points={sliceDftPoints} xTitle="Frequency (Discrete Fourier Transform)" stroke={GREEN}/>
+	<Plot discrete={true} points={slicedDftPoints} xTitle="Frequency (Discrete Fourier Transform)" stroke={GREEN}/>
 
   <div>
     <p>In this scenario, we take {numSamplesText} over a time span of {timeSpanText}, which gives us a sample rate of {sampleRateText}. Notice that:</p>
@@ -98,6 +87,7 @@
       <li>The "density" of the DFT depends directly on how long we sample the signal. Right now because the time span of the signal is {timeSpanText}, in our DFT we get {timeSpan.toFixed(1)} {plural(timeSpan, "sample")} per frequency.</li>
       <li>The magnitude (or "confidence") of our the DFT depends on our sample rate. The higher our sample rate, the more confident we are in the signal frequency</li>
     </ul>
+    <p>While we only show up to frequency 10, the DFT can actually calculate up to a frequency that is half of our sampling rate, currently {sampleRate.toFixed(1)} Hz / 2 = {(sampleRate/2).toFixed(1)} Hz. This is due to a phenomenon called "aliasing" (add link later).</p>
   </div>
 </main>
 
