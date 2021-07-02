@@ -35,7 +35,7 @@
     sampleRate,
     sampleRateText,
     slicedDftPoints,
-  } = getDftData(points, timeSpan))
+  } = getDftData(points.map(p => p.y), timeSpan))
 </script>
 
 <main>
@@ -76,7 +76,6 @@
   </div>
   
   <Plot discrete discreteCircleR={2} {points} xTitle="Time in seconds"/>
-  <!-- <Plot points={ftPoints} xTitle="Fourier Transform" stroke={GREEN}/> -->
 
 
 	<Plot discrete={true} points={slicedDftPoints} xTitle="Frequency (Discrete Fourier Transform)" stroke={GREEN}/>

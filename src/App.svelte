@@ -2,6 +2,7 @@
   import { onMount } from 'svelte';
 
   import COM from './Containers/COM.svelte';
+  import CustomDFT from './Containers/CustomDFT.svelte';
   import DFT from './Containers/DFT.svelte';
   import Header from './Containers/Header.svelte';
   import Intro from './Containers/Intro.svelte';
@@ -60,6 +61,10 @@
     <br/><br/><br/><br/>
 
     <DFT/>
+
+    <br/><br/><br/><br/>
+
+    <CustomDFT/>
 
     <br/><br/><br/><br/>
 

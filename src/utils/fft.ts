@@ -25,14 +25,22 @@ export default function fft(
   return X
 }
 
-export function zeroPad(values: ComplexNumber[]) {
+export function zeroPad(
+  values: number[],
+  targetLength?: number
+) {
   const valuesCopy = values.slice()
   const length = valuesCopy.length
-  const power = Math.log2(length)
-  const nextPower = Math.ceil(power)
-  const paddedLength = Math.pow(2, nextPower)
-  for(let i = length; i<paddedLength; ++i) {
-    valuesCopy.push(complex.makeNew({}))
+  
+  if(isNaN(targetLength)) {
+    const power = Math.log2(length)
+    const nextPower = Math.ceil(power)
+    targetLength = Math.pow(2, nextPower)
+  }
+
+
+  for(let i = length; i<targetLength; ++i) {
+    valuesCopy.push(0)
   }
   return valuesCopy
 }
