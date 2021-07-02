@@ -12,7 +12,7 @@
   //based off this fiddle http://jsfiddle.net/65maD/83/ from this stack answer https://stackoverflow.com/a/54027313
   const DPR = window.devicePixelRatio
   let canvas
-  const CANVAS_MARGIN = {b:13,l:32,r:7,t:10}
+  const CANVAS_MARGIN = {b:12,l:32,r:9,t:6}
 
   const sampleOptions = [64, 128, 256, 512, 1024]
   let numSamples = 64
@@ -102,9 +102,9 @@
       background:#444;
       position:absolute;
       bottom:${CANVAS_MARGIN.b}px;
+      height:${canvasHeight}px;
       left:${CANVAS_MARGIN.l}px;
-      right:${CANVAS_MARGIN.r}px;
-      top:${CANVAS_MARGIN.t}px;
+      width:${canvasWidth}px;
     `}/>
 
     <Plot domain={[0,3]} {height} range={[-1,1]}/>
@@ -115,7 +115,6 @@
       on:mousemove={onMouseMove}
       on:touchmove={onTouchMove}
       style={`
-        background-color:pink;
         position:absolute;
         left:${CANVAS_MARGIN.l}px;
         top:${CANVAS_MARGIN.t}px;
