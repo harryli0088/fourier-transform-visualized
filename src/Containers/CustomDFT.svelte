@@ -109,7 +109,7 @@
   
   <div bind:clientWidth={width} style="position:relative;">
     <div style={`
-      background:#444;
+      background:#505050;
       position:absolute;
       bottom:${CANVAS_MARGIN.b}px;
       height:${canvasHeight}px;
