@@ -9,6 +9,7 @@
   import MultipleCosines from "./Containers/MultipleCosines.svelte";
   import OneCosine from "./Containers/OneCosine.svelte";
   import Sound from './Containers/Sound.svelte';
+import { DOMAIN } from './utils/constants';
   import initMathJax from './utils/initMathJax';
 
   onMount(() => {
@@ -89,8 +90,8 @@
       <br/>
 
       <div>
-        <h3>Why is the Fourier Transform so squiggly? Shouldn't the transform identify the specific pure frequencies?</h3>
-        <p>These Fourier Transforms are squiggly because the integral is bounded over times t=0 to t=3. If we were integrating between -∞ and ∞, then we would get dirac deltas at the specific pure frequencies. <a href="https://en.wikipedia.org/wiki/Fourier_transform#Definition" target="_blank" rel="noopener noreferrer">Wikipedia</a>, <a href="https://www.thefouriertransform.com/pairs/sinusoids.php" target="_blank" rel="noopener noreferrer">thefouriertransform.com</a></p>
+        <h3>Why is the Continuous Fourier Transform so squiggly? Shouldn't the transform identify the specific pure frequencies?</h3>
+        <p>These Fourier Transforms are squiggly because the integral is bounded between times t={DOMAIN[0]} to t={DOMAIN[1]}. If we were integrating between -∞ and ∞, then we would get dirac deltas at the specific pure frequencies. <a href="https://en.wikipedia.org/wiki/Fourier_transform#Definition" target="_blank" rel="noopener noreferrer">Wikipedia</a>, <a href="https://www.thefouriertransform.com/pairs/sinusoids.php" target="_blank" rel="noopener noreferrer">thefouriertransform.com</a></p>
       </div>
     </div>
   </section>

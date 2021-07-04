@@ -13,7 +13,7 @@
   //based off this fiddle http://jsfiddle.net/65maD/83/ from this stack answer https://stackoverflow.com/a/54027313
   const DPR = window.devicePixelRatio
   let canvas
-  const CANVAS_MARGIN = {b:40,l:32,r:10,t:6}
+  const CANVAS_MARGIN = {b:43,l:32,r:10,t:6}
 
   let numSamples = 64
   $: numSamplesText = `${numSamples} ${plural(numSamples, "sample")}`
@@ -98,6 +98,8 @@
 </script>
 
 <main>
+  <h2>Build-a-Signal!</h2>
+  <p>{width > 500 ? "Hover your mouse" : "Drag your finger"} over the light gray box below to build your own custom signal. See what the DFT looks like!</p>
   <PickNumSamples bind:numSamples={numSamples}/>
   <div>
     <b>Sample Rate: </b> {numSamplesText} / {timeSpanText} = {sampleRateText}

@@ -39,7 +39,7 @@
 
 <main>
   <h2>Discrete Fourier Transform</h2>
-  <p>Fourier Transforms on continuous functions work great when we know exactly how the signals behave (so far our signals have all been simple cosines). Often though, the real world is not so simple or predictable, so we want to sample an incoming signal. Once we start taking discrete samples, we need to use the <b>Discrete Fourier Transform</b>. The DFT is similar to the regular Fourier Transform, but is instead used on discretely sampled signals. In this playground, you can play with a basic example of the DFT.</p>
+  <p>Fourier Transforms on continuous functions work great when we know exactly how the signals behave (so far our signals have all been simple cosines). Often though, the real world is not perfectly simple or predictable, so we want to sample an incoming signal. Once we start taking discrete samples, we need to use the <b>Discrete Fourier Transform</b>. The DFT is similar to the regular Fourier Transform, but is instead used on discretely sampled signals. In this playground, you can play with a basic example of the DFT.</p>
   <div>
     <timeSpan><b>Signal Frequency: </b>{$funcFreq.toFixed(1)} {plural($funcFreq, "beat")} per second (Hz)</timeSpan>
     <input
