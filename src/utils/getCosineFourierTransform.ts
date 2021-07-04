@@ -8,23 +8,23 @@ import type { MathComplexFunc } from "./types"
  * ^ is used as raising to a power, not the JS XOR operator
  * a = magnitude constant of the input cosine function cos(a*t + b)
  * b = phase shift constant of the input cosine function cos(a*t + b)
- * f = frequency
  * i = imaginary unit
  * H = definite integral higher bound (resolved in getDefiniteIntegralFunction)
  * L = definite integral lower bound (resolved in getDefiniteIntegralFunction)
  * t = time
- * Fourier Transform(freq) = ∫(from t = L to H) cos(at+b)*e^(-2πitf) dt
- * (through Euler's formula) = ∫(from t = L to H) cos(at+b)cos(-2πtf) + icos(at+b)sin(-2πtf) dt
- * (through trig identities) = (1/2)∫(from t = L to H) cos(at+b-2πtf) + cos(at+b+2πtf) + isin(-2πtf+at+b) + isin(-2πtf-at-b) dt
- * (simplified) = (1/2)∫(from t = L to H) cos((a-2πtf)t+b) + cos((a+2πf)t+b) + isin((a-2πf)t+b) +isin((-a-2πf)t-b) dt
- * = (1/2)( sin((a-2πf)t+b)/(a-2πf) + sin((a+2πf)t+b)/(a+2πf) - icos((a-2πf)t+b)/(a-2πf) + icos((-a-2πf)t-b)/(a+2πf) ) ](from t = L to H)
+ * w = frequency
+ * Fourier Transform(freq) = ∫(from t = L to H) cos(at+b)*e^(-2πitw) dt
+ * (through Euler's formula) = ∫(from t = L to H) cos(at+b)cos(-2πtw) + icos(at+b)sin(-2πtw) dt
+ * (through trig identities) = (1/2)∫(from t = L to H) cos(at+b-2πtw) + cos(at+b+2πtw) + isin(-2πtw+at+b) + isin(-2πtw-at-b) dt
+ * (simplified) = (1/2)∫(from t = L to H) cos((a-2πtw)t+b) + cos((a+2πw)t+b) + isin((a-2πw)t+b) +isin((-a-2πw)t-b) dt
+ * = (1/2)( sin((a-2πw)t+b)/(a-2πw) + sin((a+2πw)t+b)/(a+2πw) - icos((a-2πw)t+b)/(a-2πw) + icos((-a-2πw)t-b)/(a+2πw) ) ](from t = L to H)
  * 
  * If the function is shifted up, cos(at+b) becomes cos(at+b)/2 + 1
  * The original derivation for cosine is multiplied by another 1/2 to make the factor 1/4
  * The derivation for the extra +1 term is:
- * ∫(from t = L to H) e^(-2πitf) dt
- * = ∫(from t = L to H) cos(-2πtf) + isin(-2πtf) dt
- * = -sin(-2πtf)/2πf + icos(-2πtf)/2πf ](from t = L to H)
+ * ∫(from t = L to H) e^(-2πitw) dt
+ * = ∫(from t = L to H) cos(-2πtw) + isin(-2πtw) dt
+ * = -sin(-2πtw)/2πw + icos(-2πtw)/2πw ](from t = L to H)
  *
  * @param a       the magnitude constant in the function cos(a*t + b)
  * @param b       the phase shift constant in the function cos(a*t + b)

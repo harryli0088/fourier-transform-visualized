@@ -1,5 +1,13 @@
 import type { MathFunc, PointType } from "./types"
 
+/**
+ * Given the domain, function, and other arguments, return an array of points sampled from the function
+ * @param domain          2 element number array [start x value, end x value]
+ * @param func            the numeric function to sample
+ * @param numPoints       the total number of points/samples
+ * @param includeEndPoint whether or not to include the end point in the domain
+ * @returns               array of sampled points
+ */
 export default function getPoints(
   domain: [number, number],
   func: MathFunc,

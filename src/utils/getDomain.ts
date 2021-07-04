@@ -7,7 +7,7 @@ import type { PointType } from "./types";
  * @returns      array with first and last values of x
  */
 export default function getDomain(points: PointType[]):[number, number] {
-  return points.length > 0 //if there are points
+  return points.length >= 2 //if there are at least 2 points
   ? [points[0].x, lastArrEle(points).x] //return the first and last elements
   : [0,0] //else default to 0,0
 }
