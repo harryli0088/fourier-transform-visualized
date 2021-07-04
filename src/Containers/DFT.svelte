@@ -2,11 +2,10 @@
   import { tweened } from 'svelte/motion'
   import { cubicOut } from 'svelte/easing'
 
+  import PickNumSamples from '../Components/PickNumSamples.svelte';
   import Plot from "../Components/Plot.svelte";
 
-  import complex from '../utils/complexNumber';
   import { DOMAIN, GREEN, TWO_PI, WINDING_FREQ_MAX } from '../utils/constants';
-  import fft from '../utils/fft';
   import getCos from '../utils/getCos';
   import getDftData from '../utils/getDftData';
   import getPoints from '../utils/getPoints';
@@ -16,7 +15,7 @@
   $: timeSpan = domain[1] - domain[0]
   $: timeSpanText = `${timeSpan.toFixed(1)} ${plural(timeSpan, "second")}`
 
-  const sampleOptions = [64, 128, 256, 512, 1024]
+  const SAMPLE_OPTIONS = [64, 128, 256, 512, 1024]
   let numSamples = 64
   $: numSamplesText = `${numSamples} ${plural(numSamples, "sample")}`
 
@@ -63,14 +62,7 @@
       value={DOMAIN[1]}
     />
   </div>
-  <div>
-    <b>Number of Samples: </b>
-    <select bind:value={numSamples}>
-      {#each sampleOptions as s}
-        <option value={s}>{s}</option>
-      {/each}
-    </select>
-  </div>
+  <PickNumSamples bind:numSamples={numSamples}/>
   <div>
     <b>Sample Rate: </b> {numSamplesText} / {timeSpanText} = {sampleRateText}
   </div>

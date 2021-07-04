@@ -1,9 +1,10 @@
 <script lang="ts">
   import { afterUpdate } from 'svelte'
 
+  import PickNumSamples from '../Components/PickNumSamples.svelte';
   import Plot from "../Components/Plot.svelte";
 
-  import { DOMAIN, GREEN, RED } from '../utils/constants';
+  import { GREEN, RED } from '../utils/constants';
   import { zeroPad } from '../utils/fft';
   import getDftData from '../utils/getDftData';
   import plural from '../utils/plural';
@@ -12,9 +13,8 @@
   //based off this fiddle http://jsfiddle.net/65maD/83/ from this stack answer https://stackoverflow.com/a/54027313
   const DPR = window.devicePixelRatio
   let canvas
-  const CANVAS_MARGIN = {b:12,l:32,r:9,t:6}
+  const CANVAS_MARGIN = {b:40,l:32,r:10,t:6}
 
-  const sampleOptions = [64, 128, 256, 512, 1024]
   let numSamples = 64
   $: numSamplesText = `${numSamples} ${plural(numSamples, "sample")}`
 
@@ -26,13 +26,16 @@
   $: cellWidth = canvasWidth / numSamples
   $: halfCellWidth = cellWidth / 2
 
-  let domain: [number, number] = [DOMAIN[0], DOMAIN[1]]
+  $: console.log("WIDTH", width, (width - 400)/200 + 1)
+  let domain: [number, number] = [0, 1]
+  $: domain = [domain[0], Math.round(Math.min(3, Math.max(1, (width - 400)/200 + 1)))]
   $: timeSpan = domain[1] - domain[0]
   $: timeSpanText = `${timeSpan.toFixed(1)} ${plural(timeSpan, "second")}`
 
   let canvasYValues: number[] = []
   function reset() {
     canvasYValues = []
+    return true
   }
   $: reset() && numSamples //trigger a reset when the number of samples changes
   function onMouseMove(e) {
@@ -95,6 +98,11 @@
 </script>
 
 <main>
+  <PickNumSamples bind:numSamples={numSamples}/>
+  <div>
+    <b>Sample Rate: </b> {numSamplesText} / {timeSpanText} = {sampleRateText}
+  </div>
+  <br/>
   <div><button on:click={reset}>Clear</button></div>
   
   <div bind:clientWidth={width} style="position:relative;">
@@ -107,7 +115,7 @@
       width:${canvasWidth}px;
     `}/>
 
-    <Plot domain={[0,3]} {height} range={[-1,1]}/>
+    <Plot {domain} {height} range={[-1,1]} xTitle="Time in seconds"/>
 
     <canvas
       bind:this={canvas}
@@ -121,19 +129,6 @@
       `}
       width={canvasWidth}
     />
-  </div>
-
-  <div>
-    <b>Number of Samples: </b>
-    <select bind:value={numSamples}>
-      {#each sampleOptions as s}
-        <option value={s}>{s}</option>
-      {/each}
-    </select>
-  </div>
-
-  <div>
-    <b>Sample Rate: </b> {numSamplesText} / {timeSpanText} = {sampleRateText}
   </div>
 
 	<Plot discrete={true} points={slicedDftPoints} xTitle="Frequency (Discrete Fourier Transform)" stroke={GREEN}/>

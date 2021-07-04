@@ -26,3 +26,13 @@ test("accessor", () => {
     {x: 4, y: -3},
   ], (p: PointType) => p.x)).toStrictEqual([0, 5])
 })
+
+test("min is zero or lower", () => {
+  expect(getRange([
+    {x: 0, y: 10},
+    {x: 1, y: 17},
+    {x: 2, y: 11},
+    {x: 3, y: 21},
+    {x: 4, y: 3},
+  ])).toStrictEqual([0,21])
+})

@@ -13,7 +13,7 @@ export default function getRange(
   if(points.length > 0) { //if there are points
     //initialize min and max to first points
     let max = accessor(points[0])
-    let min = max
+    let min = 0 //initialize the minimum to 0
     for(let i=1; i<points.length; ++i) { //loop through the rest of the points
       const value = accessor(points[i])
       if(value > max) { //if this is a new max
