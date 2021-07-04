@@ -73,7 +73,7 @@ import { DOMAIN } from './utils/constants';
       <h2>Questions I had while making this site</h2>
 
       <div>
-        <h3>What is the derivation for these Fourier Transforms?</h3>
+        <h3>What is the derivation for these Continuous Fourier Transforms?</h3>
         <p>One cosine function has the form {`$ cos(a*t + b)$`}, where {`$a$`} represents the frequency, {`$b$`} represents the phase shift (not used in this site), and {`$t$`} represents time. In the below formulas, {`$w$`} is an input frequency, and {`$i$`} is the imaginary unit.</p>
 
         <div style="width: 100%;overflow-x: auto;">
@@ -84,14 +84,14 @@ import { DOMAIN } from './utils/constants';
           <p>(after integrating) {`$$= \\frac{1}2\\Bigl( \\frac{sin((a-2πw)t+b)}{a-2πw} + \\frac{sin((a+2πw)t+b)}{a+2πw} - i*\\frac{cos((a-2πw)t+b)}{a-2πw} + i*\\frac{cos((-a-2πw)t-b)}{a+2πw} \\Bigr) \\enspace {\\Bigr|^{t1}_{t2}}$$`}</p>
         </div>
 
-        <p>The real portion of the transform is what's plotted in these visualizations. The imaginary part represents the phase shift.</p>
+        <p>The real portion of the transform is what's plotted in these visualizations. The imaginary part (not used in this site) represents the phase shift.</p>
       </div>
 
       <br/>
 
       <div>
         <h3>Why is the Continuous Fourier Transform so squiggly? Shouldn't the transform identify the specific pure frequencies?</h3>
-        <p>These Fourier Transforms are squiggly because the integral is bounded between times t={DOMAIN[0]} to t={DOMAIN[1]}. If we were integrating between -∞ and ∞, then we would get dirac deltas at the specific pure frequencies. <a href="https://en.wikipedia.org/wiki/Fourier_transform#Definition" target="_blank" rel="noopener noreferrer">Wikipedia</a>, <a href="https://www.thefouriertransform.com/pairs/sinusoids.php" target="_blank" rel="noopener noreferrer">thefouriertransform.com</a></p>
+        <p>These Fourier Transforms are squiggly because in these examples, the integrals are bounded between times t={DOMAIN[0]} to t={DOMAIN[1]}. If we were integrating between -∞ and ∞, then we would get dirac deltas at the specific pure frequencies. <a href="https://en.wikipedia.org/wiki/Fourier_transform#Definition" target="_blank" rel="noopener noreferrer">Wikipedia</a>, <a href="https://www.thefouriertransform.com/pairs/sinusoids.php" target="_blank" rel="noopener noreferrer">thefouriertransform.com</a></p>
       </div>
     </div>
   </section>

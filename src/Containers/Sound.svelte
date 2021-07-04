@@ -47,7 +47,7 @@
   </div>
   <Plot points={D294Points} stroke={BLUE} xTitle="Time"/>
 
-  <p>Notice that D294 seems more stretched out than A440. This because A440 oscillates more frequently that D294. What happens when we play the two notes together?</p>
+  <p>Notice that A440 is more "squished" than D294. This because A440 oscillates more frequently that D294. What happens when we play the two notes together?</p>
 
   <br/><br/>
 
