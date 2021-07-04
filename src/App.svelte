@@ -74,14 +74,14 @@ import { DOMAIN } from './utils/constants';
 
       <div>
         <h3>What is the derivation for these Fourier Transforms?</h3>
-        <p>One cosine function has the form {`$ cos(a*t + b)$`}, where {`$a$`} represents the frequency, {`$b$`} represents the phase shift (not used in this site), and {`$t$`} represents time. In the below formulas, {`$f$`} is an input frequency, and {`$i$`} is the imaginary unit.</p>
+        <p>One cosine function has the form {`$ cos(a*t + b)$`}, where {`$a$`} represents the frequency, {`$b$`} represents the phase shift (not used in this site), and {`$t$`} represents time. In the below formulas, {`$w$`} is an input frequency, and {`$i$`} is the imaginary unit.</p>
 
         <div style="width: 100%;overflow-x: auto;">
-          <p>The Fourier Transform is {`$$F(f) = \\int^{t2}_{t1}{ cos(at + b) * e^{(-2πitf)} } dt$$`}</p>
-          <p>(through <a href="https://en.wikipedia.org/wiki/Euler%27s_formula" target="_blank" rel="noopener noreferrer">Euler's formula</a>) {`$$= \\int^{t2}_{t1}({ cos(at+b)*cos(-2πtf) + i*cos(at+b)*sin(-2πtf) }) dt$$`}</p>
-          <p>(through <a href="https://en.wikipedia.org/wiki/List_of_trigonometric_identities#Product-to-sum_and_sum-to-product_identities" target="_blank" rel="noopener noreferrer">trig product identities</a>) {`$$= \\frac{1}2\\int^{t2}_{t1}({ cos(at+b-2πtf) + cos(at+b+2πtf) + i*sin(-2πtf+a*t+b) + i*sin(-2πtf-at-b) }) dt$$`}</p>
-          <p>(simplifying) {`$$= \\frac{1}2\\int^{t2}_{t1}({ cos((a-2πtf)t+b) + cos((a+2πf)t+b) + i*sin((a-2πf)t+b) +i*sin((-a-2πf)t-b) }) dt$$`}</p>
-          <p>(after integrating) {`$$= \\frac{1}2\\Bigl( \\frac{sin((a-2πf)t+b)}{a-2πf} + \\frac{sin((a+2πf)t+b)}{a+2πf} - i*\\frac{cos((a-2πf)t+b)}{a-2πf} + i*\\frac{cos((-a-2πf)t-b)}{a+2πf} \\Bigr) \\enspace {\\Bigr|^{t1}_{t2}}$$`}</p>
+          <p>The Fourier Transform is {`$$F(w) = \\int^{t2}_{t1}{ cos(at + b) * e^{(-2πitw)} } dt$$`}</p>
+          <p>(through <a href="https://en.wikipedia.org/wiki/Euler%27s_formula" target="_blank" rel="noopener noreferrer">Euler's formula</a>) {`$$= \\int^{t2}_{t1}({ cos(at+b)*cos(-2πtw) + i*cos(at+b)*sin(-2πtw) }) dt$$`}</p>
+          <p>(through <a href="https://en.wikipedia.org/wiki/List_of_trigonometric_identities#Product-to-sum_and_sum-to-product_identities" target="_blank" rel="noopener noreferrer">trig product identities</a>) {`$$= \\frac{1}2\\int^{t2}_{t1}({ cos(at+b-2πtw) + cos(at+b+2πtw) + i*sin(-2πtw+a*t+b) + i*sin(-2πtw-at-b) }) dt$$`}</p>
+          <p>(simplifying) {`$$= \\frac{1}2\\int^{t2}_{t1}({ cos((a-2πtw)t+b) + cos((a+2πw)t+b) + i*sin((a-2πw)t+b) +i*sin((-a-2πw)t-b) }) dt$$`}</p>
+          <p>(after integrating) {`$$= \\frac{1}2\\Bigl( \\frac{sin((a-2πw)t+b)}{a-2πw} + \\frac{sin((a+2πw)t+b)}{a+2πw} - i*\\frac{cos((a-2πw)t+b)}{a-2πw} + i*\\frac{cos((-a-2πw)t-b)}{a+2πw} \\Bigr) \\enspace {\\Bigr|^{t1}_{t2}}$$`}</p>
         </div>
 
         <p>The real portion of the transform is what's plotted in these visualizations. The imaginary part represents the phase shift.</p>

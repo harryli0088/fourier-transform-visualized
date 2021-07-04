@@ -1,7 +1,8 @@
 import complex from "./complexNumber"
 import fft from "./fft"
 import plural from "./plural"
-import type { PointType } from "./types"
+
+export const DFT_FREQ_LIMIT = 10
 
 /**
  * Calculate the DFT and some other data on some samples
@@ -18,7 +19,7 @@ export default function getDftData(
     x: i/timeSpan,
     y: complex.magnitude(n)
   }))
-  const slicedDftPoints = dftPoints.slice(0, complexPoints.length / 2).slice(0, 10*timeSpan + 1) //slice to 10
+  const slicedDftPoints = dftPoints.slice(0, complexPoints.length / 2).slice(0, DFT_FREQ_LIMIT*timeSpan + 1) //slice to 10
 
   const sampleRate = values.length / timeSpan
   const sampleRateText = `${sampleRate.toFixed(1)} ${plural(sampleRate, "sample")} per second (Hz)`

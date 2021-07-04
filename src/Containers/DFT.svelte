@@ -7,7 +7,7 @@
 
   import { DOMAIN, GREEN, TWO_PI, WINDING_FREQ_MAX } from '../utils/constants';
   import getCos from '../utils/getCos';
-  import getDftData from '../utils/getDftData';
+  import getDftData, { DFT_FREQ_LIMIT } from '../utils/getDftData';
   import getPoints from '../utils/getPoints';
   import plural from '../utils/plural';
 
@@ -78,7 +78,7 @@
       <li>The "density" of the DFT depends directly on how long we sample the signal. Right now because the time span of the signal is {timeSpanText}, in our DFT we get {timeSpan.toFixed(1)} {plural(timeSpan, "sample")} per frequency.</li>
       <li>The magnitude (or "confidence") of our the DFT depends on our sample rate. The higher our sample rate, the more confident we are in the signal frequency</li>
     </ul>
-    <p>While we only show up to frequency 10, the DFT can actually calculate up to a frequency that is half of our sampling rate, currently {sampleRate.toFixed(1)} Hz / 2 = {(sampleRate/2).toFixed(1)} Hz. This is due to a phenomenon called "aliasing" (add link later).</p>
+    <p>The DFT can calculate up to a frequency that is half of our sampling rate, currently {sampleRate.toFixed(1)} Hz / 2 = {(sampleRate/2).toFixed(1)} Hz. This is due to a phenomenon called "aliasing" (add link later). {sampleRate/2 > DFT_FREQ_LIMIT ? `(Currently the plot only shows up to frequency ${DFT_FREQ_LIMIT} Hz for simplicity)` : ""}</p>
   </div>
 </main>
 
