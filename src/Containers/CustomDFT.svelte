@@ -23,10 +23,9 @@
   let width = 500
   $: canvasHeight = height - CANVAS_MARGIN.b - CANVAS_MARGIN.t
   $: canvasWidth = width - CANVAS_MARGIN.l - CANVAS_MARGIN.r
-  $: cellWidth = canvasWidth / numSamples
-  $: halfCellWidth = cellWidth / 2
+  $: sampleWidth = canvasWidth / numSamples
+  $: halfSampleWidth = sampleWidth / 2
 
-  $: console.log("WIDTH", width, (width - 400)/200 + 1)
   let domain: [number, number] = [0, 1]
   $: domain = [domain[0], Math.round(Math.min(3, Math.max(1, (width - 400)/200 + 1)))]
   $: timeSpan = domain[1] - domain[0]
@@ -51,18 +50,21 @@
     const canvasX = clientX - dimensions.left
     const canvasY = clientY - dimensions.top
 
-    const cellX = Math.floor(canvasX / cellWidth)
-    if(cellX >= canvasYValues.length) {
-      const lastYValue = canvasYValues[canvasYValues.length-1]
-      const lastCanvasY = lastYValue===undefined ? halfHeight : lastYValue
-      const canvasYDiff = canvasY - lastCanvasY
-      const cellXDiff = cellX - canvasYValues.length
-      const newValues:number[] = []
-      for(let i=0; i<cellXDiff; ++i) { //interpolate the skipped cells
-        newValues.push(lastCanvasY + i*canvasYDiff/cellXDiff)
+    const sampleX = Math.floor(canvasX / sampleWidth) //get the sample number
+    if( //if we should add more samples
+      sampleX >= canvasYValues.length //if we have not sampled this far yet (ie the event is further to the right than the last sample)
+      && sampleX < numSamples //if the sample is within bounds of the canvas (on mobile, this even triggers past the canvas width because of touch/drag peculiarities)
+    ) {
+      const lastYValue = canvasYValues[canvasYValues.length-1] //get the last sample value
+      const lastCanvasY = lastYValue===undefined ? halfHeight : lastYValue //in case we have no samples yet, use the vertical midpoint of the canvas
+      const canvasYDiff = canvasY - lastCanvasY //get the canvas pixel distance between the event and the last sample
+      const sampleXDiff = sampleX - canvasYValues.length //get the # samples difference between the event and the last sample
+      const newValues:number[] = [] //create an an empty array to store new samples
+      for(let i=0; i<sampleXDiff; ++i) { //interpolate the skipped cells, if any
+        newValues.push(lastCanvasY + i*canvasYDiff/sampleXDiff) //add the new interpolated value
       }
-      newValues.push(canvasY)
-      canvasYValues = canvasYValues.concat(newValues)
+      newValues.push(canvasY) //push the event as a sample
+      canvasYValues = canvasYValues.concat(newValues) //concat the new values
     }
   }
   
@@ -90,9 +92,9 @@
 
       ctx.fillStyle = RED
       canvasYValues.forEach((v,i) => { //dots
-        const x = i * cellWidth
+        const x = i * sampleWidth
         ctx.beginPath()
-        ctx.arc(x + halfCellWidth, v + halfCellWidth, 2, 0, 2 * Math.PI)
+        ctx.arc(x + halfSampleWidth, v + halfSampleWidth, 2, 0, 2 * Math.PI)
         ctx.fill()
       })
       ctx.restore() //undo the DPR
@@ -102,7 +104,7 @@
 
 <main>
   <h2>Build-a-Signal!</h2>
-  <p>{width > 500 ? "Hover your mouse" : "Drag your finger"} over the light gray box below to build your own custom signal. See what the DFT looks like!</p>
+  <p>{width > 500 ? "Hover your mouse" : "Drag your finger"} over the light gray box below from left to right to build your own custom signal. See what the DFT looks like!</p>
   <PickNumSamples bind:numSamples={numSamples}/>
   <div>
     <b>Sample Rate: </b> {numSamplesText} / {timeSpanText} = {sampleRateText}

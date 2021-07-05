@@ -4,6 +4,12 @@ import complex from "./complexNumber";
 export default function fft(
   values: ComplexNumber[],
 ) {
+  if(!Number.isInteger(Math.log2(values.length))) { //if this is not a power of 2
+    console.error(`FFT expects the number of values to be a power of 2. You must properly zero pad the values yourself. Received length ${values.length}.`)
+    return [] //return an empty array
+  }
+
+
   const X = []
   const N = values.length
   const half = N / 2
