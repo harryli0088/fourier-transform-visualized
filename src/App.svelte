@@ -85,6 +85,7 @@ import { DOMAIN } from './utils/constants';
         </div>
 
         <p>The real portion of the transform is what's plotted in these visualizations. The imaginary part (not used in this site) represents the phase shift.</p>
+        <p>For multiple cosine functions, simple integrate each one independently, then sum those integrations together.</p>
       </div>
 
       <br/>

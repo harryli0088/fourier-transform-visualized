@@ -10,6 +10,7 @@
   import getDftData, { DFT_FREQ_LIMIT } from '../utils/getDftData';
   import getPoints from '../utils/getPoints';
   import plural from '../utils/plural';
+import lastArrEle from '../utils/lastArrEle';
 
   let domain: [number, number] = [DOMAIN[0], DOMAIN[1]]
   $: timeSpan = domain[1] - domain[0]
@@ -73,12 +74,15 @@
 	<Plot discrete={true} points={slicedDftPoints} xTitle="Frequency (Discrete Fourier Transform)" stroke={GREEN}/>
 
   <div>
+    <p>{lastArrEle(slicedDftPoints).x === DFT_FREQ_LIMIT ? `(Currently the plot only shows up to frequency ${DFT_FREQ_LIMIT} Hz for simplicity)` : ""}</p>
     <p>In this scenario, we take {numSamplesText} over a time span of {timeSpanText}, which gives us a sample rate of {sampleRateText}. Notice that:</p>
     <ul>
       <li>The "density" of the DFT depends directly on how long we sample the signal. Right now because the time span of the signal is {timeSpanText}, in our DFT we get {timeSpan.toFixed(1)} {plural(timeSpan, "sample")} per frequency.</li>
       <li>The magnitude (or "confidence") of our the DFT depends on our sample rate. The higher our sample rate, the more confident we are in the signal frequency</li>
+      <li>The DFT can calculate up to a frequency that is half of our sampling rate, currently {sampleRate.toFixed(1)} Hz / 2 = {(sampleRate/2).toFixed(1)} Hz. This is due to a phenomenon called <a href="https://en.wikipedia.org/wiki/Aliasing" target="_blank" rel="noopener noreferrer">aliasing</a>. If you increase the time span and use a low sample rate, you can see that our DFT gets confused. Because of the low sample rate, the sampled signal looks like it has a compeletely different frequency. (talk more about aliasing)</li>
     </ul>
-    <p>The DFT can calculate up to a frequency that is half of our sampling rate, currently {sampleRate.toFixed(1)} Hz / 2 = {(sampleRate/2).toFixed(1)} Hz. This is due to a phenomenon called "aliasing" (add link later). {sampleRate/2 > DFT_FREQ_LIMIT ? `(Currently the plot only shows up to frequency ${DFT_FREQ_LIMIT} Hz for simplicity)` : ""}</p>
+
+    <p>(This site uses a recursive implementation of the <a href="https://en.wikipedia.org/wiki/Cooley%E2%80%93Tukey_FFT_algorithm" target="_blank" rel="noopener noreferrer">Cooley-Tukey FFT</a> algorithm based off <a href="https://github.com/vail-systems/node-fft" target="_blank" rel="noopener noreferrer">this example by Vail Systems</a>)</p>
   </div>
 </main>
 
