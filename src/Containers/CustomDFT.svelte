@@ -19,9 +19,9 @@
   $: numSamplesText = `${numSamples} ${plural(numSamples, "sample")}`
 
   const height = 200
-  const halfHeight = height / 2
   let width = 500
   $: canvasHeight = height - CANVAS_MARGIN.b - CANVAS_MARGIN.t
+  $: halfCanvasHeight = canvasHeight / 2
   $: canvasWidth = width - CANVAS_MARGIN.l - CANVAS_MARGIN.r
   $: sampleWidth = canvasWidth / numSamples
   $: halfSampleWidth = sampleWidth / 2
@@ -56,7 +56,7 @@
       && sampleX < numSamples //if the sample is within bounds of the canvas (on mobile, this even triggers past the canvas width because of touch/drag peculiarities)
     ) {
       const lastYValue = canvasYValues[canvasYValues.length-1] //get the last sample value
-      const lastCanvasY = lastYValue===undefined ? halfHeight : lastYValue //in case we have no samples yet, use the vertical midpoint of the canvas
+      const lastCanvasY = lastYValue===undefined ? halfCanvasHeight : lastYValue //in case we have no samples yet, use the vertical midpoint of the canvas
       const canvasYDiff = canvasY - lastCanvasY //get the canvas pixel distance between the event and the last sample
       const sampleXDiff = sampleX - canvasYValues.length //get the # samples difference between the event and the last sample
       const newValues:number[] = [] //create an an empty array to store new samples
@@ -69,7 +69,7 @@
   }
   
   //convert pixel positions to points
-  $: yValues = canvasYValues.map(v => (halfHeight - v) / halfHeight)
+  $: yValues = canvasYValues.map(v => (halfCanvasHeight - v) / halfCanvasHeight)
   $: zeroPaddedValues = zeroPad(yValues, numSamples)
 
   /* Discrete Fourier Transform */
