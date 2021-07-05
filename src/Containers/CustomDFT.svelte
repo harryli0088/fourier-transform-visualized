@@ -13,7 +13,7 @@
   //based off this fiddle http://jsfiddle.net/65maD/83/ from this stack answer https://stackoverflow.com/a/54027313
   const DPR = window.devicePixelRatio
   let canvas
-  const CANVAS_MARGIN = {b:43,l:32,r:10,t:6}
+  const CANVAS_MARGIN = {b:40,l:32,r:10,t:9}
 
   let numSamples = 64
   $: numSamplesText = `${numSamples} ${plural(numSamples, "sample")}`
@@ -84,15 +84,18 @@
   	const requestId = requestAnimationFrame(draw)
 
     function draw() {
-      ctx.clearRect(0,0,width,height)
+      ctx.save() //save the context so we can undo the DPR later
+      ctx.scale(DPR, DPR) //scale by the DPR
+      ctx.clearRect(0,0,width,height) //clear the canvas
 
       ctx.fillStyle = RED
-      canvasYValues.forEach((v,i) => {
+      canvasYValues.forEach((v,i) => { //dots
         const x = i * cellWidth
         ctx.beginPath()
         ctx.arc(x + halfCellWidth, v + halfCellWidth, 2, 0, 2 * Math.PI)
         ctx.fill()
       })
+      ctx.restore() //undo the DPR
   	}
   })
 </script>
@@ -111,9 +114,9 @@
     <div style={`
       background:#505050;
       position:absolute;
-      bottom:${CANVAS_MARGIN.b}px;
       height:${canvasHeight}px;
       left:${CANVAS_MARGIN.l}px;
+      top:${CANVAS_MARGIN.t}px;
       width:${canvasWidth}px;
     `}/>
 
@@ -121,15 +124,17 @@
 
     <canvas
       bind:this={canvas}
-      height={canvasHeight}
+      height={canvasHeight * DPR}
       on:mousemove={onMouseMove}
       on:touchmove={onTouchMove}
       style={`
+        height:${canvasHeight}px;
+        width:${canvasWidth}px;
         position:absolute;
         left:${CANVAS_MARGIN.l}px;
         top:${CANVAS_MARGIN.t}px;
       `}
-      width={canvasWidth}
+      width={canvasWidth * DPR}
     />
   </div>
 
