@@ -19,7 +19,7 @@ export default function getDftData(
     x: i/timeSpan,
     y: complex.magnitude(n)
   }))
-  const slicedDftPoints = dftPoints.slice(0, DFT_FREQ_LIMIT*timeSpan + 1) //.slice(0, complexPoints.length / 2).slice(0, DFT_FREQ_LIMIT*timeSpan + 1) //slice to 10
+  const slicedDftPoints = dftPoints.slice(0, complexPoints.length / 2).slice(0, DFT_FREQ_LIMIT*timeSpan + 1) //slice to 10
 
   const sampleRate = values.length / timeSpan
   const sampleRateText = `${sampleRate.toFixed(1)} ${plural(sampleRate, "sample")} per second (Hz)`
