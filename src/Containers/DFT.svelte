@@ -5,14 +5,17 @@
   import PickNumSamples from '../Components/PickNumSamples.svelte';
   import Plot from "../Components/Plot.svelte";
 
-  import { DOMAIN, GREEN, TWO_PI, WINDING_FREQ_MAX } from '../utils/constants';
+  import { DOMAIN, GREEN, RED, TWO_PI, WINDING_FREQ_MAX } from '../utils/constants';
   import getCos from '../utils/getCos';
   import getDftData, { DFT_FREQ_LIMIT } from '../utils/getDftData';
   import getPoints from '../utils/getPoints';
+  import lastArrEle from '../utils/lastArrEle';
   import plural from '../utils/plural';
-import lastArrEle from '../utils/lastArrEle';
 
   let domain: [number, number] = [DOMAIN[0], DOMAIN[1]]
+  function setDomainEnd(end:number) {
+    domain = [domain[0], end]
+  }
   $: timeSpan = domain[1] - domain[0]
   $: timeSpanText = `${timeSpan.toFixed(1)} ${plural(timeSpan, "second")}`
 
@@ -36,6 +39,9 @@ import lastArrEle from '../utils/lastArrEle';
     sampleRateText,
     slicedDftPoints,
   } = getDftData(points.map(p => p.y), timeSpan))
+
+  $: halfSampleRate = sampleRate / 2
+  $: halfSampleRateText = `${sampleRate.toFixed(1)} Hz / 2 = ${(halfSampleRate).toFixed(1)} Hz`
 </script>
 
 <main>
@@ -49,7 +55,7 @@ import lastArrEle from '../utils/lastArrEle';
       on:input={e => funcFreq.set(parseFloat(e.target.value))}
       step="0.05"
       type="range"
-      value={INITIAL_FUNC_FREQ}
+      value={$funcFreq}
     />
   </div>
   <div>
@@ -57,10 +63,10 @@ import lastArrEle from '../utils/lastArrEle';
     <input
       max="10"
       min="1"
-      on:input={e => domain[1] = parseFloat(e.target.value)}
+      on:input={e => setDomainEnd(parseFloat(e.target.value))}
       step="0.1"
       type="range"
-      value={DOMAIN[1]}
+      value={domain[1]}
     />
   </div>
   <PickNumSamples bind:numSamples={numSamples}/>
@@ -79,7 +85,19 @@ import lastArrEle from '../utils/lastArrEle';
     <ul>
       <li>The "density" of the DFT depends directly on how long we sample the signal. Right now because the time span of the signal is {timeSpanText}, in our DFT we get {timeSpan.toFixed(1)} {plural(timeSpan, "sample")} per frequency.</li>
       <li>The magnitude (or "confidence") of our the DFT depends on our sample rate. The higher our sample rate, the more confident we are in the signal frequency</li>
-      <li>The DFT can calculate up to a frequency that is half of our sampling rate, currently {sampleRate.toFixed(1)} Hz / 2 = {(sampleRate/2).toFixed(1)} Hz. This is due to a phenomenon called <a href="https://en.wikipedia.org/wiki/Aliasing" target="_blank" rel="noopener noreferrer">aliasing</a>. Basically, if your sample rate is too low, the sampled signal looks like it has a compeltely different frequency. Try using a low sample rate and a long time span to see this effect! (add a convenience button)</li>
+      <li>
+        <div>The DFT can calculate up to a frequency that is half of our sampling rate, currently {halfSampleRateText}. This is due to a phenomenon called <a href="https://en.wikipedia.org/wiki/Aliasing" target="_blank" rel="noopener noreferrer">aliasing</a>. Basically, if your sample rate is too low, the sampled signal looks like it has a compeltely different frequency. Try using a low sample rate to see this effect!</div>
+        <br/>
+        <button on:click={() => {
+          funcFreq.set(6, {duration: 0})
+          numSamples = 64
+          setDomainEnd(10)
+        }}>See an Aliasing Example</button>
+
+        {#if halfSampleRate < $funcFreq}
+          <p style={`color: ${RED};`}>Alias alert! Your signal of {$funcFreq.toFixed(1)} Hz is too large for your sample rate of {sampleRate.toFixed(1)} Hz. The DFT can only go up to {halfSampleRateText}.</p>
+        {/if}
+      </li>
     </ul>
 
     <p>(This site uses a recursive implementation of the <a href="https://en.wikipedia.org/wiki/Cooley%E2%80%93Tukey_FFT_algorithm" target="_blank" rel="noopener noreferrer">Cooley-Tukey FFT</a> algorithm based off <a href="https://github.com/vail-systems/node-fft" target="_blank" rel="noopener noreferrer">this example by Vail Systems</a>)</p>

@@ -9,7 +9,8 @@
   import MultipleCosines from "./Containers/MultipleCosines.svelte";
   import OneCosine from "./Containers/OneCosine.svelte";
   import Sound from './Containers/Sound.svelte';
-import { DOMAIN } from './utils/constants';
+
+  import { DOMAIN } from './utils/constants';
   import initMathJax from './utils/initMathJax';
 
   onMount(() => {
@@ -66,6 +67,10 @@ import { DOMAIN } from './utils/constants';
     <br/><br/><br/><br/>
 
     <CustomDFT/>
+
+    <br/><br/><br/><br/>
+
+    <div><p>Both the Continuous and Discrete Fourier Transforms have inverse versions to go from the frequency domain back to the original signal. I hope to add more sections on that one day.</p></div>
 
     <br/><br/><br/><br/>
 
