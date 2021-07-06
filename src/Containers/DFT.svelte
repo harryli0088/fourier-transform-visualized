@@ -42,6 +42,7 @@
 
   $: halfSampleRate = sampleRate / 2
   $: halfSampleRateText = `${sampleRate.toFixed(1)} Hz / 2 = ${(halfSampleRate).toFixed(1)} Hz`
+  $: isAliased = halfSampleRate < $funcFreq
 </script>
 
 <main>
@@ -84,17 +85,22 @@
     <p>In this scenario, we take {numSamplesText} over a time span of {timeSpanText}, which gives us a sample rate of {sampleRateText}. Notice that:</p>
     <ul>
       <li>The "density" of the DFT depends directly on how long we sample the signal. Right now because the time span of the signal is {timeSpanText}, in our DFT we get {timeSpan.toFixed(1)} {plural(timeSpan, "sample")} per frequency.</li>
-      <li>The magnitude (or "confidence") of our the DFT depends on our sample rate. The higher our sample rate, the more confident we are in the signal frequency</li>
+      <br/>
+      <li>The magnitude (or "confidence") of our the DFT depends on our sample rate. The higher our sample rate, the more confident we are in the signal frequency. (This may different depending on the implementation)</li>
+      <br/>
       <li>
         <div>The DFT can calculate up to a frequency that is half of our sampling rate, currently {halfSampleRateText}. This is due to a phenomenon called <a href="https://en.wikipedia.org/wiki/Aliasing" target="_blank" rel="noopener noreferrer">aliasing</a>. Basically, if your sample rate is too low, the sampled signal looks like it has a compeltely different frequency. Try using a low sample rate to see this effect!</div>
         <br/>
-        <button on:click={() => {
-          funcFreq.set(6, {duration: 0})
-          numSamples = 64
-          setDomainEnd(10)
-        }}>See an Aliasing Example</button>
+        <button
+          disabled={isAliased}
+          on:click={() => {
+            funcFreq.set(6, {duration: 0})
+            numSamples = 64
+            setDomainEnd(10)
+          }}
+        >See an Aliasing Example</button>
 
-        {#if halfSampleRate < $funcFreq}
+        {#if isAliased}
           <p style={`color: ${RED};`}>Alias alert! Your signal of {$funcFreq.toFixed(1)} Hz is too large for your sample rate of {sampleRate.toFixed(1)} Hz. The DFT can only go up to {halfSampleRateText}.</p>
         {/if}
       </li>
