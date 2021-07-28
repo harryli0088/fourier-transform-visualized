@@ -86,7 +86,7 @@
           <p>(through <a href="https://en.wikipedia.org/wiki/Euler%27s_formula" target="_blank" rel="noopener noreferrer">Euler's formula</a>) {`$$= \\int^{t2}_{t1}({ cos(at+b)*cos(-2πtw) + i*cos(at+b)*sin(-2πtw) }) dt$$`}</p>
           <p>(through <a href="https://en.wikipedia.org/wiki/List_of_trigonometric_identities#Product-to-sum_and_sum-to-product_identities" target="_blank" rel="noopener noreferrer">trig product identities</a>) {`$$= \\frac{1}2\\int^{t2}_{t1}({ cos(at+b-2πtw) + cos(at+b+2πtw) + i*sin(-2πtw+a*t+b) + i*sin(-2πtw-at-b) }) dt$$`}</p>
           <p>(simplifying) {`$$= \\frac{1}2\\int^{t2}_{t1}({ cos((a-2πtw)t+b) + cos((a+2πw)t+b) + i*sin((a-2πw)t+b) +i*sin((-a-2πw)t-b) }) dt$$`}</p>
-          <p>(after integrating) {`$$= \\frac{1}2\\Bigl( \\frac{sin((a-2πw)t+b)}{a-2πw} + \\frac{sin((a+2πw)t+b)}{a+2πw} - i*\\frac{cos((a-2πw)t+b)}{a-2πw} + i*\\frac{cos((-a-2πw)t-b)}{a+2πw} \\Bigr) \\enspace {\\Bigr|^{t1}_{t2}}$$`}</p>
+          <p>(after integrating) {`$$= \\frac{1}2\\Bigl( \\frac{sin((a-2πw)t+b)}{a-2πw} + \\frac{sin((a+2πw)t+b)}{a+2πw} - i*\\frac{cos((a-2πw)t+b)}{a-2πw} + i*\\frac{cos((-a-2πw)t-b)}{a+2πw} \\Bigr) \\enspace {\\Bigr|^{t2}_{t1}}$$`}</p>
         </div>
 
         <p>The real portion of the transform is what's plotted in these visualizations. The imaginary part (not used in this site) represents the phase shift.</p>
